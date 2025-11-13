@@ -153,7 +153,7 @@ def main():
     st.sidebar.info("Interfaz visual restringida (solo vista corporativa).")
 
     # =========================================================
-    # TARJETAS PRINCIPALES - TODO EL CONTENIDO DENTRO
+    # TARJETAS PRINCIPALES - TÍTULOS ADENTRO
     # =========================================================
     col1, col2 = st.columns(2)
 
@@ -200,15 +200,18 @@ def main():
         st.markdown('</div>', unsafe_allow_html=True)
 
     # =========================================================
-    # SECCIÓN INFORMATIVA ADICIONAL
+    # SECCIÓN INFORMATIVA ADICIONAL - TÍTULOS ADENTRO
     # =========================================================
     st.markdown("---")
     
+    # Crear tarjetas para los módulos de procesamiento
     st.markdown("### 🔄 MÓDULOS DE PROCESAMIENTO DISPONIBLES")
     
-    info_col1, info_col2, info_col3 = st.columns(3)
+    mod_col1, mod_col2, mod_col3 = st.columns(3)
     
-    with info_col1:
+    with mod_col1:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card-content">', unsafe_allow_html=True)
         st.markdown("#### 📋 COOSALUD")
         st.markdown("""
         - MANTIS JSON Processor
@@ -217,8 +220,14 @@ def main():
         - RIPS Manager
         - SISPRO + CUV Integración
         """)
+        st.markdown('</div>', unsafe_allow_html=True)
+        if st.button("ACCEDER COOSALUD", key="coosalud"):
+            st.switch_page("pages/2_📋_COOSALUD.py")
+        st.markdown('</div>', unsafe_allow_html=True)
     
-    with info_col2:
+    with mod_col2:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card-content">', unsafe_allow_html=True)
         st.markdown("#### 🏥 SAVIA")
         st.markdown("""
         - MANTIS JSON Processor
@@ -227,8 +236,14 @@ def main():
         - RIPS Manager
         - SISPRO + CUV Integración
         """)
+        st.markdown('</div>', unsafe_allow_html=True)
+        if st.button("ACCEDER SAVIA", key="savia"):
+            st.switch_page("pages/3_🏥_SAVIA.py")
+        st.markdown('</div>', unsafe_allow_html=True)
     
-    with info_col3:
+    with mod_col3:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card-content">', unsafe_allow_html=True)
         st.markdown("#### 💊 SALUD TOTAL")
         st.markdown("""
         - Procesador PDF
@@ -236,6 +251,10 @@ def main():
         - Procesador Scan
         - OCR Avanzado
         """)
+        st.markdown('</div>', unsafe_allow_html=True)
+        if st.button("ACCEDER SALUD TOTAL", key="salud_total"):
+            st.switch_page("pages/4_💊_Salud_Total.py")
+        st.markdown('</div>', unsafe_allow_html=True)
 
     # =========================================================
     # PIE DE PÁGINA
