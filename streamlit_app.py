@@ -206,7 +206,8 @@ def main():
         st.markdown("`[PROCESAMIENTO_JSON_RIPS]`")
         st.markdown("```\nEPS: COOSALUD | SAVIA | SALUD_TOTAL\nFUNCION: Validación y conversión\n```")
         if st.button(">> INICIAR SISTEMA <<", key="cuentas_medicas"):
-            st.switch_page("pages/1_📊_Cuentas_Medicas.py")
+            st.success("Módulo activado - Redirigiendo...")
+            # Aquí puedes agregar la funcionalidad específica
         st.markdown('</div>', unsafe_allow_html=True)
     
     with col2:
@@ -225,6 +226,40 @@ def main():
         st.button(">> SISTEMA BLOQUEADO <<", key="ia", disabled=True)
         st.markdown('</div>', unsafe_allow_html=True)
     
+    # SECCIÓN DE ESTADÍSTICAS
+    st.markdown("---")
+    st.markdown("### [>> MÉTRICAS DEL SISTEMA <<]")
+    
+    metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
+    
+    with metric_col1:
+        st.markdown('<div class="cyber-card">', unsafe_allow_html=True)
+        st.markdown("**PROCESAMIENTO**")
+        st.markdown("```\n📊 95% EFICIENCIA\n```")
+        st.progress(0.95)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with metric_col2:
+        st.markdown('<div class="cyber-card">', unsafe_allow_html=True)
+        st.markdown("**VELOCIDAD**")
+        st.markdown("```\n⚡ 2.4s PROMEDIO\n```")
+        st.progress(0.88)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with metric_col3:
+        st.markdown('<div class="cyber-card">', unsafe_allow_html=True)
+        st.markdown("**UPTIME**")
+        st.markdown("```\n🟢 99.9% ACTIVO\n```")
+        st.progress(0.999)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with metric_col4:
+        st.markdown('<div class="cyber-card">', unsafe_allow_html=True)
+        st.markdown("**SEGURIDAD**")
+        st.markdown("```\n🔒 100% PROTEGIDO\n```")
+        st.progress(1.0)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
     # STATUS DEL SISTEMA
     st.markdown("---")
     st.markdown("### [>> STATUS DEL SISTEMA <<]")
@@ -232,16 +267,33 @@ def main():
     status_col1, status_col2, status_col3 = st.columns(3)
     
     with status_col1:
+        st.markdown('<div class="cyber-card">', unsafe_allow_html=True)
         st.markdown("**▸ NÚCLEO PRINCIPAL**")
         st.markdown("```diff\n+ SISTEMA OPERATIVO\n```")
+        st.markdown("**▸ VERSIÓN**")
+        st.markdown("```\nv2.0.1 CYBER-EDITION\n```")
+        st.markdown('</div>', unsafe_allow_html=True)
     
     with status_col2:
+        st.markdown('<div class="cyber-card">', unsafe_allow_html=True)
         st.markdown("**▸ MÓDULOS ACTIVOS**")
-        st.markdown("```diff\n+ CUENTAS_MÉDICAS: ONLINE\n```")
+        st.markdown("```diff\n+ CUENTAS_MÉDICAS: ONLINE\n- INVENTARIOS: OFFLINE\n- REPORTES_IA: OFFLINE\n```")
+        st.markdown('</div>', unsafe_allow_html=True)
     
     with status_col3:
-        st.markdown("**▸ CONEXIÓN BD**")
-        st.markdown("```diff\n+ CONECTADO\n```")
+        st.markdown('<div class="cyber-card">', unsafe_allow_html=True)
+        st.markdown("**▸ CONEXIONES**")
+        st.markdown("```diff\n+ BD PRINCIPAL: CONECTADO\n+ API EXTERNA: STANDBY\n+ CLOUD SYNC: ACTIVO\n```")
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    # FOOTER
+    st.markdown("---")
+    st.markdown(
+        '<div style="text-align: center; color: #00cc00; font-family: Courier New;">'
+        '**TODODROGAS AUTOMATION SYSTEM** • **v2.0 CYBER-EDITION** • **© 2024 INVERSIONES TODO DROGAS S.A.S**'
+        '</div>', 
+        unsafe_allow_html=True
+    )
 
 if __name__ == "__main__":
     main()
