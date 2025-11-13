@@ -25,29 +25,6 @@ def apply_glass_tododrogas_style():
             radial-gradient(circle at 80% 80%, rgba(0, 200, 255, 0.08), transparent 50%);
         z-index: -2;
     }
-
-    .glass-card {
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(0, 255, 255, 0.25);
-        border-radius: 20px;
-        padding: 10px;
-        margin: 15px;
-        box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2);
-        transition: all 0.3s ease;
-        text-align: center;
-        min-height: 280px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .glass-card:hover {
-        transform: translateY(-5px);
-        border-color: rgba(0, 255, 255, 0.5);
-        box-shadow: 0 12px 40px rgba(0, 255, 255, 0.35);
-    }
-
     .main-title {
         text-align: center;
         font-size: 3em;
