@@ -99,9 +99,6 @@ def main():
 
     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
     st.markdown("""
-    st.markdown('<div class="GESTION INTEGRAL DE CUENTAS">', unsafe_allow_html=True)
-    Sistema unificado para la validación de archivos, procesamiento masivo de datos,
-    generación de reportes automáticos, control de calidad y auditoría.
     
     **Incluye módulos para todas las EPS operativas.**
     """)
