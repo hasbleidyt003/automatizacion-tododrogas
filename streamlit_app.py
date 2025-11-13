@@ -143,41 +143,6 @@ def main():
         """, unsafe_allow_html=True)
 
     # =========================================================
-    # DESCRIPCIÓN DE MÓDULOS (FUERA DE LOS BOTONES)
-    # =========================================================
-    st.markdown("---")
-    st.markdown("### 📋 MÓDULOS DISPONIBLES POR EPS")
-    
-    desc_col1, desc_col2, desc_col3 = st.columns(3)
-    
-    with desc_col1:
-        st.markdown("#### 💊 SALUD TOTAL")
-        st.markdown("""
-        - PROCESADOR DE ACTAS - OCR AVANZADO
-        - CONVERSOR MANTIS JSON
-        - CONVERSOR SISPRO JSON  
-        - RENOMBRADOR CUV MANTIS
-        """)
-    
-    with desc_col2:
-        st.markdown("#### 📋 COOSALUD")
-        st.markdown("""
-        - CONVERSOR MANTIS JSON
-        - CONVERSOR SISPRO JSON  
-        - RENOMBRADOR CUV MANTIS
-        - RENOMBRADOR RIPS
-        """)
-    
-    with desc_col3:
-        st.markdown("#### 🏥 SAVIA")
-        st.markdown("""
-        - CONVERSOR MANTIS JSON
-        - CONVERSOR SISPRO JSON  
-        - RENOMBRADOR CUV MANTIS
-        - RENOMBRADOR RIPS
-        """)
-
-    # =========================================================
     # ÁREA DE CUENTAS MÉDICAS
     # =========================================================
     st.markdown("---")
