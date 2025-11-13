@@ -1,0 +1,17 @@
+# Librerías base para TODODROGAS
+streamlit==1.51.0
+pandas==2.3.3
+
+# Librerías de soporte
+numpy
+altair
+watchdog
+
+# Opcional (si usas archivos Excel o CSV grandes)
+openpyxl
+xlsxwriter
+
+# Opcional (si luego integras IA, análisis o dashboards)
+scikit-learn
+matplotlib
+plotly
