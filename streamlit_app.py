@@ -1,7 +1,7 @@
 import streamlit as st
 
 # =========================================================
-# 💊 ESTILO GLASSMORPHISM CORPORATIVO TODODROGAS - CORREGIDO
+# 💊 ESTILO GLASSMORPHISM CORPORATIVO TODODROGAS
 # =========================================================
 def apply_glass_tododrogas_style():
     st.markdown("""
@@ -27,24 +27,17 @@ def apply_glass_tododrogas_style():
         z-index: -2;
     }
 
-    /* CONTENEDOR PRINCIPAL MEJORADO */
-    .main .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-    }
-
-    /* TARJETAS GLASSMORPHISM */
     .glass-card {
         background: rgba(255, 255, 255, 0.08);
         backdrop-filter: blur(15px);
         border: 1px solid rgba(0, 255, 255, 0.25);
         border-radius: 20px;
-        padding: 25px 20px;
-        margin: 10px 0;
+        padding: 25px;
+        margin: 15px;
         box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2);
         transition: all 0.3s ease;
         text-align: center;
-        min-height: 200px;
+        min-height: 280px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -56,28 +49,37 @@ def apply_glass_tododrogas_style():
         box-shadow: 0 12px 40px rgba(0, 255, 255, 0.35);
     }
 
-    /* CONTENIDO DE TARJETAS */
-    .card-content {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+    .main-title {
+        text-align: center;
+        font-size: 3em;
+        font-weight: 700;
+        color: #b3ffff;
+        text-shadow: 0 0 20px rgba(0,255,255,0.6);
+        margin-bottom: 10px;
     }
 
-    /* BOTONES MEJORADOS - TAMAÑOS FIJOS */
+    .subtitle {
+        text-align: center;
+        font-size: 1.2em;
+        color: #9eefff;
+        margin-bottom: 40px;
+        letter-spacing: 1px;
+    }
+
+    /* BOTONES MEJORADOS - TAMAÑOS FIJOS Y CENTRADOS */
     .stButton button {
         background: rgba(0, 255, 255, 0.1);
         color: #e0ffff;
         border: 1px solid rgba(0, 255, 255, 0.4);
-        border-radius: 12px;
+        border-radius: 10px;
         padding: 12px 0;
-        font-size: 14px;
+        font-size: 15px;
         font-weight: 600;
-        width: 180px !important;
-        min-width: 180px !important;
-        max-width: 180px !important;
+        width: 200px !important;
+        min-width: 200px !important;
+        max-width: 200px !important;
         transition: all 0.3s ease;
-        margin: 10px auto !important;
+        margin: 15px auto 0 auto !important;
         display: block !important;
     }
 
@@ -86,7 +88,6 @@ def apply_glass_tododrogas_style():
         color: #00ffff;
         box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
         transform: scale(1.05);
-        border-color: rgba(0, 255, 255, 0.7);
     }
 
     /* BOTÓN DESHABILITADO */
@@ -107,82 +108,40 @@ def apply_glass_tododrogas_style():
         box-shadow: none;
     }
 
-    /* CONTENEDOR DE BOTONES CENTRADO */
-    .button-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: auto;
-        padding-top: 15px;
-        width: 100%;
-    }
-
-    /* TÍTULOS */
-    .main-title {
-        text-align: center;
-        font-size: 2.8em;
-        font-weight: 700;
-        color: #b3ffff;
-        text-shadow: 0 0 20px rgba(0,255,255,0.6);
-        margin-bottom: 10px;
-        padding-top: 1rem;
-    }
-
-    .subtitle {
-        text-align: center;
-        font-size: 1.2em;
-        color: #9eefff;
-        margin-bottom: 30px;
-        letter-spacing: 1px;
-    }
-
-    /* SEPARADOR */
-    .stMarkdown hr {
-        border: none;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, rgba(0,255,255,0.5), transparent);
-        margin: 30px 0;
-    }
-
-    /* FOOTER */
     .footer {
         text-align: center;
-        font-size: 0.9em;
+        font-size: 0.8em;
         margin-top: 30px;
         color: #99e6ff;
-        padding: 20px;
     }
-
-    /* SIDEBAR */
-    .sidebar .sidebar-content {
-        background: rgba(0, 30, 60, 0.8);
-        backdrop-filter: blur(10px);
-        border-right: 1px solid rgba(0, 255, 255, 0.2);
+    
+    /* CONTENIDO DE TARJETA */
+    .card-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-        .glass-card {
-            min-height: 180px;
-            padding: 20px 15px;
-        }
-        
-        .main-title {
-            font-size: 2.2em;
-        }
-        
-        .stButton button {
-            width: 160px !important;
-            min-width: 160px !important;
-            max-width: 160px !important;
-            padding: 10px 0;
-        }
+    
+    /* MÉTRICAS Y ESTADÍSTICAS */
+    .metric-number {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #00ffff;
+        text-shadow: 0 0 10px rgba(0,255,255,0.5);
+        margin: 10px 0;
+    }
+    
+    .metric-label {
+        font-size: 0.9em;
+        color: #9eefff;
+        margin-bottom: 15px;
     }
     </style>
     """, unsafe_allow_html=True)
 
 # =========================================================
-# 🧠 CONTENIDO PRINCIPAL - ESTRUCTURA CORREGIDA
+# 🧠 CONTENIDO PRINCIPAL
 # =========================================================
 def main():
     apply_glass_tododrogas_style()
@@ -194,65 +153,88 @@ def main():
     st.sidebar.info("Interfaz visual restringida (solo vista corporativa).")
 
     # =========================================================
-    # TARJETAS PRINCIPALES - BOTONES CON TAMAÑOS FIJOS
+    # TARJETAS PRINCIPALES - TODO EL CONTENIDO DENTRO
     # =========================================================
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
 
     with col1:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown('<div class="card-content">', unsafe_allow_html=True)
         st.markdown("### 📊 CUENTAS MÉDICAS")
         st.write("Gestión de EPS, validación de archivos y reportes automáticos.")
+        st.markdown("---")
+        st.markdown("**EPS Conectadas:**")
+        st.markdown("- COOSALUD")
+        st.markdown("- SAVIA")
+        st.markdown("- SALUD TOTAL")
         st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('<div class="button-container">', unsafe_allow_html=True)
-        if st.button("ACCEDER", key="cuentas_medicas"):
+        if st.button("ACCEDER A PROCESAMIENTO", key="cuentas"):
             st.switch_page("pages/1_🏥_Cuentas_Medicas.py")
-        st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown('<div class="card-content">', unsafe_allow_html=True)
-        st.markdown("### 📦 INVENTARIOS")
-        st.write("Gestione y analice el stock de productos, entradas y salidas.")
+        st.markdown("### 📈 MÉTRICAS DEL SISTEMA")
+        st.write("Estadísticas de uso y procesamiento de archivos.")
+        st.markdown("---")
+        
+        # MÉTRICAS SIMULADAS
+        col_metric1, col_metric2 = st.columns(2)
+        
+        with col_metric1:
+            st.markdown('<div class="metric-number">1,247</div>', unsafe_allow_html=True)
+            st.markdown('<div class="metric-label">Archivos Procesados</div>', unsafe_allow_html=True)
+            
+        with col_metric2:
+            st.markdown('<div class="metric-number">89</div>', unsafe_allow_html=True)
+            st.markdown('<div class="metric-label">Sesiones Activas</div>', unsafe_allow_html=True)
+        
+        st.markdown("**Procesos Automatizados:**")
+        st.markdown("- Validación RIPS")
+        st.markdown("- Conversión JSON")
+        st.markdown("- Reportes Auto")
         st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('<div class="button-container">', unsafe_allow_html=True)
-        st.button("PRÓXIMAMENTE", key="inventarios", disabled=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    with col3:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown('<div class="card-content">', unsafe_allow_html=True)
-        st.markdown("### 🤖 REPORTES IA")
-        st.write("Generación de reportes automáticos mediante inteligencia artificial.")
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('<div class="button-container">', unsafe_allow_html=True)
-        st.button("PRÓXIMAMENTE", key="reportes_ia", disabled=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+        if st.button("VER MÉTRICAS DETALLADAS", key="metricas"):
+            st.success("🔍 Mostrando métricas detalladas...")
         st.markdown('</div>', unsafe_allow_html=True)
 
     # =========================================================
-    # INFORMACIÓN ADICIONAL
+    # SECCIÓN INFORMATIVA ADICIONAL
     # =========================================================
     st.markdown("---")
     
-    info_col1, info_col2 = st.columns(2)
+    st.markdown("### 🔄 MÓDULOS DE PROCESAMIENTO DISPONIBLES")
+    
+    info_col1, info_col2, info_col3 = st.columns(3)
     
     with info_col1:
-        st.markdown("### 📋 EPS Conectadas")
+        st.markdown("#### 📋 COOSALUD")
         st.markdown("""
-        - **COOSALUD**
-        - **SAVIA** 
-        - **SALUD TOTAL**
+        - MANTIS JSON Processor
+        - SISPRO JSON Interface  
+        - CUV MANTIS Renombrador
+        - RIPS Manager
+        - SISPRO + CUV Integración
         """)
     
     with info_col2:
-        st.markdown("### 🔄 Procesos Automatizados")
+        st.markdown("#### 🏥 SAVIA")
         st.markdown("""
-        - Validación de archivos RIPS
-        - Generación de reportes
-        - Sincronización en tiempo real
+        - MANTIS JSON Processor
+        - SISPRO JSON Interface  
+        - CUV MANTIS Renombrador
+        - RIPS Manager
+        - SISPRO + CUV Integración
+        """)
+    
+    with info_col3:
+        st.markdown("#### 💊 SALUD TOTAL")
+        st.markdown("""
+        - Procesador PDF
+        - Validador PDF
+        - Procesador Scan
+        - OCR Avanzado
         """)
 
     # =========================================================
