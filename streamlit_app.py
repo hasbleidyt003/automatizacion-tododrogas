@@ -218,7 +218,7 @@ def main():
         - CONVERSOR SISPRO JSON  
         - RENOMBRADOR CUV MANTIS
         - RENOMBRADOR RIPS
-        - PROCESADOR DE ACTAS - OCR
+        - PROCESADOR DE ACTAS - OCR AVANZADO
         """)
         st.markdown('</div>', unsafe_allow_html=True)
         if st.button("ACCEDER COOSALUD", key="coosalud"):
