@@ -27,31 +27,34 @@ def apply_glass_tododrogas_style():
         z-index: -2;
     }
 
-    .glass-card {
+    /* BOTONES PRINCIPALES - MÁS COMPACTOS */
+    .main-button {
         background: rgba(255, 255, 255, 0.08);
         backdrop-filter: blur(15px);
         border: 1px solid rgba(0, 255, 255, 0.25);
-        border-radius: 20px;
-        padding: 25px;
-        margin: 15px;
+        border-radius: 15px;
+        padding: 20px 15px;
+        margin: 10px;
         box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2);
         transition: all 0.3s ease;
         text-align: center;
-        min-height: 320px;
+        min-height: 180px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        cursor: pointer;
     }
 
-    .glass-card:hover {
-        transform: translateY(-5px);
+    .main-button:hover {
+        transform: translateY(-3px);
         border-color: rgba(0, 255, 255, 0.5);
         box-shadow: 0 12px 40px rgba(0, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.12);
     }
 
     .main-title {
         text-align: center;
-        font-size: 3em;
+        font-size: 2.5em;
         font-weight: 700;
         color: #b3ffff;
         text-shadow: 0 0 20px rgba(0,255,255,0.6);
@@ -60,34 +63,33 @@ def apply_glass_tododrogas_style():
 
     .subtitle {
         text-align: center;
-        font-size: 1.2em;
+        font-size: 1.1em;
         color: #9eefff;
-        margin-bottom: 40px;
+        margin-bottom: 30px;
         letter-spacing: 1px;
     }
 
-    /* BOTONES MEJORADOS - TODOS IGUALES Y ALINEADOS */
+    /* BOTONES ACCEDER - COMPACTOS */
     .stButton button {
-        background: rgba(0, 255, 255, 0.1);
+        background: rgba(0, 255, 255, 0.15);
         color: #e0ffff;
         border: 1px solid rgba(0, 255, 255, 0.4);
-        border-radius: 10px;
-        padding: 12px 0;
-        font-size: 15px;
+        border-radius: 8px;
+        padding: 8px 0;
+        font-size: 14px;
         font-weight: 600;
-        width: 200px !important;
-        min-width: 200px !important;
-        max-width: 200px !important;
-        height: 45px !important;
+        width: 160px !important;
+        min-width: 160px !important;
+        max-width: 160px !important;
         transition: all 0.3s ease;
-        margin: 0 auto !important;
+        margin: 10px auto 0 auto !important;
         display: block !important;
     }
 
     .stButton button:hover {
         background: rgba(0, 255, 255, 0.25);
         color: #00ffff;
-        box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
         transform: scale(1.05);
     }
 
@@ -98,45 +100,29 @@ def apply_glass_tododrogas_style():
         color: #99e6ff;
     }
     
-    /* CONTENIDO DE TARJETA */
-    .card-content {
+    /* CONTENIDO DE BOTÓN PRINCIPAL */
+    .button-content {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
     }
     
-    /* MÉTRICAS Y ESTADÍSTICAS */
-    .metric-number {
-        font-size: 2.5em;
+    /* LISTA COMPACTA */
+    .compact-list {
+        font-size: 0.8em;
+        line-height: 1.2;
+        text-align: left;
+        margin: 8px 0;
+        color: #c0f0ff;
+    }
+    
+    .eps-title {
+        font-size: 1.3em;
         font-weight: bold;
         color: #00ffff;
+        margin-bottom: 8px;
         text-shadow: 0 0 10px rgba(0,255,255,0.5);
-        margin: 10px 0;
-    }
-    
-    .metric-label {
-        font-size: 0.9em;
-        color: #9eefff;
-        margin-bottom: 15px;
-    }
-    
-    /* CONTENEDOR DE BOTÓN FIJO EN PARTE INFERIOR */
-    .button-container {
-        margin-top: auto;
-        padding-top: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-        min-height: 60px;
-    }
-    
-    /* CONTENIDO DE LISTAS MÁS COMPACTO */
-    .module-list {
-        font-size: 0.85em;
-        line-height: 1.3;
-        text-align: left;
-        margin: 10px 0;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -154,171 +140,167 @@ def main():
     st.sidebar.info("Interfaz visual restringida (solo vista corporativa).")
 
     # =========================================================
-    # SECCIÓN EPS - DE PRIMERAS Y REORGANIZADA
+    # BOTONES PRINCIPALES DE EPS - COMPACTOS
     # =========================================================
     st.markdown("### 🔄 MÓDULOS DE PROCESAMIENTO POR EPS")
     
-    # REORGANIZADO: Salud Total a la izquierda
     eps_col1, eps_col2, eps_col3 = st.columns(3)
     
-    with eps_col1:  # SALUD TOTAL A LA IZQUIERDA
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown('<div class="card-content">', unsafe_allow_html=True)
-        st.markdown("#### 💊 SALUD TOTAL")
-        st.markdown('<div class="module-list">', unsafe_allow_html=True)
-        st.markdown("""
-        - PROCESADOR DE ACTAS - OCR AVANZADO
-        - CONVERSOR MANTIS JSON
-        - CONVERSOR SISPRO JSON  
-        - RENOMBRADOR CUV MANTIS
-        - RENOMBRADOR RIPS
-        """)
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('<div class="button-container">', unsafe_allow_html=True)
-        if st.button("ACCEDER SALUD TOTAL", key="salud_total"):
+    with eps_col1:  # SALUD TOTAL
+        if st.button("", key="salud_total_main"):
             st.switch_page("pages/4_💊_Salud_Total.py")
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-    
-    with eps_col2:  # COOSALUD EN EL CENTRO
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown('<div class="card-content">', unsafe_allow_html=True)
-        st.markdown("#### 📋 COOSALUD")
-        st.markdown('<div class="module-list">', unsafe_allow_html=True)
         st.markdown("""
-        - CONVERSOR MANTIS JSON
-        - CONVERSOR SISPRO JSON  
-        - RENOMBRADOR CUV MANTIS
-        - RENOMBRADOR RIPS
-        - PROCESADOR DE ACTAS - OCR AVANZADO
-        """)
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('<div class="button-container">', unsafe_allow_html=True)
-        if st.button("ACCEDER COOSALUD", key="coosalud"):
+        <div class="main-button" onclick="this.parentNode.querySelector('button').click()">
+            <div class="button-content">
+                <div class="eps-title">💊 SALUD TOTAL</div>
+                <div class="compact-list">
+                - PROCESADOR DE ACTAS - OCR AVANZADO<br>
+                - CONVERSOR MANTIS JSON<br>
+                - CONVERSOR SISPRO JSON<br>
+                - RENOMBRADOR CUV MANTIS
+                </div>
+            </div>
+            <div style="margin-top: 10px;">
+                <small>Haz clic para acceder</small>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with eps_col2:  # COOSALUD
+        if st.button("", key="coosalud_main"):
             st.switch_page("pages/2_📋_COOSALUD.py")
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-    
-    with eps_col3:  # SAVIA A LA DERECHA
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown('<div class="card-content">', unsafe_allow_html=True)
-        st.markdown("#### 🏥 SAVIA")
-        st.markdown('<div class="module-list">', unsafe_allow_html=True)
         st.markdown("""
-        - CONVERSOR MANTIS JSON
-        - CONVERSOR SISPRO JSON  
-        - RENOMBRADOR CUV MANTIS
-        - RENOMBRADOR RIPS
-        - PROCESADOR DE ACTAS - OCR AVANZADO
-        """)
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('<div class="button-container">', unsafe_allow_html=True)
-        if st.button("ACCEDER SAVIA", key="savia"):
+        <div class="main-button" onclick="this.parentNode.querySelector('button').click()">
+            <div class="button-content">
+                <div class="eps-title">📋 COOSALUD</div>
+                <div class="compact-list">
+                - CONVERSOR MANTIS JSON<br>
+                - CONVERSOR SISPRO JSON<br>
+                - RENOMBRADOR CUV MANTIS<br>
+                - RENOMBRADOR RIPS
+                </div>
+            </div>
+            <div style="margin-top: 10px;">
+                <small>Haz clic para acceder</small>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with eps_col3:  # SAVIA
+        if st.button("", key="savia_main"):
             st.switch_page("pages/3_🏥_SAVIA.py")
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="main-button" onclick="this.parentNode.querySelector('button').click()">
+            <div class="button-content">
+                <div class="eps-title">🏥 SAVIA</div>
+                <div class="compact-list">
+                - CONVERSOR MANTIS JSON<br>
+                - CONVERSOR SISPRO JSON<br>
+                - RENOMBRADOR CUV MANTIS<br>
+                - RENOMBRADOR RIPS
+                </div>
+            </div>
+            <div style="margin-top: 10px;">
+                <small>Haz clic para acceder</small>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
     # =========================================================
-    # ÁREA PRINCIPAL - CUENTAS MÉDICAS
+    # ÁREA DE CUENTAS MÉDICAS
     # =========================================================
     st.markdown("---")
     st.markdown("### 📊 ÁREA DE CUENTAS MÉDICAS")
     
-    area_col1, area_col2 = st.columns([2, 1])
-    
-    with area_col1:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown('<div class="card-content">', unsafe_allow_html=True)
-        st.markdown("#### 🏥 GESTIÓN INTEGRAL DE CUENTAS")
-        st.markdown("""
-        **Sistema unificado para:**  
-        • Validación de archivos RIPS  
-        • Procesamiento masivo de datos  
-        • Generación de reportes automáticos  
-        • Control de calidad y auditoría  
-        • Integración con todas las EPS
-        """)
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('<div class="button-container">', unsafe_allow_html=True)
-        if st.button("ACCEDER ÁREA CUENTAS MÉDICAS", key="cuentas_medicas"):
-            st.switch_page("pages/1_🏥_Cuentas_Medicas.py")
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-    
-    with area_col2:
-        st.markdown("#### 📈 Resumen de Actividad")
-        st.markdown("""
-        **Procesos Activos:**  
-        ✅ RIPS Automatizado  
-        ✅ Validación JSON  
-        ✅ Reportes en Tiempo Real  
-        
-        **Próximamente:**  
-        🔄 Análisis Predictivo  
-        🔄 Dashboard Ejecutivo
-        """)
+    if st.button("", key="cuentas_main"):
+        st.switch_page("pages/1_🏥_Cuentas_Medicas.py")
+    st.markdown("""
+    <div class="main-button" onclick="this.parentNode.querySelector('button').click()">
+        <div class="button-content">
+            <div class="eps-title">🏥 GESTIÓN INTEGRAL DE CUENTAS</div>
+            <div class="compact-list">
+            • Validación de archivos RIPS<br>
+            • Procesamiento masivo de datos<br>
+            • Generación de reportes automáticos<br>
+            • Control de calidad y auditoría<br>
+            • Integración con todas las EPS
+            </div>
+        </div>
+        <div style="margin-top: 10px;">
+            <small>Haz clic para acceder al área completa</small>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     # =========================================================
-    # MÉTRICAS DEL SISTEMA - ABAJO
+    # MÉTRICAS DEL SISTEMA
     # =========================================================
     st.markdown("---")
-    st.markdown("### 📈 MÉTRICAS Y ESTADÍSTICAS DEL SISTEMA")
+    st.markdown("### 📈 MÉTRICAS DEL SISTEMA")
     
     metric_col1, metric_col2 = st.columns(2)
 
     with metric_col1:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown('<div class="card-content">', unsafe_allow_html=True)
-        st.markdown("#### 📊 ESTADÍSTICAS DE USO")
-        st.markdown("---")
+        st.markdown("""
+        <div style='
+            background: rgba(255,255,255,0.05); 
+            padding: 15px; 
+            border-radius: 10px; 
+            border: 1px solid rgba(0,255,255,0.2);
+            text-align: center;
+        '>
+            <div style='font-size: 2em; color: #00ffff; font-weight: bold;'>1,247</div>
+            <div style='color: #9eefff; font-size: 0.9em;'>Archivos Procesados</div>
+        </div>
+        """, unsafe_allow_html=True)
         
-        # MÉTRICAS SIMULADAS
-        col_m1, col_m2 = st.columns(2)
-        
-        with col_m1:
-            st.markdown('<div class="metric-number">1,247</div>', unsafe_allow_html=True)
-            st.markdown('<div class="metric-label">Archivos Procesados</div>', unsafe_allow_html=True)
-            
-        with col_m2:
-            st.markdown('<div class="metric-number">89</div>', unsafe_allow_html=True)
-            st.markdown('<div class="metric-label">Sesiones Activas</div>', unsafe_allow_html=True)
-        
-        st.markdown("**Eficiencia del Sistema:**")
-        st.markdown("- 99.2% Tiempo Activo")
-        st.markdown("- 15.7s Procesamiento Promedio")
-        st.markdown("- 0 Errores Críticos")
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('<div class="button-container">', unsafe_allow_html=True)
-        if st.button("VER MÉTRICAS DETALLADAS", key="metricas"):
-            st.success("🔍 Mostrando métricas detalladas...")
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div style='
+            background: rgba(255,255,255,0.05); 
+            padding: 15px; 
+            border-radius: 10px; 
+            border: 1px solid rgba(0,255,255,0.2);
+            margin-top: 10px;
+        '>
+            <div style='color: #9eefff; font-size: 0.9em;'><b>Eficiencia del Sistema:</b></div>
+            <div style='color: #c0f0ff; font-size: 0.8em;'>
+            • 99.2% Tiempo Activo<br>
+            • 15.7s Procesamiento Promedio<br>
+            • 0 Errores Críticos
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
     with metric_col2:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown('<div class="card-content">', unsafe_allow_html=True)
-        st.markdown("#### 🔄 ACTIVIDAD RECIENTE")
-        st.markdown("---")
+        st.markdown("""
+        <div style='
+            background: rgba(255,255,255,0.05); 
+            padding: 15px; 
+            border-radius: 10px; 
+            border: 1px solid rgba(0,255,255,0.2);
+            text-align: center;
+        '>
+            <div style='font-size: 2em; color: #00ffff; font-weight: bold;'>89</div>
+            <div style='color: #9eefff; font-size: 0.9em;'>Sesiones Activas</div>
+        </div>
+        """, unsafe_allow_html=True)
         
-        st.markdown("**Últimas 24 horas:**")
-        st.markdown("• 34 archivos COOSALUD")
-        st.markdown("• 28 archivos SAVIA") 
-        st.markdown("• 12 archivos Salud Total")
-        st.markdown("• 5 reportes generados")
-        
-        st.markdown("**Tendencias:**")
-        st.markdown("📈 +15% procesamiento")
-        st.markdown("✅ 100% precisión")
-        st.markdown("⚡ 2.3s velocidad avg")
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('<div class="button-container">', unsafe_allow_html=True)
-        if st.button("VER ACTIVIDAD COMPLETA", key="actividad"):
-            st.success("📋 Mostrando actividad completa...")
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div style='
+            background: rgba(255,255,255,0.05); 
+            padding: 15px; 
+            border-radius: 10px; 
+            border: 1px solid rgba(0,255,255,0.2);
+            margin-top: 10px;
+        '>
+            <div style='color: #9eefff; font-size: 0.9em;'><b>Actividad Reciente:</b></div>
+            <div style='color: #c0f0ff; font-size: 0.8em;'>
+            • 34 archivos COOSALUD<br>
+            • 28 archivos SAVIA<br>
+            • 12 archivos Salud Total
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
     # =========================================================
     # PIE DE PÁGINA
