@@ -14,7 +14,6 @@ def apply_glass_tododrogas_style():
         font-family: 'Poppins', sans-serif;
     }
 
-    /* EFECTO DE BURBUJAS Y BRILLOS */
     .stApp::before {
         content: '';
         position: fixed;
@@ -28,7 +27,6 @@ def apply_glass_tododrogas_style():
         z-index: -2;
     }
 
-    /* REJILLA SUAVE */
     .stApp::after {
         content: '';
         position: fixed;
@@ -44,7 +42,6 @@ def apply_glass_tododrogas_style():
         pointer-events: none;
     }
 
-    /* TITULO PRINCIPAL */
     .glass-title {
         font-size: 4em;
         font-weight: 700;
@@ -56,7 +53,6 @@ def apply_glass_tododrogas_style():
         text-transform: uppercase;
     }
 
-    /* SUBTITULO */
     .glass-subtitle {
         text-align: center;
         font-size: 1.2em;
@@ -65,7 +61,6 @@ def apply_glass_tododrogas_style():
         letter-spacing: 1.5px;
     }
 
-    /* TARJETAS GLASSMORPHIC */
     .glass-card {
         background: rgba(255, 255, 255, 0.08);
         backdrop-filter: blur(15px);
@@ -83,7 +78,6 @@ def apply_glass_tododrogas_style():
         border: 1px solid rgba(0, 255, 255, 0.3);
     }
 
-    /* BOTONES ESTILO VIDRIO */
     .stButton button {
         background: rgba(0, 255, 255, 0.1);
         color: #e0ffff;
@@ -107,33 +101,12 @@ def apply_glass_tododrogas_style():
         transform: scale(1.05);
     }
 
-    /* TEXTO Y BLOQUES */
-    .main .block-container {
-        color: #d9faff;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    /* CÓDIGOS DIFERENCIADOS */
     code, pre {
         background: rgba(0, 40, 60, 0.3);
         color: #80ffff;
         border-radius: 8px;
         padding: 8px;
         display: block;
-    }
-
-    /* SCROLLBAR */
-    ::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: rgba(0, 255, 255, 0.4);
-        border-radius: 10px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: rgba(0, 255, 255, 0.6);
     }
     </style>
     """, unsafe_allow_html=True)
@@ -142,14 +115,11 @@ def apply_glass_tododrogas_style():
 def main():
     apply_glass_tododrogas_style()
     
-    # ENCABEZADO
     st.markdown('<h1 class="glass-title">TODODROGAS</h1>', unsafe_allow_html=True)
     st.markdown('<p class="glass-subtitle">INVERSIONES TODO DROGAS S.A.S</p>', unsafe_allow_html=True)
     st.markdown('<p class="glass-subtitle">[ SISTEMA GLASS-AUTOMATION v2.0 ]</p>', unsafe_allow_html=True)
     
     st.markdown("---")
-
-    # SELECCIÓN DE MÓDULOS
     st.markdown("### 💎 SELECCIONA UN MÓDULO")
 
     col1, col2, col3 = st.columns(3)
@@ -160,7 +130,7 @@ def main():
         st.markdown("`[PROCESAMIENTO_JSON_RIPS]`")
         st.markdown("```\nEPS: COOSALUD | SAVIA | SALUD_TOTAL\nFUNCION: Validación y conversión\n```")
         if st.button("INICIAR SISTEMA", key="cuentas_medicas"):
-            st.switch_page("pages/1_📊_Cuentas_Medicas.py")
+            st.switch_page("pages/1_Cuentas_Medicas.py")
         st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
@@ -179,12 +149,10 @@ def main():
         st.button("SISTEMA BLOQUEADO", key="ia", disabled=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-    # STATUS DEL SISTEMA
     st.markdown("---")
     st.markdown("### ⚙️ STATUS DEL SISTEMA")
 
     status_col1, status_col2, status_col3 = st.columns(3)
-
     with status_col1:
         st.markdown("**▸ NÚCLEO PRINCIPAL**")
         st.markdown("```diff\n+ SISTEMA OPERATIVO\n```")
@@ -196,6 +164,7 @@ def main():
     with status_col3:
         st.markdown("**▸ CONEXIÓN BD**")
         st.markdown("```diff\n+ CONECTADO\n```")
+
 
 if __name__ == "__main__":
     main()
