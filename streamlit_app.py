@@ -90,24 +90,6 @@ def apply_glass_tododrogas_style():
         transform: scale(1.05);
     }
 
-    /* BOTÓN DESHABILITADO */
-    .stButton button:disabled {
-        background: rgba(128, 128, 128, 0.2);
-        color: #88aaff;
-        border: 1px solid rgba(128, 128, 128, 0.4);
-        cursor: not-allowed;
-        transform: none;
-        box-shadow: none;
-    }
-
-    .stButton button:disabled:hover {
-        background: rgba(128, 128, 128, 0.2);
-        color: #88aaff;
-        border: 1px solid rgba(128, 128, 128, 0.4);
-        transform: none;
-        box-shadow: none;
-    }
-
     .footer {
         text-align: center;
         font-size: 0.8em;
@@ -137,6 +119,12 @@ def apply_glass_tododrogas_style():
         color: #9eefff;
         margin-bottom: 15px;
     }
+    
+    /* BOTONES ALINEADOS */
+    .button-container {
+        margin-top: auto;
+        padding-top: 20px;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -153,63 +141,28 @@ def main():
     st.sidebar.info("Interfaz visual restringida (solo vista corporativa).")
 
     # =========================================================
-    # TARJETAS PRINCIPALES - TÍTULOS ADENTRO
+    # SECCIÓN EPS - DE PRIMERAS Y REORGANIZADA
     # =========================================================
-    col1, col2 = st.columns(2)
-
-    with col1:
+    st.markdown("### 🔄 MÓDULOS DE PROCESAMIENTO POR EPS")
+    
+    # REORGANIZADO: Salud Total a la izquierda
+    eps_col1, eps_col2, eps_col3 = st.columns(3)
+    
+    with eps_col1:  # SALUD TOTAL A LA IZQUIERDA
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown('<div class="card-content">', unsafe_allow_html=True)
-        st.markdown("### 📊 CUENTAS MÉDICAS")
-        st.write("Gestión de EPS, validación de archivos y reportes automáticos.")
-        st.markdown("---")
-        st.markdown("**EPS Conectadas:**")
-        st.markdown("- COOSALUD")
-        st.markdown("- SAVIA")
-        st.markdown("- SALUD TOTAL")
+        st.markdown("#### 💊 SALUD TOTAL")
+        st.markdown("""
+        - PROCESADOR DE ACTAS - OCR AVANZADO
+        """)
         st.markdown('</div>', unsafe_allow_html=True)
-        if st.button("ACCEDER A PROCESAMIENTO", key="cuentas"):
-            st.switch_page("pages/1_🏥_Cuentas_Medicas.py")
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
+        if st.button("ACCEDER SALUD TOTAL", key="salud_total"):
+            st.switch_page("pages/4_💊_Salud_Total.py")
         st.markdown('</div>', unsafe_allow_html=True)
-
-    with col2:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown('<div class="card-content">', unsafe_allow_html=True)
-        st.markdown("### 📈 MÉTRICAS DEL SISTEMA")
-        st.write("Estadísticas de uso y procesamiento de archivos.")
-        st.markdown("---")
-        
-        # MÉTRICAS SIMULADAS
-        col_metric1, col_metric2 = st.columns(2)
-        
-        with col_metric1:
-            st.markdown('<div class="metric-number">1,247</div>', unsafe_allow_html=True)
-            st.markdown('<div class="metric-label">Archivos Procesados</div>', unsafe_allow_html=True)
-            
-        with col_metric2:
-            st.markdown('<div class="metric-number">89</div>', unsafe_allow_html=True)
-            st.markdown('<div class="metric-label">Sesiones Activas</div>', unsafe_allow_html=True)
-        
-        st.markdown("**Procesos Automatizados:**")
-        st.markdown("- Validación RIPS")
-        st.markdown("- Conversión JSON")
-        st.markdown("- Reportes Auto")
         st.markdown('</div>', unsafe_allow_html=True)
-        if st.button("VER MÉTRICAS DETALLADAS", key="metricas"):
-            st.success("🔍 Mostrando métricas detalladas...")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    # =========================================================
-    # SECCIÓN INFORMATIVA ADICIONAL - TÍTULOS ADENTRO
-    # =========================================================
-    st.markdown("---")
     
-    # Crear tarjetas para los módulos de procesamiento
-    st.markdown("### 🔄 MÓDULOS DE PROCESAMIENTO DISPONIBLES")
-    
-    mod_col1, mod_col2, mod_col3 = st.columns(3)
-    
-    with mod_col1:
+    with eps_col2:  # COOSALUD EN EL CENTRO
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown('<div class="card-content">', unsafe_allow_html=True)
         st.markdown("#### 📋 COOSALUD")
@@ -221,11 +174,13 @@ def main():
         - PROCESADOR DE ACTAS - OCR AVANZADO
         """)
         st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
         if st.button("ACCEDER COOSALUD", key="coosalud"):
             st.switch_page("pages/2_📋_COOSALUD.py")
         st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
     
-    with mod_col2:
+    with eps_col3:  # SAVIA A LA DERECHA
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown('<div class="card-content">', unsafe_allow_html=True)
         st.markdown("#### 🏥 SAVIA")
@@ -237,20 +192,109 @@ def main():
         - PROCESADOR DE ACTAS - OCR AVANZADO
         """)
         st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
         if st.button("ACCEDER SAVIA", key="savia"):
             st.switch_page("pages/3_🏥_SAVIA.py")
         st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    # =========================================================
+    # ÁREA PRINCIPAL - CUENTAS MÉDICAS
+    # =========================================================
+    st.markdown("---")
+    st.markdown("### 📊 ÁREA DE CUENTAS MÉDICAS")
     
-    with mod_col3:
+    area_col1, area_col2 = st.columns([2, 1])
+    
+    with area_col1:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown('<div class="card-content">', unsafe_allow_html=True)
-        st.markdown("#### 💊 SALUD TOTAL")
+        st.markdown("#### 🏥 GESTIÓN INTEGRAL DE CUENTAS")
         st.markdown("""
-     - PROCESADOR DE ACTAS - OCR AVANZADO
+        **Sistema unificado para:**  
+        • Validación de archivos RIPS  
+        • Procesamiento masivo de datos  
+        • Generación de reportes automáticos  
+        • Control de calidad y auditoría  
+        • Integración con todas las EPS
         """)
         st.markdown('</div>', unsafe_allow_html=True)
-        if st.button("ACCEDER SALUD TOTAL", key="salud_total"):
-            st.switch_page("pages/4_💊_Salud_Total.py")
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
+        if st.button("ACCEDER ÁREA CUENTAS MÉDICAS", key="cuentas_medicas"):
+            st.switch_page("pages/1_🏥_Cuentas_Medicas.py")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with area_col2:
+        st.markdown("#### 📈 Resumen de Actividad")
+        st.markdown("""
+        **Procesos Activos:**  
+        ✅ RIPS Automatizado  
+        ✅ Validación JSON  
+        ✅ Reportes en Tiempo Real  
+        
+        **Próximamente:**  
+        🔄 Análisis Predictivo  
+        🔄 Dashboard Ejecutivo
+        """)
+
+    # =========================================================
+    # MÉTRICAS DEL SISTEMA - ABAJO
+    # =========================================================
+    st.markdown("---")
+    st.markdown("### 📈 MÉTRICAS Y ESTADÍSTICAS DEL SISTEMA")
+    
+    metric_col1, metric_col2 = st.columns(2)
+
+    with metric_col1:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card-content">', unsafe_allow_html=True)
+        st.markdown("#### 📊 ESTADÍSTICAS DE USO")
+        st.markdown("---")
+        
+        # MÉTRICAS SIMULADAS
+        col_m1, col_m2 = st.columns(2)
+        
+        with col_m1:
+            st.markdown('<div class="metric-number">1,247</div>', unsafe_allow_html=True)
+            st.markdown('<div class="metric-label">Archivos Procesados</div>', unsafe_allow_html=True)
+            
+        with col_m2:
+            st.markdown('<div class="metric-number">89</div>', unsafe_allow_html=True)
+            st.markdown('<div class="metric-label">Sesiones Activas</div>', unsafe_allow_html=True)
+        
+        st.markdown("**Eficiencia del Sistema:**")
+        st.markdown("- 99.2% Tiempo Activo")
+        st.markdown("- 15.7s Procesamiento Promedio")
+        st.markdown("- 0 Errores Críticos")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
+        if st.button("VER MÉTRICAS DETALLADAS", key="metricas"):
+            st.success("🔍 Mostrando métricas detalladas...")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with metric_col2:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card-content">', unsafe_allow_html=True)
+        st.markdown("#### 🔄 ACTIVIDAD RECIENTE")
+        st.markdown("---")
+        
+        st.markdown("**Últimas 24 horas:**")
+        st.markdown("• 34 archivos COOSALUD")
+        st.markdown("• 28 archivos SAVIA") 
+        st.markdown("• 12 archivos Salud Total")
+        st.markdown("• 5 reportes generados")
+        
+        st.markdown("**Tendencias:**")
+        st.markdown("📈 +15% procesamiento")
+        st.markdown("✅ 100% precisión")
+        st.markdown("⚡ 2.3s velocidad avg")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
+        if st.button("VER ACTIVIDAD COMPLETA", key="actividad"):
+            st.success("📋 Mostrando actividad completa...")
+        st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
     # =========================================================
