@@ -37,7 +37,7 @@ def apply_glass_tododrogas_style():
         box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2);
         transition: all 0.3s ease;
         text-align: center;
-        min-height: 280px;
+        min-height: 320px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -66,7 +66,7 @@ def apply_glass_tododrogas_style():
         letter-spacing: 1px;
     }
 
-    /* BOTONES MEJORADOS - TAMAÑOS FIJOS Y CENTRADOS */
+    /* BOTONES MEJORADOS - TODOS IGUALES Y ALINEADOS */
     .stButton button {
         background: rgba(0, 255, 255, 0.1);
         color: #e0ffff;
@@ -78,8 +78,9 @@ def apply_glass_tododrogas_style():
         width: 200px !important;
         min-width: 200px !important;
         max-width: 200px !important;
+        height: 45px !important;
         transition: all 0.3s ease;
-        margin: 15px auto 0 auto !important;
+        margin: 0 auto !important;
         display: block !important;
     }
 
@@ -102,7 +103,7 @@ def apply_glass_tododrogas_style():
         flex-grow: 1;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
     }
     
     /* MÉTRICAS Y ESTADÍSTICAS */
@@ -120,10 +121,22 @@ def apply_glass_tododrogas_style():
         margin-bottom: 15px;
     }
     
-    /* BOTONES ALINEADOS */
+    /* CONTENEDOR DE BOTÓN FIJO EN PARTE INFERIOR */
     .button-container {
         margin-top: auto;
         padding-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        min-height: 60px;
+    }
+    
+    /* CONTENIDO DE LISTAS MÁS COMPACTO */
+    .module-list {
+        font-size: 0.85em;
+        line-height: 1.3;
+        text-align: left;
+        margin: 10px 0;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -152,9 +165,15 @@ def main():
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown('<div class="card-content">', unsafe_allow_html=True)
         st.markdown("#### 💊 SALUD TOTAL")
+        st.markdown('<div class="module-list">', unsafe_allow_html=True)
         st.markdown("""
         - PROCESADOR DE ACTAS - OCR AVANZADO
+        - CONVERSOR MANTIS JSON
+        - CONVERSOR SISPRO JSON  
+        - RENOMBRADOR CUV MANTIS
+        - RENOMBRADOR RIPS
         """)
+        st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('<div class="button-container">', unsafe_allow_html=True)
         if st.button("ACCEDER SALUD TOTAL", key="salud_total"):
@@ -166,6 +185,7 @@ def main():
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown('<div class="card-content">', unsafe_allow_html=True)
         st.markdown("#### 📋 COOSALUD")
+        st.markdown('<div class="module-list">', unsafe_allow_html=True)
         st.markdown("""
         - CONVERSOR MANTIS JSON
         - CONVERSOR SISPRO JSON  
@@ -173,6 +193,7 @@ def main():
         - RENOMBRADOR RIPS
         - PROCESADOR DE ACTAS - OCR AVANZADO
         """)
+        st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('<div class="button-container">', unsafe_allow_html=True)
         if st.button("ACCEDER COOSALUD", key="coosalud"):
@@ -184,6 +205,7 @@ def main():
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown('<div class="card-content">', unsafe_allow_html=True)
         st.markdown("#### 🏥 SAVIA")
+        st.markdown('<div class="module-list">', unsafe_allow_html=True)
         st.markdown("""
         - CONVERSOR MANTIS JSON
         - CONVERSOR SISPRO JSON  
@@ -191,6 +213,7 @@ def main():
         - RENOMBRADOR RIPS
         - PROCESADOR DE ACTAS - OCR AVANZADO
         """)
+        st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('<div class="button-container">', unsafe_allow_html=True)
         if st.button("ACCEDER SAVIA", key="savia"):
