@@ -230,11 +230,10 @@ def main():
         st.markdown('<div class="card-content">', unsafe_allow_html=True)
         st.markdown("#### 🏥 SAVIA")
         st.markdown("""
-        - MANTIS JSON Processor
-        - SISPRO JSON Interface  
-        - CUV MANTIS Renombrador
-        - RIPS Manager
-        - SISPRO + CUV Integración
+        - CONVERSOR MANTIS JSON
+        - CONVERSOR SISPRO JSON  
+        - RENOMBRADOR CUV MANTIS
+        - RENOMBRADOR RIPS
         """)
         st.markdown('</div>', unsafe_allow_html=True)
         if st.button("ACCEDER SAVIA", key="savia"):
