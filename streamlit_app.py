@@ -214,11 +214,11 @@ def main():
         st.markdown('<div class="card-content">', unsafe_allow_html=True)
         st.markdown("#### 📋 COOSALUD")
         st.markdown("""
-        - MANTIS JSON Processor
-        - SISPRO JSON Interface  
-        - CUV MANTIS Renombrador
-        - RIPS Manager
-        - SISPRO + CUV Integración
+        - CONVERSOR MANTIS JSON
+        - CONVERSOR SISPRO JSON  
+        - RENOMBRADOR CUV MANTIS
+        - RENOMBRADOR RIPS
+        - PROCESADOR DE ACTAS - OCR
         """)
         st.markdown('</div>', unsafe_allow_html=True)
         if st.button("ACCEDER COOSALUD", key="coosalud"):
@@ -234,6 +234,7 @@ def main():
         - CONVERSOR SISPRO JSON  
         - RENOMBRADOR CUV MANTIS
         - RENOMBRADOR RIPS
+        - PROCESADOR DE ACTAS - OCR AVANZADO
         """)
         st.markdown('</div>', unsafe_allow_html=True)
         if st.button("ACCEDER SAVIA", key="savia"):
@@ -245,10 +246,7 @@ def main():
         st.markdown('<div class="card-content">', unsafe_allow_html=True)
         st.markdown("#### 💊 SALUD TOTAL")
         st.markdown("""
-        - Procesador PDF
-        - Validador PDF
-        - Procesador Scan
-        - OCR Avanzado
+     - PROCESADOR DE ACTAS - OCR AVANZADO
         """)
         st.markdown('</div>', unsafe_allow_html=True)
         if st.button("ACCEDER SALUD TOTAL", key="salud_total"):
