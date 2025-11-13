@@ -1,7 +1,7 @@
 import streamlit as st
 
 # =========================================================
-# 💊 ESTILO GLASSMORPHISM CORPORATIVO TODODROGAS
+# 💊 ESTILO GLASSMORPHISM CORPORATIVO TODODROGAS - CORREGIDO
 # =========================================================
 def apply_glass_tododrogas_style():
     st.markdown("""
@@ -27,17 +27,28 @@ def apply_glass_tododrogas_style():
         z-index: -2;
     }
 
+    /* CONTENEDOR PRINCIPAL MEJORADO */
+    .main .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    /* TARJETAS GLASSMORPHISM */
     .glass-card {
         background: rgba(255, 255, 255, 0.08);
         backdrop-filter: blur(15px);
         border: 1px solid rgba(0, 255, 255, 0.25);
         border-radius: 20px;
-        padding: 25px;
-        margin: 15px;
+        padding: 30px 20px;
+        margin: 15px 0;
         box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2);
         transition: all 0.3s ease;
         text-align: center;
-        min-height: 250px;
+        min-height: 280px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
     }
 
     .glass-card:hover {
@@ -46,6 +57,64 @@ def apply_glass_tododrogas_style():
         box-shadow: 0 12px 40px rgba(0, 255, 255, 0.35);
     }
 
+    /* CONTENIDO DE TARJETAS */
+    .card-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* BOTONES CENTRADOS Y MEJORADOS */
+    .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: auto;
+        padding-top: 20px;
+    }
+
+    .stButton button {
+        background: rgba(0, 255, 255, 0.1);
+        color: #e0ffff;
+        border: 1px solid rgba(0, 255, 255, 0.4);
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-size: 16px;
+        font-weight: 600;
+        width: 200px;
+        transition: all 0.3s ease;
+        margin: 0 auto;
+        display: block;
+    }
+
+    .stButton button:hover {
+        background: rgba(0, 255, 255, 0.25);
+        color: #00ffff;
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+        transform: scale(1.05);
+        border-color: rgba(0, 255, 255, 0.7);
+    }
+
+    /* BOTÓN DESHABILITADO */
+    .stButton button:disabled {
+        background: rgba(128, 128, 128, 0.2);
+        color: #88aaff;
+        border: 1px solid rgba(128, 128, 128, 0.4);
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .stButton button:disabled:hover {
+        background: rgba(128, 128, 128, 0.2);
+        color: #88aaff;
+        border: 1px solid rgba(128, 128, 128, 0.4);
+        transform: none;
+        box-shadow: none;
+    }
+
+    /* TÍTULOS */
     .main-title {
         text-align: center;
         font-size: 3em;
@@ -53,6 +122,7 @@ def apply_glass_tododrogas_style():
         color: #b3ffff;
         text-shadow: 0 0 20px rgba(0,255,255,0.6);
         margin-bottom: 10px;
+        padding-top: 1rem;
     }
 
     .subtitle {
@@ -63,37 +133,51 @@ def apply_glass_tododrogas_style():
         letter-spacing: 1px;
     }
 
-    .stButton button {
-        background: rgba(0, 255, 255, 0.1);
-        color: #e0ffff;
-        border: 1px solid rgba(0, 255, 255, 0.4);
-        border-radius: 10px;
-        padding: 10px 20px;
-        font-size: 15px;
-        font-weight: 600;
-        width: 80%;
-        transition: all 0.3s ease;
-        margin-top: 15px;
+    /* SEPARADOR */
+    .stMarkdown hr {
+        border: none;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(0,255,255,0.5), transparent);
+        margin: 40px 0;
     }
 
-    .stButton button:hover {
-        background: rgba(0, 255, 255, 0.25);
-        color: #00ffff;
-        box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
-        transform: scale(1.05);
-    }
-
+    /* FOOTER */
     .footer {
         text-align: center;
-        font-size: 0.8em;
+        font-size: 0.9em;
         margin-top: 30px;
         color: #99e6ff;
+        padding: 20px;
+    }
+
+    /* SIDEBAR */
+    .sidebar .sidebar-content {
+        background: rgba(0, 30, 60, 0.8);
+        backdrop-filter: blur(10px);
+        border-right: 1px solid rgba(0, 255, 255, 0.2);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        .glass-card {
+            min-height: 250px;
+            padding: 20px 15px;
+        }
+        
+        .main-title {
+            font-size: 2.2em;
+        }
+        
+        .stButton button {
+            width: 160px;
+            padding: 10px 20px;
+        }
     }
     </style>
     """, unsafe_allow_html=True)
 
 # =========================================================
-# 🧠 CONTENIDO PRINCIPAL
+# 🧠 CONTENIDO PRINCIPAL - CORREGIDO
 # =========================================================
 def main():
     apply_glass_tododrogas_style()
@@ -105,30 +189,66 @@ def main():
     st.sidebar.info("Interfaz visual restringida (solo vista corporativa).")
 
     # =========================================================
-    # TARJETAS PRINCIPALES
+    # TARJETAS PRINCIPALES - ESTRUCTURA CORREGIDA
     # =========================================================
     col1, col2, col3 = st.columns(3)
 
     with col1:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card-content">', unsafe_allow_html=True)
         st.markdown("### 📊 CUENTAS MÉDICAS")
         st.write("Gestión de EPS, validación de archivos y reportes automáticos.")
-        st.button("ACCEDER", key="cuentas")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
+        if st.button("ACCEDER", key="cuentas"):
+            st.success("🔓 Accediendo al módulo de Cuentas Médicas...")
+        st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card-content">', unsafe_allow_html=True)
         st.markdown("### 📦 INVENTARIOS")
         st.write("Gestione y analice el stock de productos, entradas y salidas.")
-        st.button("PRÓXIMAMENTE", key="inventarios")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
+        st.button("PRÓXIMAMENTE", key="inventarios", disabled=True)
+        st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
     with col3:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card-content">', unsafe_allow_html=True)
         st.markdown("### 🤖 REPORTES IA")
         st.write("Generación de reportes automáticos mediante inteligencia artificial.")
-        st.button("PRÓXIMAMENTE", key="reportes_ia")
         st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
+        st.button("PRÓXIMAMENTE", key="reportes_ia", disabled=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    # =========================================================
+    # INFORMACIÓN ADICIONAL
+    # =========================================================
+    st.markdown("---")
+    
+    info_col1, info_col2 = st.columns(2)
+    
+    with info_col1:
+        st.markdown("### 📋 EPS Conectadas")
+        st.markdown("""
+        - **COOSALUD**
+        - **SAVIA** 
+        - **SALUD TOTAL**
+        """)
+    
+    with info_col2:
+        st.markdown("### 🔄 Procesos Automatizados")
+        st.markdown("""
+        - Validación de archivos RIPS
+        - Generación de reportes
+        - Sincronización en tiempo real
+        """)
 
     # =========================================================
     # PIE DE PÁGINA
