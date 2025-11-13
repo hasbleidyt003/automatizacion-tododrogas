@@ -64,31 +64,25 @@ def apply_glass_tododrogas_style():
         margin-bottom: 40px;
     }
 
-    /* 🔹 BOTONES COMPACTOS (ajuste de tamaño) */
     .stButton button {
-        background: rgba(0, 255, 255, 0.08);
-        color: #d9ffff;
-        border: 1px solid rgba(0, 255, 255, 0.3);
-        border-radius: 8px;
-        padding: 6px 0;
-        font-size: 13.5px;
-        font-weight: 500;
+        background: rgba(0, 255, 255, 0.1);
+        color: #e0ffff;
+        border: 1px solid rgba(0, 255, 255, 0.4);
+        border-radius: 10px;
+        padding: 8px 0;
+        font-size: 14px;
+        font-weight: 600;
         width: 160px !important;
-        height: 34px !important;
-        transition: all 0.25s ease;
-        margin: 8px auto !important;
+        transition: all 0.3s ease;
+        margin: 0 auto !important;
         display: block !important;
-        text-transform: uppercase;
-        letter-spacing: 0.4px;
-        box-shadow: 0 0 6px rgba(0,255,255,0.15);
     }
 
     .stButton button:hover {
-        background: rgba(0, 255, 255, 0.18);
+        background: rgba(0, 255, 255, 0.25);
         color: #00ffff;
-        border-color: rgba(0,255,255,0.5);
-        box-shadow: 0 0 15px rgba(0,255,255,0.3);
-        transform: translateY(-1px);
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+        transform: scale(1.05);
     }
 
     .footer {
@@ -122,7 +116,7 @@ def main():
     st.sidebar.info("Interfaz visual restringida (solo vista corporativa).")
 
     # =========================================================
-    # ÁREA PRINCIPAL - CUENTAS MÉDICAS (EJE CENTRAL)
+    # ÁREA PRINCIPAL - CUENTAS MÉDICAS (SIN BOTÓN)
     # =========================================================
     st.markdown("## 🩺 ÁREA PRINCIPAL: CUENTAS MÉDICAS")
 
@@ -134,11 +128,10 @@ def main():
     
     **Incluye módulos para todas las EPS operativas.**
     """)
-    st.button("ACCEDER AL ÁREA", key="cuentas_medicas")
     st.markdown('</div>', unsafe_allow_html=True)
 
     # =========================================================
-    # SUBMÓDULOS EPS
+    # SUBMÓDULOS EPS (SOLO BOTONES “ACCEDER …”)
     # =========================================================
     st.markdown("## ⚙️ Submódulos de EPS")
 
@@ -181,7 +174,7 @@ def main():
         st.markdown('</div>', unsafe_allow_html=True)
 
     # =========================================================
-    # SISTEMAS COMPLEMENTARIOS
+    # SISTEMAS COMPLEMENTARIOS (SOLO “ACTIVAR …”)
     # =========================================================
     st.markdown("## 🧩 Sistemas complementarios")
 
@@ -212,7 +205,7 @@ def main():
         st.markdown('</div>', unsafe_allow_html=True)
 
     # =========================================================
-    # MÉTRICAS Y FUTURO
+    # MÉTRICAS Y FUTURO (SOLO “MÁS INFORMACIÓN”)
     # =========================================================
     st.markdown("## 📈 Métricas del sistema y próximos desarrollos")
 
