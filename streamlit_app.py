@@ -1,8 +1,7 @@
 import streamlit as st
-import base64
 
 # =========================================================
-# 🎨 ESTILO GLASSMORPHISM CORPORATIVO TODODROGAS
+# 💊 ESTILO GLASSMORPHISM CORPORATIVO TODODROGAS
 # =========================================================
 def apply_glass_tododrogas_style():
     st.markdown("""
@@ -34,10 +33,11 @@ def apply_glass_tododrogas_style():
         border: 1px solid rgba(0, 255, 255, 0.25);
         border-radius: 20px;
         padding: 25px;
-        margin: 10px;
+        margin: 15px;
         box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2);
         transition: all 0.3s ease;
         text-align: center;
+        min-height: 250px;
     }
 
     .glass-card:hover {
@@ -68,12 +68,12 @@ def apply_glass_tododrogas_style():
         color: #e0ffff;
         border: 1px solid rgba(0, 255, 255, 0.4);
         border-radius: 10px;
-        padding: 12px 25px;
-        font-size: 16px;
+        padding: 10px 20px;
+        font-size: 15px;
         font-weight: 600;
-        letter-spacing: 0.5px;
+        width: 80%;
         transition: all 0.3s ease;
-        width: 100%;
+        margin-top: 15px;
     }
 
     .stButton button:hover {
@@ -92,25 +92,20 @@ def apply_glass_tododrogas_style():
     </style>
     """, unsafe_allow_html=True)
 
-
 # =========================================================
 # 🧠 CONTENIDO PRINCIPAL
 # =========================================================
 def main():
     apply_glass_tododrogas_style()
 
-    # Render forzado inicial
-    st.write("")
-
-    # Encabezado principal
-    st.markdown('<h1 class="main-title">🏭 INVERSIONES TODODROGAS S.A.S</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-title">💊 INVERSIONES TODODROGAS S.A.S</h1>', unsafe_allow_html=True)
     st.markdown('<p class="subtitle">Sistema de automatización y control interno</p>', unsafe_allow_html=True)
 
     st.sidebar.success("✅ Conectado a servidor Streamlit")
-    st.sidebar.info("Seleccione un módulo del sistema para continuar.")
+    st.sidebar.info("Interfaz visual restringida (solo vista corporativa).")
 
     # =========================================================
-    # TARJETAS DE ACCESO PRINCIPALES
+    # TARJETAS PRINCIPALES
     # =========================================================
     col1, col2, col3 = st.columns(3)
 
@@ -118,22 +113,21 @@ def main():
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown("### 📊 CUENTAS MÉDICAS")
         st.write("Gestión de EPS, validación de archivos y reportes automáticos.")
-        if st.button("ACCEDER", key="cuentas"):
-            st.switch_page("pages/1_Cuentas_Medicas.py")
+        st.button("ACCEDER", key="cuentas")
         st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown("### 📦 INVENTARIOS")
         st.write("Gestione y analice el stock de productos, entradas y salidas.")
-        st.button("PRÓXIMAMENTE", disabled=True)
+        st.button("PRÓXIMAMENTE", key="inventarios")
         st.markdown('</div>', unsafe_allow_html=True)
 
     with col3:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown("### 🤖 REPORTES IA")
         st.write("Generación de reportes automáticos mediante inteligencia artificial.")
-        st.button("PRÓXIMAMENTE", disabled=True)
+        st.button("PRÓXIMAMENTE", key="reportes_ia")
         st.markdown('</div>', unsafe_allow_html=True)
 
     # =========================================================
@@ -144,7 +138,6 @@ def main():
         '<p class="footer">© 2025 Inversiones TODODROGAS S.A.S | Todos los derechos reservados</p>',
         unsafe_allow_html=True
     )
-
 
 # =========================================================
 # 🚀 EJECUCIÓN PRINCIPAL
