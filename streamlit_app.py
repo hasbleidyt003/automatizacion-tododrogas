@@ -39,16 +39,15 @@ def apply_glass_tododrogas_style():
         backdrop-filter: blur(15px);
         border: 1px solid rgba(0, 255, 255, 0.25);
         border-radius: 20px;
-        padding: 30px 20px;
-        margin: 15px 0;
+        padding: 25px 20px;
+        margin: 10px 0;
         box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2);
         transition: all 0.3s ease;
         text-align: center;
-        min-height: 280px;
+        min-height: 200px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        position: relative;
     }
 
     .glass-card:hover {
@@ -65,27 +64,21 @@ def apply_glass_tododrogas_style():
         justify-content: center;
     }
 
-    /* BOTONES CENTRADOS Y MEJORADOS */
-    .button-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: auto;
-        padding-top: 20px;
-    }
-
+    /* BOTONES MEJORADOS - TAMAÑOS FIJOS */
     .stButton button {
         background: rgba(0, 255, 255, 0.1);
         color: #e0ffff;
         border: 1px solid rgba(0, 255, 255, 0.4);
         border-radius: 12px;
-        padding: 12px 25px;
-        font-size: 16px;
+        padding: 12px 0;
+        font-size: 14px;
         font-weight: 600;
-        width: 200px;
+        width: 180px !important;
+        min-width: 180px !important;
+        max-width: 180px !important;
         transition: all 0.3s ease;
-        margin: 0 auto;
-        display: block;
+        margin: 10px auto !important;
+        display: block !important;
     }
 
     .stButton button:hover {
@@ -114,10 +107,20 @@ def apply_glass_tododrogas_style():
         box-shadow: none;
     }
 
+    /* CONTENEDOR DE BOTONES CENTRADO */
+    .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: auto;
+        padding-top: 15px;
+        width: 100%;
+    }
+
     /* TÍTULOS */
     .main-title {
         text-align: center;
-        font-size: 3em;
+        font-size: 2.8em;
         font-weight: 700;
         color: #b3ffff;
         text-shadow: 0 0 20px rgba(0,255,255,0.6);
@@ -129,7 +132,7 @@ def apply_glass_tododrogas_style():
         text-align: center;
         font-size: 1.2em;
         color: #9eefff;
-        margin-bottom: 40px;
+        margin-bottom: 30px;
         letter-spacing: 1px;
     }
 
@@ -138,7 +141,7 @@ def apply_glass_tododrogas_style():
         border: none;
         height: 2px;
         background: linear-gradient(90deg, transparent, rgba(0,255,255,0.5), transparent);
-        margin: 40px 0;
+        margin: 30px 0;
     }
 
     /* FOOTER */
@@ -160,7 +163,7 @@ def apply_glass_tododrogas_style():
     /* RESPONSIVE */
     @media (max-width: 768px) {
         .glass-card {
-            min-height: 250px;
+            min-height: 180px;
             padding: 20px 15px;
         }
         
@@ -169,15 +172,17 @@ def apply_glass_tododrogas_style():
         }
         
         .stButton button {
-            width: 160px;
-            padding: 10px 20px;
+            width: 160px !important;
+            min-width: 160px !important;
+            max-width: 160px !important;
+            padding: 10px 0;
         }
     }
     </style>
     """, unsafe_allow_html=True)
 
 # =========================================================
-# 🧠 CONTENIDO PRINCIPAL - CORREGIDO
+# 🧠 CONTENIDO PRINCIPAL - ESTRUCTURA CORREGIDA
 # =========================================================
 def main():
     apply_glass_tododrogas_style()
@@ -189,7 +194,7 @@ def main():
     st.sidebar.info("Interfaz visual restringida (solo vista corporativa).")
 
     # =========================================================
-    # TARJETAS PRINCIPALES - ESTRUCTURA CORREGIDA
+    # TARJETAS PRINCIPALES - BOTONES CON TAMAÑOS FIJOS
     # =========================================================
     col1, col2, col3 = st.columns(3)
 
@@ -200,8 +205,8 @@ def main():
         st.write("Gestión de EPS, validación de archivos y reportes automáticos.")
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('<div class="button-container">', unsafe_allow_html=True)
-        if st.button("ACCEDER", key="cuentas"):
-            st.success("🔓 Accediendo al módulo de Cuentas Médicas...")
+        if st.button("ACCEDER", key="cuentas_medicas"):
+            st.switch_page("pages/1_🏥_Cuentas_Medicas.py")
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
