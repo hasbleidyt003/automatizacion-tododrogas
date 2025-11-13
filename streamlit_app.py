@@ -31,7 +31,7 @@ def apply_glass_tododrogas_style():
         backdrop-filter: blur(15px);
         border: 1px solid rgba(0, 255, 255, 0.25);
         border-radius: 20px;
-        padding: 25px;
+        padding: 10px;
         margin: 15px;
         box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2);
         transition: all 0.3s ease;
@@ -64,25 +64,31 @@ def apply_glass_tododrogas_style():
         margin-bottom: 40px;
     }
 
+    /* 🔹 BOTONES COMPACTOS (ajuste de tamaño) */
     .stButton button {
-        background: rgba(0, 255, 255, 0.1);
-        color: #e0ffff;
-        border: 1px solid rgba(0, 255, 255, 0.4);
-        border-radius: 10px;
-        padding: 12px 0;
-        font-size: 15px;
-        font-weight: 600;
-        width: 200px !important;
-        transition: all 0.3s ease;
-        margin: 0 auto !important;
+        background: rgba(0, 255, 255, 0.08);
+        color: #d9ffff;
+        border: 1px solid rgba(0, 255, 255, 0.3);
+        border-radius: 8px;
+        padding: 6px 0;
+        font-size: 13.5px;
+        font-weight: 500;
+        width: 160px !important;
+        height: 34px !important;
+        transition: all 0.25s ease;
+        margin: 8px auto !important;
         display: block !important;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        box-shadow: 0 0 6px rgba(0,255,255,0.15);
     }
 
     .stButton button:hover {
-        background: rgba(0, 255, 255, 0.25);
+        background: rgba(0, 255, 255, 0.18);
         color: #00ffff;
-        box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
-        transform: scale(1.05);
+        border-color: rgba(0,255,255,0.5);
+        box-shadow: 0 0 15px rgba(0,255,255,0.3);
+        transform: translateY(-1px);
     }
 
     .footer {
