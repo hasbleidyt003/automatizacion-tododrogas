@@ -1,25 +1,19 @@
-# STREAMLIT PRINCIPAL SIN IMÁGENES, CON FONDO ESTILO GOOGLE COLAB FUTURISTA
-
 import streamlit as st
 
-# ------------------------------
-# CONFIGURACIÓN DE LA PÁGINA
-# ------------------------------
-st.set_page_config(page_title="Sistema de Automatización - Tododrogas", layout="wide")
-
-# ------------------------------
-# ESTILO FUTURISTA / TIPO GOOGLE COLAB
-# ------------------------------
-st.markdown(
-    """
+# =========================================================
+# 💊 ESTILO GLASSMORPHISM CORPORATIVO TODODROGAS
+# =========================================================
+def apply_glass_tododrogas_style():
+    st.markdown("""
     <style>
+    /* ======= ESTILO GLASSMORPHISM TODODROGAS ======= */
     .stApp {
-        background: linear-gradient(135deg, #0f0f0f 0%, #1c1c1c 40%, #2a2a2a 100%);
-        background-attachment: fixed;
+        background: linear-gradient(135deg, #00111a 0%, #001f33 50%, #00334d 100%);
+        color: #e0f7fa;
         font-family: 'Poppins', sans-serif;
+        overflow: hidden;
     }
 
-    /* EFECTOS LUMINOSOS FUTURISTAS */
     .stApp::before {
         content: '';
         position: fixed;
@@ -27,144 +21,293 @@ st.markdown(
         left: 0;
         width: 100%;
         height: 100%;
-        pointer-events: none;
-        background: radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.07), transparent 60%),
-                    radial-gradient(circle at 80% 70%, rgba(0, 255, 180, 0.06), transparent 60%);
-        z-index: -1;
+        background:
+            radial-gradient(circle at 25% 25%, rgba(0, 255, 255, 0.05), transparent 40%),
+            radial-gradient(circle at 80% 80%, rgba(0, 200, 255, 0.08), transparent 50%);
+        z-index: -2;
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(0, 255, 255, 0.25);
+        border-radius: 20px;
+        padding: 25px;
+        margin: 15px;
+        box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2);
+        transition: all 0.3s ease;
+        text-align: center;
+        min-height: 280px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .glass-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(0, 255, 255, 0.5);
+        box-shadow: 0 12px 40px rgba(0, 255, 255, 0.35);
     }
 
     .main-title {
         text-align: center;
-        color: #00eaff;
-        font-size: 3.2em;
+        font-size: 3em;
         font-weight: 700;
-        text-shadow: 0 0 25px rgba(0,255,255,0.7);
-        margin-bottom: 5px;
+        color: #b3ffff;
+        text-shadow: 0 0 20px rgba(0,255,255,0.6);
+        margin-bottom: 10px;
     }
 
     .subtitle {
         text-align: center;
-        color: #e0ffff;
-        font-size: 1.3em;
+        font-size: 1.2em;
+        color: #9eefff;
         margin-bottom: 40px;
+        letter-spacing: 1px;
     }
 
-    .glass-card {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        padding: 20px;
-        border-radius: 18px;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 0 18px rgba(0,255,255,0.15);
-        color: #d6ffff;
-        margin-bottom: 25px;
+    /* BOTONES MEJORADOS - TAMAÑOS FIJOS Y CENTRADOS */
+    .stButton button {
+        background: rgba(0, 255, 255, 0.1);
+        color: #e0ffff;
+        border: 1px solid rgba(0, 255, 255, 0.4);
+        border-radius: 10px;
+        padding: 12px 0;
+        font-size: 15px;
+        font-weight: 600;
+        width: 200px !important;
+        min-width: 200px !important;
+        max-width: 200px !important;
+        transition: all 0.3s ease;
+        margin: 15px auto 0 auto !important;
+        display: block !important;
     }
 
-    .metric-number {
-        font-size: 2.5em;
-        font-weight: 900;
+    .stButton button:hover {
+        background: rgba(0, 255, 255, 0.25);
         color: #00ffff;
-        text-shadow: 0 0 15px rgba(0,255,255,0.6);
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+        transform: scale(1.05);
     }
 
     .footer {
         text-align: center;
+        font-size: 0.8em;
+        margin-top: 30px;
+        color: #99e6ff;
+    }
+    
+    /* CONTENIDO DE TARJETA */
+    .card-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    /* MÉTRICAS Y ESTADÍSTICAS */
+    .metric-number {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #00ffff;
+        text-shadow: 0 0 10px rgba(0,255,255,0.5);
+        margin: 10px 0;
+    }
+    
+    .metric-label {
         font-size: 0.9em;
-        margin-top: 40px;
-        color: #b8ffff;
+        color: #9eefff;
+        margin-bottom: 15px;
+    }
+    
+    /* BOTONES ALINEADOS */
+    .button-container {
+        margin-top: auto;
+        padding-top: 20px;
     }
     </style>
-    """,
-    unsafe_allow_html=True,
-)
+    """, unsafe_allow_html=True)
 
-# ------------------------------
-# TÍTULOS PRINCIPALES
-# ------------------------------
-st.markdown('<h1 class="main-title">SISTEMA DE AUTOMATIZACIÓN</h1>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle">El futuro es la tecnología, y hoy se convierte en nuestra mejor herramienta. Este sistema centraliza todas las automatizaciones por área, optimizando procesos y mejorando resultados.</p>', unsafe_allow_html=True)
+# =========================================================
+# 🧠 CONTENIDO PRINCIPAL
+# =========================================================
+def main():
+    apply_glass_tododrogas_style()
 
-# ------------------------------
-# SECCIÓN CUENTAS MÉDICAS
-# ------------------------------
-st.markdown("## 🩺 CUENTAS MÉDICAS")
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-st.markdown(
-    """
-    **Automatizaciones disponibles:**
+    st.markdown('<h1 class="main-title">💊 INVERSIONES TODODROGAS S.A.S</h1>', unsafe_allow_html=True)
+    st.markdown('<p class="subtitle">Sistema de automatización y control interno</p>', unsafe_allow_html=True)
 
-    • Procesador de actas (OCR)  
-    • Conversor MANTIS y SISPRO  
-    • Renombradores CUV y RIPS  
-    • Reportes automáticos para SAVIA, COOSALUD y SALUD TOTAL
-    """
-)
-st.markdown('</div>', unsafe_allow_html=True)
+    st.sidebar.success("✅ Conectado a servidor Streamlit")
+    st.sidebar.info("Interfaz visual restringida (solo vista corporativa).")
 
-# ------------------------------
-# SECCIÓN CARTERA
-# ------------------------------
-st.markdown("## 💰 CARTERA")
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-st.markdown(
-    """
-    **Automatizaciones desarrolladas:**
+    # =========================================================
+    # SECCIÓN EPS - DE PRIMERAS Y REORGANIZADA
+    # =========================================================
+    st.markdown("### 🔄 MÓDULOS DE PROCESAMIENTO POR EPS")
+    
+    # REORGANIZADO: Salud Total a la izquierda
+    eps_col1, eps_col2, eps_col3 = st.columns(3)
+    
+    with eps_col1:  # SALUD TOTAL A LA IZQUIERDA
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card-content">', unsafe_allow_html=True)
+        st.markdown("#### 💊 SALUD TOTAL")
+        st.markdown("""
+        - PROCESADOR DE ACTAS - OCR AVANZADO
+        """)
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
+        if st.button("ACCEDER SALUD TOTAL", key="salud_total"):
+            st.switch_page("pages/4_💊_Salud_Total.py")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with eps_col2:  # COOSALUD EN EL CENTRO
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card-content">', unsafe_allow_html=True)
+        st.markdown("#### 📋 COOSALUD")
+        st.markdown("""
+        - CONVERSOR MANTIS JSON
+        - CONVERSOR SISPRO JSON  
+        - RENOMBRADOR CUV MANTIS
+        - RENOMBRADOR RIPS
+        - PROCESADOR DE ACTAS - OCR AVANZADO
+        """)
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
+        if st.button("ACCEDER COOSALUD", key="coosalud"):
+            st.switch_page("pages/2_📋_COOSALUD.py")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with eps_col3:  # SAVIA A LA DERECHA
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card-content">', unsafe_allow_html=True)
+        st.markdown("#### 🏥 SAVIA")
+        st.markdown("""
+        - CONVERSOR MANTIS JSON
+        - CONVERSOR SISPRO JSON  
+        - RENOMBRADOR CUV MANTIS
+        - RENOMBRADOR RIPS
+        - PROCESADOR DE ACTAS - OCR AVANZADO
+        """)
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
+        if st.button("ACCEDER SAVIA", key="savia"):
+            st.switch_page("pages/3_🏥_SAVIA.py")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
-    • Informes automáticos de cartera  
-    • Estados de cuenta automatizados  
-    • Estructura automática de informes de pago  
-    • Reporte semanal automatizado
-    """
-)
-st.markdown('</div>', unsafe_allow_html=True)
+    # =========================================================
+    # ÁREA PRINCIPAL - CUENTAS MÉDICAS
+    # =========================================================
+    st.markdown("---")
+    st.markdown("### 📊 ÁREA DE CUENTAS MÉDICAS")
+    
+    area_col1, area_col2 = st.columns([2, 1])
+    
+    with area_col1:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card-content">', unsafe_allow_html=True)
+        st.markdown("#### 🏥 GESTIÓN INTEGRAL DE CUENTAS")
+        st.markdown("""
+        **Sistema unificado para:**  
+        • Validación de archivos RIPS  
+        • Procesamiento masivo de datos  
+        • Generación de reportes automáticos  
+        • Control de calidad y auditoría  
+        • Integración con todas las EPS
+        """)
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
+        if st.button("ACCEDER ÁREA CUENTAS MÉDICAS", key="cuentas_medicas"):
+            st.switch_page("pages/1_🏥_Cuentas_Medicas.py")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with area_col2:
+        st.markdown("#### 📈 Resumen de Actividad")
+        st.markdown("""
+        **Procesos Activos:**  
+        ✅ RIPS Automatizado  
+        ✅ Validación JSON  
+        ✅ Reportes en Tiempo Real  
+        
+        **Próximamente:**  
+        🔄 Análisis Predictivo  
+        🔄 Dashboard Ejecutivo
+        """)
 
-# ------------------------------
-# SECCIÓN TESORERÍA
-# ------------------------------
-st.markdown("## 🏦 TESORERÍA")
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-st.markdown(
-    """
-    **Automatización disponible:**
+    # =========================================================
+    # MÉTRICAS DEL SISTEMA - ABAJO
+    # =========================================================
+    st.markdown("---")
+    st.markdown("### 📈 MÉTRICAS Y ESTADÍSTICAS DEL SISTEMA")
+    
+    metric_col1, metric_col2 = st.columns(2)
 
-    • Generación automatizada de estados de cuenta
-    """
-)
-st.markdown('</div>', unsafe_allow_html=True)
+    with metric_col1:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card-content">', unsafe_allow_html=True)
+        st.markdown("#### 📊 ESTADÍSTICAS DE USO")
+        st.markdown("---")
+        
+        # MÉTRICAS SIMULADAS
+        col_m1, col_m2 = st.columns(2)
+        
+        with col_m1:
+            st.markdown('<div class="metric-number">1,247</div>', unsafe_allow_html=True)
+            st.markdown('<div class="metric-label">Archivos Procesados</div>', unsafe_allow_html=True)
+            
+        with col_m2:
+            st.markdown('<div class="metric-number">89</div>', unsafe_allow_html=True)
+            st.markdown('<div class="metric-label">Sesiones Activas</div>', unsafe_allow_html=True)
+        
+        st.markdown("**Eficiencia del Sistema:**")
+        st.markdown("- 99.2% Tiempo Activo")
+        st.markdown("- 15.7s Procesamiento Promedio")
+        st.markdown("- 0 Errores Críticos")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
+        if st.button("VER MÉTRICAS DETALLADAS", key="metricas"):
+            st.success("🔍 Mostrando métricas detalladas...")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
-# ------------------------------
-# MÉTRICAS Y PRÓXIMOS DESARROLLOS
-# ------------------------------
-st.markdown("## 📈 Métricas y próximos desarrollos")
-col1, col2, col3 = st.columns(3)
+    with metric_col2:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card-content">', unsafe_allow_html=True)
+        st.markdown("#### 🔄 ACTIVIDAD RECIENTE")
+        st.markdown("---")
+        
+        st.markdown("**Últimas 24 horas:**")
+        st.markdown("• 34 archivos COOSALUD")
+        st.markdown("• 28 archivos SAVIA") 
+        st.markdown("• 12 archivos Salud Total")
+        st.markdown("• 5 reportes generados")
+        
+        st.markdown("**Tendencias:**")
+        st.markdown("📈 +15% procesamiento")
+        st.markdown("✅ 100% precisión")
+        st.markdown("⚡ 2.3s velocidad avg")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
+        if st.button("VER ACTIVIDAD COMPLETA", key="actividad"):
+            st.success("📋 Mostrando actividad completa...")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
-with col1:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    st.markdown("#### ⚡ Rendimiento actual")
-    st.markdown('<div class="metric-number">99.3%</div>', unsafe_allow_html=True)
-    st.write("Eficiencia en procesamiento")
-    st.markdown('</div>', unsafe_allow_html=True)
+    # =========================================================
+    # PIE DE PÁGINA
+    # =========================================================
+    st.markdown("---")
+    st.markdown(
+        '<p class="footer">© 2025 Inversiones TODODROGAS S.A.S | Todos los derechos reservados</p>',
+        unsafe_allow_html=True
+    )
 
-with col2:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    st.markdown("#### 📂 Archivos procesados")
-    st.markdown('<div class="metric-number">12,874</div>', unsafe_allow_html=True)
-    st.write("Desde implementación v2.0")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-with col3:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    st.markdown("#### 🚀 Próximamente")
-    st.write("• Dashboard Ejecutivo  ")
-    st.write("• IA Predictiva  ")
-    st.write("• Integración SISPRO Cloud")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# ------------------------------
-# CONTACTO
-# ------------------------------
-st.markdown('---')
-st.markdown(
-    '<p class="footer">© 2025 Inversiones TODODROGAS S.A.S | Contacto: soporte@tododrogas.com</p>',
-    unsafe_allow_html=True
-)
+# =========================================================
+# 🚀 EJECUCIÓN PRINCIPAL
+# =========================================================
+if __name__ == "__main__":
+    main()
