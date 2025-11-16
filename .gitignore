@@ -1,1 +1,69 @@
+# Streamlit
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.streamlit/
 
+# Archivos de configuración local
+config/local.py
+*.env
+.env.local
+secrets.toml
+
+# Archivos de datos temporales
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archivos de IDE/Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Archivos de Python
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Logs
+*.log
+logs/
+
+# Archivos subidos por usuarios
+uploaded_files/
+downloads/
+
+# Archivos Excel/CSV temporales
+*_temp.xlsx
+*_temp.csv
+*_backup.*
+
+# Archivos de Streamlit
+data/
+.streamlit/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Archivos de macOS
+._*
+
+# Archivos de Windows
+ehthumbs.db
+
+# Archivos de Office temporales
+~$*
