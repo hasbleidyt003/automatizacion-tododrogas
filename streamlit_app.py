@@ -1,18 +1,25 @@
+# STREAMLIT PRINCIPAL SIN IMÁGENES, CON FONDO ESTILO GOOGLE COLAB FUTURISTA
+
 import streamlit as st
 
-# =========================================================
-# 💊 ESTILO GLASSMORPHISM CORPORATIVO TODODROGAS
-# =========================================================
-def apply_glass_tododrogas_style():
-    st.markdown("""
+# ------------------------------
+# CONFIGURACIÓN DE LA PÁGINA
+# ------------------------------
+st.set_page_config(page_title="Sistema de Automatización - Tododrogas", layout="wide")
+
+# ------------------------------
+# ESTILO FUTURISTA / TIPO GOOGLE COLAB
+# ------------------------------
+st.markdown(
+    """
     <style>
     .stApp {
-        background: linear-gradient(135deg, #00111a 0%, #001f33 50%, #00334d 100%);
-        color: #e0f7fa;
+        background: linear-gradient(135deg, #0f0f0f 0%, #1c1c1c 40%, #2a2a2a 100%);
+        background-attachment: fixed;
         font-family: 'Poppins', sans-serif;
-        overflow: hidden;
     }
 
+    /* EFECTOS LUMINOSOS FUTURISTAS */
     .stApp::before {
         content: '';
         position: fixed;
@@ -20,208 +27,144 @@ def apply_glass_tododrogas_style():
         left: 0;
         width: 100%;
         height: 100%;
-        background:
-            radial-gradient(circle at 25% 25%, rgba(0, 255, 255, 0.05), transparent 40%),
-            radial-gradient(circle at 80% 80%, rgba(0, 200, 255, 0.08), transparent 50%);
-        z-index: -2;
+        pointer-events: none;
+        background: radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.07), transparent 60%),
+                    radial-gradient(circle at 80% 70%, rgba(0, 255, 180, 0.06), transparent 60%);
+        z-index: -1;
     }
+
     .main-title {
         text-align: center;
-        font-size: 3em;
+        color: #00eaff;
+        font-size: 3.2em;
         font-weight: 700;
-        color: #b3ffff;
-        text-shadow: 0 0 20px rgba(0,255,255,0.6);
-        margin-bottom: 10px;
+        text-shadow: 0 0 25px rgba(0,255,255,0.7);
+        margin-bottom: 5px;
     }
 
     .subtitle {
         text-align: center;
-        font-size: 1.2em;
-        color: #9eefff;
+        color: #e0ffff;
+        font-size: 1.3em;
         margin-bottom: 40px;
     }
 
-    .stButton button {
-        background: rgba(0, 255, 255, 0.1);
-        color: #e0ffff;
-        border: 1px solid rgba(0, 255, 255, 0.4);
-        border-radius: 10px;
-        padding: 8px 0;
-        font-size: 14px;
-        font-weight: 600;
-        width: 160px !important;
-        transition: all 0.3s ease;
-        margin: 0 auto !important;
-        display: block !important;
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 20px;
+        border-radius: 18px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 18px rgba(0,255,255,0.15);
+        color: #d6ffff;
+        margin-bottom: 25px;
     }
 
-    .stButton button:hover {
-        background: rgba(0, 255, 255, 0.25);
+    .metric-number {
+        font-size: 2.5em;
+        font-weight: 900;
         color: #00ffff;
-        box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
-        transform: scale(1.05);
+        text-shadow: 0 0 15px rgba(0,255,255,0.6);
     }
 
     .footer {
         text-align: center;
-        font-size: 0.8em;
-        margin-top: 30px;
-        color: #99e6ff;
-    }
-
-    .metric-number {
-        font-size: 2.2em;
-        font-weight: bold;
-        color: #00ffff;
-        text-shadow: 0 0 10px rgba(0,255,255,0.5);
+        font-size: 0.9em;
+        margin-top: 40px;
+        color: #b8ffff;
     }
     </style>
-    """, unsafe_allow_html=True)
+    """,
+    unsafe_allow_html=True,
+)
 
+# ------------------------------
+# TÍTULOS PRINCIPALES
+# ------------------------------
+st.markdown('<h1 class="main-title">SISTEMA DE AUTOMATIZACIÓN</h1>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">El futuro es la tecnología, y hoy se convierte en nuestra mejor herramienta. Este sistema centraliza todas las automatizaciones por área, optimizando procesos y mejorando resultados.</p>', unsafe_allow_html=True)
 
-# =========================================================
-# 🧠 CONTENIDO PRINCIPAL
-# =========================================================
-def main():
-    apply_glass_tododrogas_style()
+# ------------------------------
+# SECCIÓN CUENTAS MÉDICAS
+# ------------------------------
+st.markdown("## 🩺 CUENTAS MÉDICAS")
+st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+st.markdown(
+    """
+    **Automatizaciones disponibles:**
 
-    # ENCABEZADO CORPORATIVO
-    st.markdown('<h1 class="main-title">💊 INVERSIONES TODODROGAS S.A.S</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="subtitle">Sistema de automatización y control interno</p>', unsafe_allow_html=True)
+    • Procesador de actas (OCR)  
+    • Conversor MANTIS y SISPRO  
+    • Renombradores CUV y RIPS  
+    • Reportes automáticos para SAVIA, COOSALUD y SALUD TOTAL
+    """
+)
+st.markdown('</div>', unsafe_allow_html=True)
 
-    st.sidebar.success("✅ Conectado a servidor Streamlit")
-    st.sidebar.info("Interfaz visual restringida (solo vista corporativa).")
+# ------------------------------
+# SECCIÓN CARTERA
+# ------------------------------
+st.markdown("## 💰 CARTERA")
+st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+st.markdown(
+    """
+    **Automatizaciones desarrolladas:**
 
-    # =========================================================
-    # ÁREA PRINCIPAL - CUENTAS MÉDICAS (SIN BOTÓN)
-    # =========================================================
-    st.markdown("## 🩺 CUENTAS MÉDICAS")
+    • Informes automáticos de cartera  
+    • Estados de cuenta automatizados  
+    • Estructura automática de informes de pago  
+    • Reporte semanal automatizado
+    """
+)
+st.markdown('</div>', unsafe_allow_html=True)
 
+# ------------------------------
+# SECCIÓN TESORERÍA
+# ------------------------------
+st.markdown("## 🏦 TESORERÍA")
+st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+st.markdown(
+    """
+    **Automatización disponible:**
+
+    • Generación automatizada de estados de cuenta
+    """
+)
+st.markdown('</div>', unsafe_allow_html=True)
+
+# ------------------------------
+# MÉTRICAS Y PRÓXIMOS DESARROLLOS
+# ------------------------------
+st.markdown("## 📈 Métricas y próximos desarrollos")
+col1, col2, col3 = st.columns(3)
+
+with col1:
     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    st.markdown("""
-    
-    **Incluye módulos para todas las EPS operativas.**
-    """)
+    st.markdown("#### ⚡ Rendimiento actual")
+    st.markdown('<div class="metric-number">99.3%</div>', unsafe_allow_html=True)
+    st.write("Eficiencia en procesamiento")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # =========================================================
-    # SUBMÓDULOS EPS (SOLO BOTONES “ACCEDER …”)
-    # =========================================================
-    st.markdown("## ⚙️ Submódulos de EPS")
+with col2:
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown("#### 📂 Archivos procesados")
+    st.markdown('<div class="metric-number">12,874</div>', unsafe_allow_html=True)
+    st.write("Desde implementación v2.0")
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    eps_col1, eps_col2, eps_col3 = st.columns(3)
+with col3:
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown("#### 🚀 Próximamente")
+    st.write("• Dashboard Ejecutivo  ")
+    st.write("• IA Predictiva  ")
+    st.write("• Integración SISPRO Cloud")
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    with eps_col1:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("#### 💊 SALUD TOTAL")
-        st.markdown("""
-        • Procesador de actas (OCR)  
-        • Conversor MANTIS y SISPRO  
-        • Renombradores CUV y RIPS  
-        • Reportes automáticos  
-        """)
-        st.button("ACCEDER SALUD TOTAL", key="salud_total")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    with eps_col2:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("#### 📋 COOSALUD")
-        st.markdown("""
-        • Conversores MANTIS/SISPRO  
-        • Renombradores CUV/RIPS  
-        • Validación estructural  
-        • Exportación de reportes  
-        """)
-        st.button("ACCEDER COOSALUD", key="coosalud")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    with eps_col3:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("#### 🏥 SAVIA")
-        st.markdown("""
-        • MANTIS JSON adaptado  
-        • SISPRO JSON específico  
-        • CUV/RIPS automatizados  
-        • Reportes corporativos  
-        """)
-        st.button("ACCEDER SAVIA", key="savia")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    # =========================================================
-    # SISTEMAS COMPLEMENTARIOS (SOLO “ACTIVAR …”)
-    # =========================================================
-    st.markdown("## 🧩 Sistemas complementarios")
-
-    sys_col1, sys_col2 = st.columns(2)
-
-    with sys_col1:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("#### 🧠 VALIDACIÓN INTELIGENTE")
-        st.markdown("""
-        • Verificación automática de formatos  
-        • Corrección estructural  
-        • Validación de campos RIPS  
-        • Normalización de datos  
-        """)
-        st.button("ACTIVAR MÓDULO", key="validacion")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    with sys_col2:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("#### 🔒 CONTROL DE CALIDAD")
-        st.markdown("""
-        • Monitoreo de errores  
-        • Logs en tiempo real  
-        • Indicadores de cumplimiento  
-        • Auditoría de procesos  
-        """)
-        st.button("ACTIVAR CONTROL", key="control_calidad")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    # =========================================================
-    # MÉTRICAS Y FUTURO (SOLO “MÁS INFORMACIÓN”)
-    # =========================================================
-    st.markdown("## 📈 Métricas del sistema y próximos desarrollos")
-
-    met1, met2, met3 = st.columns(3)
-
-    with met1:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("#### ⚡ Rendimiento actual")
-        st.markdown('<div class="metric-number">99.3%</div>', unsafe_allow_html=True)
-        st.markdown("Eficiencia promedio en procesamiento")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    with met2:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("#### 📂 Archivos procesados")
-        st.markdown('<div class="metric-number">12,874</div>', unsafe_allow_html=True)
-        st.markdown("Desde la implementación v2.0")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    with met3:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("#### 🚀 Próximamente")
-        st.markdown("""
-        • 📊 Dashboard Ejecutivo  
-        • 🤖 IA Predictiva  
-        • 🌐 Integración SISPRO Cloud  
-        """)
-        st.button("MÁS INFORMACIÓN", key="proximamente")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    # =========================================================
-    # PIE DE PÁGINA
-    # =========================================================
-    st.markdown("---")
-    st.markdown(
-        '<p class="footer">© 2025 Inversiones TODODROGAS S.A.S | Todos los derechos reservados</p>',
-        unsafe_allow_html=True
-    )
-
-
-# =========================================================
-# 🚀 EJECUCIÓN PRINCIPAL
-# =========================================================
-if __name__ == "__main__":
-    main()
+# ------------------------------
+# CONTACTO
+# ------------------------------
+st.markdown('---')
+st.markdown(
+    '<p class="footer">© 2025 Inversiones TODODROGAS S.A.S | Contacto: soporte@tododrogas.com</p>',
+    unsafe_allow_html=True
+)
