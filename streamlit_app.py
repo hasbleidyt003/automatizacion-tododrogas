@@ -30,7 +30,7 @@ with col1:
             line-height: 1.2;
             font-family: "Inter", sans-serif;
         '>
-        Tododrogas<br>Sistema de Automatización
+        Sistema de Automatización
         </h1>
         
         <div style='
