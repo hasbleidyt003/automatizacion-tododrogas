@@ -16,7 +16,7 @@ st.set_page_config(
 # Navbar moderna
 modern_navbar()
 
-# HERO SECTION MODERNA
+# HERO SECTION MODERNA - CORREGIDA
 col1, col2 = st.columns([2, 1])
 
 with col1:
@@ -30,7 +30,7 @@ with col1:
             line-height: 1.2;
             font-family: "Inter", sans-serif;
         '>
-        Sistema de<br>Automatización
+        TodoDrogas<br>Sistema de Automatización
         </h1>
         
         <div style='
@@ -79,7 +79,7 @@ with col1:
             </button>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """, unsafe_allow_html=True)  # ✅ ESTA LÍNEA ES CLAVE
 
 with col2:
     st.markdown("""
@@ -109,7 +109,7 @@ with col2:
             </div>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """, unsafe_allow_html=True)  # ✅ ESTA LÍNEA ES CLAVE
 
 # SEPARADOR
 st.markdown("<div style='height: 2px; background: #f0f0f0; margin: 4rem 0;'></div>", unsafe_allow_html=True)
@@ -146,8 +146,7 @@ with col1:
         height: 320px;
         display: flex;
         flex-direction: column;
-    ' onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.12)'" 
-    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.08)'">
+    '>
         <div style='
             background: linear-gradient(135deg, #0066cc, #004499);
             width: 60px;
@@ -196,9 +195,7 @@ with col1:
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
-        ' onmouseover="this.style.background='#0052a3'" 
-        onmouseout="this.style.background='#0066cc'"
-        onclick="window.location.href='/pages/1_Cuentas_Medicas'">
+        ' onclick="window.location.href='/pages/1_Cuentas_Medicas'">
         Acceder
         </button>
     </div>
@@ -216,8 +213,7 @@ with col2:
         height: 320px;
         display: flex;
         flex-direction: column;
-    ' onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.12)'" 
-    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.08)'">
+    '>
         <div style='
             background: linear-gradient(135deg, #00a86b, #007a4d);
             width: 60px;
@@ -272,9 +268,7 @@ with col2:
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
-        ' onmouseover="this.style.background='#007a4d'" 
-        onmouseout="this.style.background='#00a86b'"
-        onclick="window.location.href='/pages/2_Cartera'">
+        ' onclick="window.location.href='/pages/2_Cartera'">
         Acceder
         </button>
     </div>
@@ -292,8 +286,7 @@ with col3:
         height: 320px;
         display: flex;
         flex-direction: column;
-    ' onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.12)'" 
-    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.08)'">
+    '>
         <div style='
             background: linear-gradient(135deg, #ff6b35, #cc552b);
             width: 60px;
@@ -348,9 +341,7 @@ with col3:
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
-        ' onmouseover="this.style.background='#cc552b'" 
-        onmouseout="this.style.background='#ff6b35'"
-        onclick="window.location.href='/pages/3_Tesoreria'">
+        ' onclick="window.location.href='/pages/3_Tesoreria'">
         Acceder
         </button>
     </div>
@@ -368,8 +359,7 @@ with col4:
         height: 320px;
         display: flex;
         flex-direction: column;
-    ' onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.12)'" 
-    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.08)'">
+    '>
         <div style='
             background: linear-gradient(135deg, #8a2be2, #6a1cb3);
             width: 60px;
@@ -418,9 +408,7 @@ with col4:
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
-        ' onmouseover="this.style.background='#6a1cb3'" 
-        onmouseout="this.style.background='#8a2be2'"
-        onclick="window.location.href='/pages/4_Metricas_y_Contacto'">
+        ' onclick="window.location.href='/pages/4_Metricas_y_Contacto'">
         Acceder
         </button>
     </div>
