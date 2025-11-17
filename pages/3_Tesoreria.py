@@ -13,12 +13,12 @@ modern_navbar()
 # Título
 st.markdown("""
 <div style='text-align: center; margin-bottom: 3rem;'>
-    <h1 style='color: #1a1a1a; font-size: 2.5rem; margin-bottom: 1rem;'>🏦 Tesorería - Estados de Cuenta</h1>
+    <h1 style='color: #1a1a1a; font-size: 2.5rem; margin-bottom: 1rem;'>🏦 Tesorería - Automatización Estados de Cuenta</h1>
 </div>
 """, unsafe_allow_html=True)
 
 # Sección principal
-st.markdown("### 📤 Procesar Estados de Cuenta de Proveedores y Acreedores")
+st.markdown("### 📤 Procesar archivos")
 
 uploaded_files = st.file_uploader(
     "Subir estados de cuenta (archivos XLS/XLSX)",
