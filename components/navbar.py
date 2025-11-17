@@ -63,7 +63,7 @@ def modern_navbar():
 
     <div class="modern-navbar">
         <div class="nav-content">
-            <div class="nav-title">Todo<span>Drogas</span></div>
+            <div class="nav-title">Tododrogas</div>
             <div class="nav-links">
                 <a href="/" class="nav-link active">Inicio</a>
                 <a href="/pages/1_Cuentas_Medicas" class="nav-link">Cuentas Médicas</a>
@@ -73,4 +73,4 @@ def modern_navbar():
             </div>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """, unsafe_allow_html=True) 
