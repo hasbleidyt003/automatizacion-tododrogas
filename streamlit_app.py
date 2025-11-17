@@ -16,14 +16,14 @@ st.set_page_config(
 # Navbar moderna
 modern_navbar()
 
-# HERO SECTION 3D MODERNA
+# HERO SECTION 3D MODERNA (se mantiene igual)
 st.markdown("""
 <style>
 .hero-3d {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 5rem 2rem;
+    padding: 4rem 2rem;
     border-radius: 20px;
-    margin: 2rem 0;
+    margin: 1rem 0;
     position: relative;
     overflow: hidden;
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
@@ -48,7 +48,7 @@ st.markdown("""
 
 .hero-title {
     color: white;
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-weight: 800;
     text-align: center;
     margin-bottom: 1rem;
@@ -58,152 +58,184 @@ st.markdown("""
 
 .hero-subtitle {
     color: rgba(255,255,255,0.9);
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     font-weight: 300;
 }
 
-/* TARJETAS 3D */
-.card-3d {
-    background: white;
-    border-radius: 20px;
-    padding: 2.5rem;
-    margin: 1rem 0;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    backdrop-filter: blur(10px);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* SECCIONES FUTURISTAS POR ÁREA */
+.area-section {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 25px;
+    padding: 3rem;
+    margin: 2rem 0;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    backdrop-filter: blur(10px);
 }
 
-.card-3d::before {
+.area-section::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #0066cc, #00a86b, #ff6b35, #8a2be2);
+    height: 6px;
+    background: linear-gradient(90deg, var(--accent-color), transparent);
 }
 
-.card-3d:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+.area-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-/* BOTONES FLOTANTES */
-.floating-btn {
-    background: linear-gradient(135deg, #0066cc, #004499);
-    color: white;
-    border: none;
-    padding: 1.2rem 2.5rem;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(0,102,204,0.3);
+.area-icon {
+    font-size: 4rem;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+}
+
+.area-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin: 0;
+    text-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.area-description {
+    font-size: 1.3rem;
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* GRID DE AUTOMATIZACIONES */
+.automations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.automation-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border-left: 5px solid var(--accent-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
 }
 
-.floating-btn::before {
+.automation-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s;
+    background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.05), transparent);
+    transition: left 0.6s;
 }
 
-.floating-btn:hover::before {
+.automation-card:hover::before {
     left: 100%;
 }
 
-.floating-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(0,102,204,0.4);
+.automation-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
-/* MENÚ DESPLEGABLE 3D */
-.accordion-3d {
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    border-radius: 15px;
-    margin: 1rem 0;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.accordion-header {
-    background: linear-gradient(135deg, #0066cc, #004499);
-    color: white;
-    padding: 1.5rem 2rem;
-    cursor: pointer;
+.automation-title {
+    font-size: 1.4rem;
     font-weight: 600;
-    font-size: 1.2rem;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 0.5rem;
+}
+
+.automation-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.automation-features li {
+    padding: 0.5rem 0;
+    color: #666;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.automation-features li:last-child {
+    border-bottom: none;
+}
+
+.automation-features li::before {
+    content: '▸';
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+/* BOTÓN DE ACCIÓN */
+.action-btn {
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(var(--accent-rgb), 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.accordion-header:hover {
-    background: linear-gradient(135deg, #0052a3, #003366);
+.action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(var(--accent-rgb), 0.4);
 }
 
-.accordion-content {
-    padding: 2rem;
-    background: white;
-    display: none;
-}
-
-.accordion-3d.active .accordion-content {
-    display: block;
-    animation: slideDown 0.3s ease;
-}
-
-@keyframes slideDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* ESTADÍSTICAS FLOTANTES */
-.stats-grid {
+/* ESTADÍSTICAS COMPACTAS */
+.stats-compact {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin: 3rem 0;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
 }
 
-.stat-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
+.stat-item {
     text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-    border: 1px solid #f0f0f0;
-}
-
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    padding: 1.5rem;
+    background: rgba(var(--accent-rgb), 0.1);
+    border-radius: 15px;
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
 }
 
 .stat-number {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
-    color: #0066cc;
+    color: var(--accent-color);
     margin-bottom: 0.5rem;
 }
 
 .stat-label {
-    color: #666;
     font-size: 0.9rem;
+    color: #666;
     font-weight: 500;
 }
 </style>
@@ -214,217 +246,262 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# MENSAJE PRINCIPAL CENTRADO
+# MENSAJE PRINCIPAL COMPACTO
 st.markdown("""
-<div style='text-align: center; margin: 3rem 0;'>
-    <h2 style='color: #1a1a1a; font-size: 2.2rem; font-weight: 600; margin-bottom: 1rem;'>
+<div style='text-align: center; margin: 2rem 0;'>
+    <h2 style='color: #1a1a1a; font-size: 2rem; font-weight: 600; margin-bottom: 1rem;'>
         Optimización por Áreas Especializadas
     </h2>
-    <p style='color: #666666; font-size: 1.3rem; line-height: 1.6; max-width: 800px; margin: 0 auto;'>
+    <p style='color: #666666; font-size: 1.2rem; line-height: 1.6; max-width: 800px; margin: 0 auto;'>
         Centralizamos soluciones automatizadas diseñadas específicamente para cada departamento, 
         maximizando la eficiencia y reduciendo tiempos operativos.
     </p>
 </div>
 """, unsafe_allow_html=True)
 
-# ESTADÍSTICAS IMPACTANTES
-st.markdown("""
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-number">+85%</div>
-        <div class="stat-label">Reducción de tiempos</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-number">99.2%</div>
-        <div class="stat-label">Precisión en procesos</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-number">+200</div>
-        <div class="stat-label">Procesos automatizados</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-number">24/7</div>
-        <div class="stat-label">Disponibilidad</div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# SECCIÓN DE ÁREAS CON MENÚ DESPLEGABLE 3D
-st.markdown("""
-<div style='text-align: center; margin: 4rem 0 2rem 0;'>
-    <h2 style='color: #1a1a1a; font-size: 2.5rem; font-weight: 600; margin-bottom: 1rem;'>
-        Áreas de Automatización
-    </h2>
-    <p style='color: #666666; font-size: 1.2rem;'>
-        Explora nuestras soluciones especializadas por departamento
-    </p>
-</div>
-""", unsafe_allow_html=True)
-
-# MENÚ DESPLEGABLE 3D PARA CADA ÁREA
-areas = [
+# DEFINICIÓN DE ÁREAS CON AUTOMATIZACIONES ESPECÍFICAS
+areas_data = [
     {
+        "id": "cuentas-medicas",
         "title": "📋 Cuentas Médicas",
-        "icon": "📋",
-        "color": "#0066cc",
-        "description": "Automatización de procesos médicos y administrativos",
-        "features": [
-            "Procesamiento JSON - SAVIA & COOSALUD",
-            "Renombradores RIPS y CUV", 
-            "OCR y Renombrado - SALUD TOTAL",
-            "Validación automática de formatos"
+        "accent_color": "#0066cc",
+        "accent_rgb": "0, 102, 204",
+        "accent_dark": "#004499",
+        "description": "Automatización integral de procesos médicos y administrativos para optimizar la gestión de cuentas",
+        "stats": [
+            {"number": "85%", "label": "Reducción tiempos"},
+            {"number": "99.2%", "label": "Precisión"},
+            {"number": "24/7", "label": "Disponibilidad"},
+            {"number": "±0", "label": "Errores"}
+        ],
+        "automations": [
+            {
+                "title": "🔄 Procesadores JSON",
+                "subtitle": "SAVIA & COOSALUD",
+                "features": [
+                    "Validación automática de estructura JSON",
+                    "Conversión entre formatos específicos", 
+                    "Extracción y transformación de datos",
+                    "Validación de reglas de negocio"
+                ]
+            },
+            {
+                "title": "🏷️ Renombradores Inteligentes", 
+                "subtitle": "RIPS & CUV",
+                "features": [
+                    "Renombrado masivo por estándares RIPS",
+                    "Aplicación automática de nomenclatura CUV",
+                    "Validación de nombres según políticas",
+                    "Generación de logs de cambios"
+                ]
+            },
+            {
+                "title": "🔍 Procesador OCR + Renombrado",
+                "subtitle": "SALUD TOTAL",
+                "features": [
+                    "Reconocimiento óptico de caracteres en PDF",
+                    "Extracción inteligente de datos clave",
+                    "Renombrado automático por contenido",
+                    "Integración con sistemas existentes"
+                ]
+            }
         ]
     },
     {
+        "id": "cartera", 
         "title": "💰 Cartera",
-        "icon": "💰", 
-        "color": "#00a86b",
-        "description": "Gestión automatizada de estados financieros",
-        "features": [
-            "Procesamiento de estados de cuenta",
-            "Reportes automáticos",
-            "Análisis de cartera",
-            "Alertas inteligentes"
+        "accent_color": "#00a86b",
+        "accent_rgb": "0, 168, 107",
+        "accent_dark": "#007a4d",
+        "description": "Gestión automatizada de estados financieros y reportes con inteligencia artificial",
+        "stats": [
+            {"number": "92%", "label": "Procesos auto"},
+            {"number": "±0", "label": "Discrepancias"},
+            {"number": "5min", "label": "Por reporte"},
+            {"number": "100%", "label": "Trazabilidad"}
+        ],
+        "automations": [
+            {
+                "title": "📊 Procesador Estados de Cuenta",
+                "subtitle": "Análisis Automático",
+                "features": [
+                    "Procesamiento automático de extractos",
+                    "Detección de anomalías y discrepancias",
+                    "Clasificación inteligente de transacciones",
+                    "Generación de alertas en tiempo real"
+                ]
+            },
+            {
+                "title": "📈 Generador de Reportes",
+                "subtitle": "Business Intelligence", 
+                "features": [
+                    "Reportes financieros automáticos",
+                    "Dashboards interactivos personalizados",
+                    "Análisis predictivo de cartera",
+                    "Exportación multi-formato"
+                ]
+            }
         ]
     },
     {
+        "id": "tesoreria",
         "title": "🏦 Tesorería", 
-        "icon": "🏦",
-        "color": "#ff6b35",
-        "description": "Control y gestión del flujo financiero",
-        "features": [
-            "Automatización de conciliaciones",
-            "Control de estados bancarios",
-            "Reportes de tesorería",
-            "Análisis de flujo de caja"
+        "accent_color": "#ff6b35",
+        "accent_rgb": "255, 107, 53",
+        "accent_dark": "#cc552b",
+        "description": "Control y gestión automatizada del flujo financiero con máxima seguridad",
+        "stats": [
+            {"number": "99.9%", "label": "Exactitud"},
+            {"number": "3min", "label": "Conciliación"}, 
+            {"number": "0", "label": "Errores humanos"},
+            {"number": "100%", "label": "Auditoría"}
+        ],
+        "automations": [
+            {
+                "title": "🔄 Conciliador Automático",
+                "subtitle": "Bancos & Sistemas",
+                "features": [
+                    "Conciliación automática bancaria",
+                    "Detección automática de diferencias",
+                    "Generación de asientos contables",
+                    "Integración cross-platform"
+                ]
+            },
+            {
+                "title": "📋 Gestor de Estados Bancarios",
+                "subtitle": "Control Total", 
+                "features": [
+                    "Procesamiento de estados en tiempo real",
+                    "Alertas de movimientos inusuales",
+                    "Reportes de flujo de caja automáticos",
+                    "Proyecciones financieras inteligentes"
+                ]
+            }
         ]
     },
     {
+        "id": "metricas",
         "title": "📊 Métricas y Contacto",
-        "icon": "📊",
-        "color": "#8a2be2", 
-        "description": "Seguimiento y análisis de resultados",
-        "features": [
-            "Dashboard de métricas",
-            "Reportes de impacto",
-            "Análisis de eficiencia",
-            "Soporte y contacto"
+        "accent_color": "#8a2be2", 
+        "accent_rgb": "138, 43, 226",
+        "accent_dark": "#6a1cb3",
+        "description": "Seguimiento, análisis y soporte integral para todas las automatizaciones",
+        "stats": [
+            {"number": "360°", "label": "Visibilidad"},
+            {"number": "24/7", "label": "Soporte"},
+            {"number": "±0", "label": "Downtime"},
+            {"number": "100%", "label": "Satisfacción"}
+        ],
+        "automations": [
+            {
+                "title": "📈 Dashboard de Métricas",
+                "subtitle": "Análisis de Impacto",
+                "features": [
+                    "Métricas de eficiencia en tiempo real",
+                    "ROI de automatizaciones por área",
+                    "Reportes de productividad comparativa",
+                    "Alertas de rendimiento"
+                ]
+            },
+            {
+                "title": "💡 Centro de Soporte",
+                "subtitle": "Soporte Integral", 
+                "features": [
+                    "Solicitud de nuevas automatizaciones",
+                    "Soporte técnico especializado",
+                    "Capacitación y documentación",
+                    "Mejora continua de procesos"
+                ]
+            }
         ]
     }
 ]
 
-for i, area in enumerate(areas):
+# RENDERIZAR SECCIONES FUTURISTAS PARA CADA ÁREA
+for area in areas_data:
     st.markdown(f"""
-    <div class="accordion-3d" id="accordion-{i}">
-        <div class="accordion-header" onclick="toggleAccordion({i})">
-            <span>{area['icon']} {area['title']}</span>
-            <span>▼</span>
+    <div class="area-section" style="--accent-color: {area['accent_color']}; --accent-rgb: {area['accent_rgb']}; --accent-dark: {area['accent_dark']};">
+        <div class="area-header">
+            <div class="area-icon">{area['title'].split()[0]}</div>
+            <div>
+                <h2 class="area-title">{area['title']}</h2>
+                <p class="area-description">{area['description']}</p>
+            </div>
         </div>
-        <div class="accordion-content">
-            <div style='color: #666; font-size: 1.1rem; margin-bottom: 1.5rem;'>
-                {area['description']}
+        
+        <div class="stats-compact">
+            {''.join([f'''
+            <div class="stat-item">
+                <div class="stat-number">{stat['number']}</div>
+                <div class="stat-label">{stat['label']}</div>
             </div>
-            <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;'>
-                {''.join([f'<div style="color: #666; font-size: 0.95rem; padding: 0.5rem; background: #f8f9fa; border-radius: 8px;">✓ {feature}</div>' for feature in area['features']])}
+            ''' for stat in area['stats']])}
+        </div>
+        
+        <div class="automations-grid">
+            {''.join([f'''
+            <div class="automation-card">
+                <div class="automation-title">
+                    {automation['title']}
+                    <span style="font-size: 0.9rem; color: #999; font-weight: 400;">{automation['subtitle']}</span>
+                </div>
+                <ul class="automation-features">
+                    {''.join([f'<li>{feature}</li>' for feature in automation['features']])}
+                </ul>
             </div>
-            <button class="floating-btn" onclick="navigateToArea({i})">
-                Acceder a {area['title'].split()[-1]}
+            ''' for automation in area['automations']])}
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <button class="action-btn" onclick="navigateToArea('{area['id']}')">
+                🚀 Acceder a {area['title'].split()[-1]}
             </button>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-# BOTONES FLOTANTES DE ACCIÓN RÁPIDA
-st.markdown("""
-<div style='text-align: center; margin: 4rem 0;'>
-    <h3 style='color: #1a1a1a; font-size: 1.8rem; margin-bottom: 2rem;'>
-        Acciones Rápidas
-    </h3>
-    <div style='display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;'>
-        <button class="floating-btn" onclick="navigateToArea(0)">
-            🚀 Iniciar Automatización
-        </button>
-        <button class="floating-btn" style="background: linear-gradient(135deg, #00a86b, #007a4d);">
-            📊 Ver Reportes
-        </button>
-        <button class="floating-btn" style="background: linear-gradient(135deg, #8a2be2, #6a1cb3);">
-            💡 Solicitar Soporte
-        </button>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# TARJETA DE BENEFICIOS
-st.markdown("""
-<div class="card-3d">
-    <div style='text-align: center; margin-bottom: 2rem;'>
-        <h3 style='color: #1a1a1a; font-size: 2rem; margin-bottom: 1rem;'>¿Por qué automatizar?</h3>
-    </div>
-    <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;'>
-        <div style='text-align: center;'>
-            <div style='font-size: 3rem; margin-bottom: 1rem;'>⚡</div>
-            <h4 style='color: #1a1a1a; margin-bottom: 0.5rem;'>Velocidad</h4>
-            <p style='color: #666;'>Procesa en minutos lo que antes tomaba horas</p>
-        </div>
-        <div style='text-align: center;'>
-            <div style='font-size: 3rem; margin-bottom: 1rem;'>🎯</div>
-            <h4 style='color: #1a1a1a; margin-bottom: 0.5rem;'>Precisión</h4>
-            <p style='color: #666;'>Elimina errores humanos en procesos repetitivos</p>
-        </div>
-        <div style='text-align: center;'>
-            <div style='font-size: 3rem; margin-bottom: 1rem;'>📈</div>
-            <h4 style='color: #1a1a1a; margin-bottom: 0.5rem;'>Escalabilidad</h4>
-            <p style='color: #666;'>Crece sin incrementar carga operativa</p>
-        </div>
-        <div style='text-align: center;'>
-            <div style='font-size: 3rem; margin-bottom: 1rem;'>💼</div>
-            <h4 style='color: #1a1a1a; margin-bottom: 0.5rem;'>Enfoque</h4>
-            <p style='color: #666;'>Tu equipo se concentra en lo realmente importante</p>
-        </div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# JAVASCRIPT PARA INTERACTIVIDAD
+# JAVASCRIPT PARA NAVEGACIÓN
 st.markdown("""
 <script>
-function toggleAccordion(index) {
-    const accordion = document.getElementById(`accordion-${index}`);
-    accordion.classList.toggle('active');
+function navigateToArea(areaId) {
+    const routes = {
+        'cuentas-medicas': '/Cuentas_Medicas',
+        'cartera': '/Cartera', 
+        'tesoreria': '/Tesoreria',
+        'metricas': '/Metricas_y_Contacto'
+    };
+    if (routes[areaId]) {
+        window.location.href = routes[areaId];
+    }
 }
 
-function navigateToArea(index) {
-    const areas = ['Cuentas_Medicas', 'Cartera', 'Tesoreria', 'Metricas_y_Contacto'];
-    window.location.href = `/${areas[index]}`;
-}
-
-// Efecto de aparición suave
+// Animación de aparición escalonada
 document.addEventListener('DOMContentLoaded', function() {
-    const elements = document.querySelectorAll('.card-3d, .stat-card');
-    elements.forEach((el, index) => {
+    const sections = document.querySelectorAll('.area-section');
+    sections.forEach((section, index) => {
         setTimeout(() => {
-            el.style.opacity = '1';
-            el.style.transform = 'translateY(0)';
-        }, index * 200);
+            section.style.opacity = '1';
+            section.style.transform = 'translateY(0)';
+        }, index * 300);
     });
 });
 </script>
 
 <style>
-.card-3d, .stat-card {
+.area-section {
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.6s ease;
+    transform: translateY(50px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 </style>
 """, unsafe_allow_html=True)
 
-# FOOTER MODERNO
+# FOOTER MODERNO COMPACTO
 st.markdown("""
 <div style='
     background: #f8f9fa;
-    padding: 3rem 0;
-    margin-top: 4rem;
+    padding: 2rem 0;
+    margin-top: 3rem;
     text-align: center;
     border-top: 1px solid #e0e0e0;
 '>
