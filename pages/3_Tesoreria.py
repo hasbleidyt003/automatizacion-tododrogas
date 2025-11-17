@@ -4,7 +4,7 @@ import io
 from datetime import datetime
 
 # Configuración
-st.set_page_config(page_title="Tesorería - TodoDrogas", page_icon="🏦", layout="wide")
+st.set_page_config(page_title="Tesorería", page_icon="🏦", layout="wide")
 
 # Navbar
 from components.navbar import modern_navbar
@@ -13,19 +13,18 @@ modern_navbar()
 # Título
 st.markdown("""
 <div style='text-align: center; margin-bottom: 3rem;'>
-    <h1 style='color: #1a1a1a; font-size: 2.5rem; margin-bottom: 1rem;'>🏦 Tesorería - Estados de Cuenta Proveedores</h1>
-    <p style='color: #666; font-size: 1.2rem;'>Procesamiento de estados de cuenta de acreedores y proveedores</p>
+    <h1 style='color: #1a1a1a; font-size: 2.5rem; margin-bottom: 1rem;'>🏦 Tesorería - Estados de Cuenta</h1>
 </div>
 """, unsafe_allow_html=True)
 
 # Sección principal
-st.markdown("### 📤 Procesar Estados de Cuenta de Proveedores")
+st.markdown("### 📤 Procesar Estados de Cuenta de Proveedores y Acreedores")
 
 uploaded_files = st.file_uploader(
-    "Subir estados de cuenta de proveedores (archivos XLS/XLSX)",
+    "Subir estados de cuenta (archivos XLS/XLSX)",
     type=['xlsx', 'xls'],
     accept_multiple_files=True,
-    help="Solo archivos Excel (.xls, .xlsx) de estados de cuenta de proveedores"
+    help="Solo archivos Excel (.xls, .xlsx) de los estados de cuenta"
 )
 
 if uploaded_files:
