@@ -7,7 +7,7 @@ configure_modern_theme()
 
 # Configurar página
 st.set_page_config(
-    page_title="Sistema de Automatización - TodoDrogas",
+    page_title="Sistema de Automatización - Tododrogas",  # Cambiado a Tododrogas
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -24,7 +24,7 @@ with col1:
     <div style='padding: 0.5rem 0 2rem 0; margin-top: -0.8cm;'>
         <h1 style='
             color: #1a1a1a;
-            font-size: 3.8rem;
+            font-size: 3.2rem;  <!-- REDUCIDO DE 3.8rem -->
             font-weight: 800;
             margin-bottom: 0;
             line-height: 1;
@@ -438,6 +438,6 @@ st.markdown("""
 '>
     <h4 style='color: #1a1a1a; margin-bottom: 0.8rem; font-size: 1.1rem;'>Tododrogas - Sistema de Automatización</h4>
     <p style='color: #666666; margin-bottom: 0.4rem; font-size: 0.9rem;'>Optimizando procesos mediante tecnología</p>
-    <p style='color: #999999; font-size: 0.8rem;'>© 2024 Todos los derechos reservados</p>
+    <p style='color: #999999; font-size: 0.8rem;'>Todos los derechos reservados</p>  <!-- AÑO ELIMINADO -->
 </div>
-""", unsafe_allow_html=True) 
+""", unsafe_allow_html=True)
