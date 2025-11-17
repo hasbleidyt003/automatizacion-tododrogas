@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 
 # Configurar página
 st.set_page_config(
-    page_title="Cuentas Médicas - TodoDrogas",
+    page_title="Cuentas Médicas - Toddrogas",
     page_icon="📋",
     layout="wide"
 )
@@ -19,57 +19,58 @@ st.markdown("Automatización de procesos para cuentas médicas")
 # SECCIÓN DE PROCESAMIENTO DE ARCHIVOS
 st.header("🔄 Procesamiento de Archivos")
 
-# Pestañas para diferentes procesos
-tab1, tab2, tab3, tab4 = st.tabs([
-    "SAVIA & COOSALUD - Conversores", 
+# Pestañas para diferentes procesos - CORREGIDO SEGÚN TUS INDICACIONES
+tab1, tab2, tab3 = st.tabs([
+    "SAVIA & COOSALUD - Conversores JSON", 
     "SAVIA & COOSALUD - Renombradores", 
-    "SALUD TOTAL - Procesador OCR", 
-    "SALUD TOTAL - Renombrador"
+    "SALUD TOTAL - Procesador OCR y Renombrador"
 ])
 
 with tab1:
-    st.subheader("Conversores MANTIS/SISPRO")
-    st.info("Convierte archivos entre formatos MANTIS y SISPRO")
+    st.subheader("Conversores JSON - SAVIA & COOSALUD")
+    st.info("Procesa archivos JSON para conversión de formatos")
     
     uploaded_file = st.file_uploader(
-        "Sube archivo para conversión", 
-        type=['xlsx', 'xls', 'csv'],
-        key="conversor"
+        "Sube archivo JSON para procesar", 
+        type=['json'],
+        key="conversor_json"
     )
     
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        conversion_type = st.selectbox(
-            "Tipo de conversión",
-            ["MANTIS a SISPRO", "SISPRO a MANTIS"],
-            key="conversion_type"
-        )
-    
-    with col2:
-        if uploaded_file:
-            if st.button("🔄 Convertir Archivo", use_container_width=True):
-                with st.spinner("Procesando conversión..."):
+    if uploaded_file:
+        st.success(f"✅ Archivo {uploaded_file.name} cargado correctamente")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            proceso_type = st.selectbox(
+                "Tipo de procesamiento",
+                ["Validación de estructura", "Conversión de formatos", "Extracción de datos"],
+                key="proceso_json"
+            )
+        
+        with col2:
+            if st.button("🔄 Procesar JSON", use_container_width=True):
+                with st.spinner("Procesando archivo JSON..."):
                     # Simulación de procesamiento
                     import time
                     time.sleep(2)
-                    st.success("✅ Conversión completada exitosamente!")
+                    st.success("✅ Procesamiento JSON completado exitosamente!")
                     
                     # Simular archivo de descarga
                     st.download_button(
-                        label="📥 Descargar Archivo Convertido",
-                        data="contenido simulado del archivo convertido",
-                        file_name=f"convertido_{uploaded_file.name}",
-                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        label="📥 Descargar Archivo Procesado",
+                        data="contenido simulado del archivo procesado",
+                        file_name=f"procesado_{uploaded_file.name}",
+                        mime="application/json"
                     )
 
 with tab2:
-    st.subheader("Renombradores CUV/RIPS")
-    st.info("Renombra archivos según estándares CUV y RIPS")
+    st.subheader("Renombradores RIPS y CUV - SAVIA & COOSALUD")
+    st.info("Renombra archivos según estándares RIPS y CUV")
     
     uploaded_files = st.file_uploader(
         "Sube archivos para renombrar", 
-        type=['xlsx', 'xls', 'csv', 'txt'],
+        type=['xlsx', 'xls', 'csv', 'txt', 'json'],
         accept_multiple_files=True,
         key="renombrador"
     )
@@ -78,118 +79,107 @@ with tab2:
         st.write(f"📁 Archivos seleccionados: {len(uploaded_files)}")
         
         naming_convention = st.selectbox(
-            "Convención de nombres",
-            ["CUV - Estándar", "RIPS - Facturación", "Personalizado"],
+            "Estándar de renombrado",
+            ["RIPS - Facturación", "CUV - Codificación", "Ambos estándares"],
             key="naming_convention"
         )
         
-        if st.button("🔄 Renombrar Archivos", use_container_width=True):
-            progress_bar = st.progress(0)
-            status_text = st.empty()
-            
-            for i, file in enumerate(uploaded_files):
-                progress = (i + 1) / len(uploaded_files)
-                progress_bar.progress(progress)
-                status_text.text(f"Procesando {file.name}...")
-                # Simular procesamiento
-                import time
-                time.sleep(0.5)
-            
-            st.success("✅ Todos los archivos han sido renombrados!")
-            
-            # Mostrar preview de nombres nuevos
-            st.subheader("Preview de nombres nuevos:")
-            for i, file in enumerate(uploaded_files):
-                new_name = f"renamed_{i+1}_{file.name}"
-                st.write(f"• {file.name} → **{new_name}**")
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            if st.button("🔄 Aplicar RIPS", use_container_width=True):
+                progress_bar = st.progress(0)
+                status_text = st.empty()
+                
+                for i, file in enumerate(uploaded_files):
+                    progress = (i + 1) / len(uploaded_files)
+                    progress_bar.progress(progress)
+                    status_text.text(f"Aplicando RIPS a {file.name}...")
+                    # Simular procesamiento
+                    import time
+                    time.sleep(0.5)
+                
+                st.success("✅ Estándar RIPS aplicado exitosamente!")
+        
+        with col2:
+            if st.button("🔄 Aplicar CUV", use_container_width=True):
+                progress_bar = st.progress(0)
+                status_text = st.empty()
+                
+                for i, file in enumerate(uploaded_files):
+                    progress = (i + 1) / len(uploaded_files)
+                    progress_bar.progress(progress)
+                    status_text.text(f"Aplicando CUV a {file.name}...")
+                    # Simular procesamiento
+                    import time
+                    time.sleep(0.5)
+                
+                st.success("✅ Estándar CUV aplicado exitosamente!")
 
 with tab3:
-    st.subheader("Procesador OCR")
-    st.info("Procesa imágenes y PDFs mediante reconocimiento óptico de caracteres")
+    st.subheader("Procesador OCR y Renombrador - SALUD TOTAL")
+    st.info("Procesa PDFs con OCR y renombra archivos automáticamente")
     
+    # Subida de archivos PDF para OCR
     ocr_files = st.file_uploader(
-        "Sube imágenes o PDFs para OCR", 
-        type=['jpg', 'jpeg', 'png', 'pdf'],
+        "Sube PDFs para procesamiento OCR", 
+        type=['pdf'],
         accept_multiple_files=True,
-        key="ocr"
+        key="ocr_salud_total"
     )
     
     if ocr_files:
+        st.write(f"📄 PDFs cargados: {len(ocr_files)}")
+        
         col1, col2 = st.columns(2)
         
         with col1:
+            # Configuración OCR
+            st.subheader("Configuración OCR")
             ocr_language = st.selectbox(
-                "Idioma del texto",
+                "Idioma para OCR",
                 ["Español", "Inglés", "Español/Inglés"],
-                key="ocr_language"
+                key="ocr_language_salud"
+            )
+            
+            extraction_type = st.selectbox(
+                "Tipo de extracción",
+                ["Datos estructurados", "Texto completo", "Campos específicos"],
+                key="extraction_type"
             )
         
         with col2:
-            output_format = st.selectbox(
-                "Formato de salida",
-                ["Excel (.xlsx)", "CSV (.csv)", "Texto (.txt)"],
-                key="output_format"
-            )
-        
-        if st.button("🔍 Procesar con OCR", use_container_width=True):
-            with st.spinner("Extrayendo texto de los documentos..."):
-                import time
-                time.sleep(3)
-                
-                st.success("✅ Procesamiento OCR completado!")
-                
-                # Simular resultados
-                st.subheader("Texto extraído (ejemplo):")
-                st.text_area(
-                    "Texto detectado:",
-                    "EJEMPLO DE TEXTO EXTRAÍDO MEDIANTE OCR:\n\n"
-                    "FACTURA No: 12345\n"
-                    "Fecha: 15/Nov/2023\n"
-                    "Paciente: Juan Pérez\n"
-                    "Servicio: Consulta médica\n"
-                    "Valor: $150.000",
-                    height=150
+            # Configuración renombrado
+            st.subheader("Configuración Renombrado")
+            auto_rename = st.checkbox("Renombrado automático", value=True)
+            
+            if auto_rename:
+                rename_pattern = st.selectbox(
+                    "Patrón de renombrado",
+                    ["Nombre original + fecha", "Secuencial + contenido", "Personalizado"],
+                    key="rename_pattern"
                 )
-
-with tab4:
-    st.subheader("Renombrador de Archivos")
-    st.info("Renombra archivos de forma masiva según patrones específicos")
-    
-    bulk_files = st.file_uploader(
-        "Sube archivos para renombrar", 
-        accept_multiple_files=True,
-        key="bulk_rename"
-    )
-    
-    if bulk_files:
-        st.write(f"📂 Total de archivos: {len(bulk_files)}")
         
-        rename_pattern = st.text_input(
-            "Patrón de renombrado:",
-            placeholder="Ej: factura_{numero}_{fecha}",
-            help="Usa {numero} para contador, {fecha} para fecha actual"
-        )
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            start_number = st.number_input("Número inicial:", value=1, min_value=1)
-        
-        with col2:
-            add_date = st.checkbox("Incluir fecha", value=True)
-        
-        if st.button("🔄 Renombrar Lote", use_container_width=True):
-            progress_bar = st.progress(0)
-            
-            for i, file in enumerate(bulk_files):
-                progress = (i + 1) / len(bulk_files)
-                progress_bar.progress(progress)
+        # Botón de procesamiento único para OCR y renombrado
+        if st.button("🔍 Procesar OCR y Renombrar", use_container_width=True):
+            with st.spinner("Procesando PDFs con OCR y aplicando renombrado..."):
+                progress_bar = st.progress(0)
+                status_text = st.empty()
                 
-                # Simular renombrado
-                import time
-                time.sleep(0.3)
-            
-            st.success(f"✅ {len(bulk_files)} archivos renombrados exitosamente!")
+                for i, file in enumerate(ocr_files):
+                    progress = (i + 1) / len(ocr_files)
+                    progress_bar.progress(progress)
+                    status_text.text(f"Procesando {file.name}...")
+                    # Simular procesamiento combinado
+                    import time
+                    time.sleep(1)
+                
+                st.success("✅ Procesamiento OCR y renombrado completado!")
+                
+                # Mostrar resultados combinados
+                st.subheader("Resultados del Procesamiento:")
+                for i, file in enumerate(ocr_files):
+                    st.write(f"• **{file.name}** → OCR procesado + renombrado correctamente")
 
 # SECCIÓN DE ESTADÍSTICAS Y MÉTRICAS
 st.header("📊 Métricas y Estadísticas")
@@ -225,7 +215,7 @@ try:
     dates = pd.date_range(start='2024-01-01', end='2024-01-30', freq='D')
     activity_data = pd.DataFrame({
         'Fecha': dates,
-        'Archivos': np.random.randint(10, 100, len(dates)),  # LÍNEA CORREGIDA
+        'Archivos': np.random.randint(10, 100, len(dates)),
         'Errores': np.random.randint(0, 5, len(dates))
     })
     
@@ -254,8 +244,8 @@ st.header("📋 Historial de Procesos")
 # Datos de ejemplo para el historial
 historial_data = {
     'Fecha': ['2024-01-15 10:30', '2024-01-15 11:15', '2024-01-14 16:45'],
-    'Archivo': ['facturas_enero.xlsx', 'rips_noviembre.csv', 'ocr_imagenes.zip'],
-    'Proceso': ['Conversión MANTIS', 'Renombrado RIPS', 'Procesamiento OCR'],
+    'Archivo': ['datos_savia.json', 'facturas_rips.csv', 'historias_salud.pdf'],
+    'Proceso': ['Procesamiento JSON', 'Renombrado RIPS', 'OCR + Renombrado'],
     'Estado': ['✅ Completado', '✅ Completado', '⚠️ Advertencias'],
     'Usuario': ['admin', 'operador1', 'operador2']
 }
@@ -263,35 +253,36 @@ historial_data = {
 historial_df = pd.DataFrame(historial_data)
 st.dataframe(historial_df, use_container_width=True)
 
-# INSTRUCCIONES DE USO
-with st.expander("📖 Instrucciones de Uso"):
+# INSTRUCCIONES DE USO ACTUALIZADAS
+with st.expander("📖 Instrucciones de Uso - Actualizadas"):
     st.markdown("""
-    ### Guía Rápida:
+    ### Guía Rápida Actualizada:
     
-    **SAVIA & COOSALUD - Conversores:**
-    - Sube archivos en formato Excel o CSV
-    - Selecciona el tipo de conversión (MANTIS/SISPRO)
-    - Descarga el archivo convertido
+    **SAVIA & COOSALUD - Conversores JSON:**
+    - Sube archivos en formato JSON
+    - Selecciona el tipo de procesamiento (validación, conversión, extracción)
+    - Descarga el archivo procesado
     
     **SAVIA & COOSALUD - Renombradores:**
     - Selecciona múltiples archivos
-    - Elige la convención de nombres (CUV/RIPS)
-    - Los archivos se renombrarán automáticamente
+    - Aplica estándares RIPS (facturación) o CUV (codificación)
+    - Los archivos se renombrán según el estándar seleccionado
     
-    **SALUD TOTAL - Procesador OCR:**
-    - Sube imágenes (JPG, PNG) o PDFs
-    - Selecciona el idioma del texto
-    - El texto extraído estará disponible para descarga
+    **SALUD TOTAL - Procesador OCR y Renombrador:**
+    - Sube archivos PDF para procesamiento OCR
+    - Configura el idioma y tipo de extracción
+    - El sistema procesa OCR y aplica renombrado automáticamente
+    - **Nota:** Esta automatización combina OCR y renombrado en un solo proceso
     
-    **SALUD TOTAL - Renombrador:**
-    - Renombra lotes grandes de archivos
-    - Usa patrones personalizados
-    - Incluye contadores y fechas automáticamente
+    ### Formatos de Archivo:
+    - **JSON:** Para procesamiento de datos estructurados
+    - **PDF:** Para procesamiento OCR en Salud Total
+    - **Excel/CSV:** Para renombrado en SAVIA & COOSALUD
     """)
 
 # FOOTER
 st.markdown("---")
 st.markdown(
-    "**Cuentas Médicas** • Sistema de Automatización TodoDrogas • "
+    "**Cuentas Médicas** • Sistema de Automatización Tododrogas • "
     "Para soporte técnico contacte al administrador del sistema."
 )
