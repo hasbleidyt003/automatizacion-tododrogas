@@ -366,7 +366,6 @@ st.markdown("""
     border-top: 1px solid #e0e0e0;
 '>
     <h4 style='color: #1a1a1a; margin-bottom: 1rem;'>Tododrogas - Sistema de Automatización</h4>
-    <p style='color: #666666; margin-bottom: 0.5rem;'>Optimizando procesos mediante tecnología</p>
     <p style='color: #999999; font-size: 0.9rem;'>© Todos los derechos reservados</p>
 </div>
 """, unsafe_allow_html=True)
