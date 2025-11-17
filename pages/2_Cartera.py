@@ -4,7 +4,7 @@ import io
 from datetime import datetime
 
 # Configuración
-st.set_page_config(page_title="Cartera - TodoDrogas", page_icon="💰", layout="wide")
+st.set_page_config(page_title="Cartera", page_icon="💰", layout="wide")
 
 # Navbar
 from components.navbar import modern_navbar
@@ -13,8 +13,7 @@ modern_navbar()
 # Título
 st.markdown("""
 <div style='text-align: center; margin-bottom: 3rem;'>
-    <h1 style='color: #1a1a1a; font-size: 2.5rem; margin-bottom: 1rem;'>💰 Cartera - Estados de Cuenta Clientes</h1>
-    <p style='color: #666; font-size: 1.2rem;'>Procesamiento de estados de cuenta de clientes</p>
+    <h1 style='color: #1a1a1a; font-size: 2.5rem; margin-bottom: 1rem;'>💰 Cartera - Automatización Estados de Cuenta </h1>
 </div>
 """, unsafe_allow_html=True)
 
