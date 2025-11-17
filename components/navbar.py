@@ -24,7 +24,6 @@ def modern_navbar():
         font-size: 1.8rem;
         font-weight: 700;
         letter-spacing: -0.5px;
-        font-family: "Inter", sans-serif;
     }
     
     .nav-title span {
@@ -48,38 +47,17 @@ def modern_navbar():
         transition: all 0.3s ease;
         font-weight: 500;
         font-size: 0.9rem;
-        font-family: "Inter", sans-serif;
     }
     
     .nav-link:hover {
         background: white;
         color: #0066cc;
         box-shadow: 0 2px 12px rgba(0,102,204,0.15);
-        transform: translateY(-1px);
     }
     
     .nav-link.active {
         background: #0066cc;
         color: white;
-        box-shadow: 0 2px 12px rgba(0,102,204,0.25);
-    }
-    
-    @media (max-width: 768px) {
-        .nav-content {
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .nav-links {
-            width: 100%;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .nav-link {
-            padding: 0.5rem 1rem;
-            font-size: 0.8rem;
-        }
     }
     </style>
 
@@ -87,7 +65,7 @@ def modern_navbar():
         <div class="nav-content">
             <div class="nav-title">Todo<span>drogas</span></div>
             <div class="nav-links">
-                <a href="/" class="nav-link active">Inicio</a>
+                <a href="/" class="nav-link">Inicio</a>
                 <a href="/pages/1_Cuentas_Medicas" class="nav-link">Cuentas Médicas</a>
                 <a href="/pages/2_Cartera" class="nav-link">Cartera</a>
                 <a href="/pages/3_Tesoreria" class="nav-link">Tesorería</a>
