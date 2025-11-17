@@ -102,7 +102,7 @@ if uploaded_files:
 st.markdown("---")
 st.markdown("""
 **📝 Notas:**
-- Solo se aceptan archivos en formato Excel (.xls, .xlsx)
-- Los archivos deben contener estados de cuenta de proveedores/acreedores
-- El sistema calculará automáticamente los saldos pendientes de pago
+- Solo se aceptan archivos en formato Excel (.xls, .xlsx).
+- Los archivos deben contener estados de cuenta de proveedores/acreedores.
+- El sistema calculará automáticamente los saldos pendientes de pago.
 """)
