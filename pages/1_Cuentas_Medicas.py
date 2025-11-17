@@ -6,7 +6,7 @@ import base64
 
 # Configuración de página
 st.set_page_config(
-    page_title="Cuentas Médicas - TodoDrogas",
+    page_title="Cuentas Médicas",
     page_icon="📋",
     layout="wide"
 )
@@ -24,7 +24,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Pestañas para diferentes EPS
-tab1, tab2, tab3 = st.tabs(["🏥 SAVIA & COOSALUD", "🔬 SALUD TOTAL", "📊 Procesos Comunes"])
+tab1, tab2, tab3 = st.tabs(["🏥 SAVIA & COOSALUD", "🔬 SALUD TOTAL", "📊 INDICADORES"])
 
 with tab1:
     st.markdown("### 🛠️ Herramientas SAVIA & COOSALUD")
@@ -74,8 +74,8 @@ with tab2:
     with col1:
         st.markdown("#### 📷 Subir documentos escaneados")
         ocr_files = st.file_uploader(
-            "Seleccionar archivos (PDF, JPG, PNG)", 
-            type=['pdf', 'jpg', 'jpeg', 'png'], 
+            "Seleccionar archivos (PDF)", 
+            type=['pdf'], 
             accept_multiple_files=True,
             key="ocr"
         )
