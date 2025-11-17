@@ -7,7 +7,7 @@ configure_modern_theme()
 
 # Configurar página
 st.set_page_config(
-    page_title="Sistema de Automatización - TodoDrogas",
+    page_title="Sistema de Automatización",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -30,7 +30,7 @@ with col1:
             line-height: 1.2;
             font-family: "Inter", sans-serif;
         '>
-        TodoDrogas<br>Sistema de Automatización
+        Tododrogas<br>Sistema de Automatización
         </h1>
         
         <div style='
