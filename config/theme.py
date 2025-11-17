@@ -1,12 +1,12 @@
 import streamlit as st
 
-def configure_minimalist_theme():
+def configure_modern_theme():
     st.markdown("""
     <style>
     .stApp {
         background: #ffffff;
-        color: #333333;
-        font-family: 'Arial', sans-serif;
+        color: #1a1a1a;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
     
     #MainMenu {visibility: hidden;}
@@ -14,19 +14,11 @@ def configure_minimalist_theme():
     header {visibility: hidden;}
     
     .stButton > button {
-        background: #0066cc;
-        color: white;
-        border: none;
         border-radius: 8px;
+        border: none;
         padding: 0.7rem 1.5rem;
         font-weight: 600;
         transition: all 0.3s ease;
-    }
-    
-    .stButton > button:hover {
-        background: #0052a3;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0,102,204,0.3);
     }
     
     .main .block-container {
@@ -36,8 +28,9 @@ def configure_minimalist_theme():
         padding-right: 2rem;
     }
     
+    /* Scrollbar moderno */
     ::-webkit-scrollbar {
-        width: 8px;
+        width: 6px;
     }
     
     ::-webkit-scrollbar-track {
@@ -45,8 +38,12 @@ def configure_minimalist_theme():
     }
     
     ::-webkit-scrollbar-thumb {
-        background: #0066cc;
-        border-radius: 4px;
+        background: #c1c1c1;
+        border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
     }
     </style>
     """, unsafe_allow_html=True)
