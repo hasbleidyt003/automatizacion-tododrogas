@@ -1,128 +1,297 @@
 import streamlit as st
 import pandas as pd
-import io
-from datetime import datetime
-import base64
+import numpy as np
+from datetime import datetime, timedelta
+import plotly.express as px
+import plotly.graph_objects as go
 
-# Configuración de página
+# Configurar página
 st.set_page_config(
-    page_title="Cuentas Médicas",
+    page_title="Cuentas Médicas - TodoDrogas",
     page_icon="📋",
     layout="wide"
 )
 
-# Navbar
-from components.navbar import modern_navbar
-modern_navbar()
+# Título de la página
+st.title("📋 Cuentas Médicas")
+st.markdown("Automatización de procesos para cuentas médicas")
 
-# Título principal
-st.markdown("""
-<div style='text-align: center; margin-bottom: 3rem;'>
-    <h1 style='color: #1a1a1a; font-size: 2.5rem; margin-bottom: 1rem;'>🏥 Cuentas Médicas</h1>
-    <p style='color: #666; font-size: 1.2rem;'>Automatización de procesos para SAVIA, COOSALUD y SALUD TOTAL</p>
-</div>
-""", unsafe_allow_html=True)
+# SECCIÓN DE PROCESAMIENTO DE ARCHIVOS
+st.header("🔄 Procesamiento de Archivos")
 
-# Pestañas para diferentes EPS
-tab1, tab2, tab3 = st.tabs(["🏥 SAVIA & COOSALUD", "🔬 SALUD TOTAL", "📊 INDICADORES"])
+# Pestañas para diferentes procesos
+tab1, tab2, tab3, tab4 = st.tabs([
+    "SAVIA & COOSALUD - Conversores", 
+    "SAVIA & COOSALUD - Renombradores", 
+    "SALUD TOTAL - Procesador OCR", 
+    "SALUD TOTAL - Renombrador"
+])
 
 with tab1:
-    st.markdown("### 🛠️ Herramientas SAVIA & COOSALUD")
+    st.subheader("Conversores MANTIS/SISPRO")
+    st.info("Convierte archivos entre formatos MANTIS y SISPRO")
+    
+    uploaded_file = st.file_uploader(
+        "Sube archivo para conversión", 
+        type=['xlsx', 'xls', 'csv'],
+        key="conversor"
+    )
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("#### 🔄 Conversor MANTIS/SISPRO")
-        uploaded_file = st.file_uploader("Subir archivo MANTIS", type=['xlsx', 'xls'], key="mantis")
-        if uploaded_file:
-            if st.button("Convertir a SISPRO", key="convert_mantis"):
-                with st.spinner("Procesando archivo..."):
-                    # Simulación de procesamiento
-                    df = pd.DataFrame({
-                        'Archivo': [uploaded_file.name],
-                        'Estado': ['✅ Convertido'],
-                        'Fecha': [datetime.now().strftime("%Y-%m-%d %H:%M")]
-                    })
-                    st.success("✅ Conversión completada exitosamente!")
-                    st.dataframe(df, use_container_width=True)
-                    
-                    # Botón de descarga
-                    output = io.BytesIO()
-                    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-                        df.to_excel(writer, index=False)
-                    st.download_button(
-                        label="📥 Descargar archivo convertido",
-                        data=output.getvalue(),
-                        file_name=f"sispro_convertido_{datetime.now().strftime('%Y%m%d_%H%M')}.xlsx",
-                        mime="application/vnd.ms-excel"
-                    )
+        conversion_type = st.selectbox(
+            "Tipo de conversión",
+            ["MANTIS a SISPRO", "SISPRO a MANTIS"],
+            key="conversion_type"
+        )
     
     with col2:
-        st.markdown("#### 📁 Renombrador CUV/RIPS")
-        uploaded_rips = st.file_uploader("Subir archivos RIPS", type=['txt', 'csv'], accept_multiple_files=True, key="rips")
-        if uploaded_rips:
-            if st.button("Renombrar archivos", key="rename_rips"):
-                st.success(f"✅ {len(uploaded_rips)} archivos renombrados correctamente")
-                for file in uploaded_rips:
-                    st.write(f"📄 {file.name} → {file.name.replace('.', '_cuv.')}")
+        if uploaded_file:
+            if st.button("🔄 Convertir Archivo", use_container_width=True):
+                with st.spinner("Procesando conversión..."):
+                    # Simulación de procesamiento
+                    import time
+                    time.sleep(2)
+                    st.success("✅ Conversión completada exitosamente!")
+                    
+                    # Simular archivo de descarga
+                    st.download_button(
+                        label="📥 Descargar Archivo Convertido",
+                        data="contenido simulado del archivo convertido",
+                        file_name=f"convertido_{uploaded_file.name}",
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    )
 
 with tab2:
-    st.markdown("### 🧪 Procesador OCR SALUD TOTAL")
+    st.subheader("Renombradores CUV/RIPS")
+    st.info("Renombra archivos según estándares CUV y RIPS")
     
-    col1, col2 = st.columns([2, 1])
+    uploaded_files = st.file_uploader(
+        "Sube archivos para renombrar", 
+        type=['xlsx', 'xls', 'csv', 'txt'],
+        accept_multiple_files=True,
+        key="renombrador"
+    )
     
-    with col1:
-        st.markdown("#### 📷 Subir documentos escaneados")
-        ocr_files = st.file_uploader(
-            "Seleccionar archivos (PDF)", 
-            type=['pdf'], 
-            accept_multiple_files=True,
-            key="ocr"
+    if uploaded_files:
+        st.write(f"📁 Archivos seleccionados: {len(uploaded_files)}")
+        
+        naming_convention = st.selectbox(
+            "Convención de nombres",
+            ["CUV - Estándar", "RIPS - Facturación", "Personalizado"],
+            key="naming_convention"
         )
         
-        if ocr_files:
-            st.info(f"📁 {len(ocr_files)} archivos seleccionados para procesamiento OCR")
+        if st.button("🔄 Renombrar Archivos", use_container_width=True):
+            progress_bar = st.progress(0)
+            status_text = st.empty()
             
-            if st.button("🚀 Iniciar Procesamiento OCR", type="primary"):
-                progress_bar = st.progress(0)
-                status_text = st.empty()
-                
-                for i, file in enumerate(ocr_files):
-                    progress = (i + 1) / len(ocr_files)
-                    progress_bar.progress(progress)
-                    status_text.text(f"Procesando: {file.name} ({i+1}/{len(ocr_files)})")
-                    
-                st.success("✅ Procesamiento OCR completado!")
-                
-                # Resultados simulados
-                results_df = pd.DataFrame({
-                    'Documento': [f.name for f in ocr_files],
-                    'Estado': ['✅ Procesado' for _ in ocr_files],
-                    'Páginas': [1 for _ in ocr_files],
-                    'Texto Extraído': [f"Texto simulado de {f.name}" for f in ocr_files]
-                })
-                st.dataframe(results_df, use_container_width=True)
+            for i, file in enumerate(uploaded_files):
+                progress = (i + 1) / len(uploaded_files)
+                progress_bar.progress(progress)
+                status_text.text(f"Procesando {file.name}...")
+                # Simular procesamiento
+                import time
+                time.sleep(0.5)
+            
+            st.success("✅ Todos los archivos han sido renombrados!")
+            
+            # Mostrar preview de nombres nuevos
+            st.subheader("Preview de nombres nuevos:")
+            for i, file in enumerate(uploaded_files):
+                new_name = f"renamed_{i+1}_{file.name}"
+                st.write(f"• {file.name} → **{new_name}**")
 
 with tab3:
-    st.markdown("### 📈 Métricas de Procesamiento")
+    st.subheader("Procesador OCR")
+    st.info("Procesa imágenes y PDFs mediante reconocimiento óptico de caracteres")
     
-    # Métricas en tarjetas
-    col1, col2, col3, col4 = st.columns(4)
+    ocr_files = st.file_uploader(
+        "Sube imágenes o PDFs para OCR", 
+        type=['jpg', 'jpeg', 'png', 'pdf'],
+        accept_multiple_files=True,
+        key="ocr"
+    )
     
-    with col1:
-        st.metric("Archivos Procesados", "1,247", "+15%")
-    with col2:
-        st.metric("Tasa de Éxito", "98.2%", "+2.1%")
-    with col3:
-        st.metric("Tiempo Promedio", "45s", "-12s")
-    with col4:
-        st.metric("Ahorro Estimado", "120h/mes", "+18h")
+    if ocr_files:
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            ocr_language = st.selectbox(
+                "Idioma del texto",
+                ["Español", "Inglés", "Español/Inglés"],
+                key="ocr_language"
+            )
+        
+        with col2:
+            output_format = st.selectbox(
+                "Formato de salida",
+                ["Excel (.xlsx)", "CSV (.csv)", "Texto (.txt)"],
+                key="output_format"
+            )
+        
+        if st.button("🔍 Procesar con OCR", use_container_width=True):
+            with st.spinner("Extrayendo texto de los documentos..."):
+                import time
+                time.sleep(3)
+                
+                st.success("✅ Procesamiento OCR completado!")
+                
+                # Simular resultados
+                st.subheader("Texto extraído (ejemplo):")
+                st.text_area(
+                    "Texto detectado:",
+                    "EJEMPLO DE TEXTO EXTRAÍDO MEDIANTE OCR:\n\n"
+                    "FACTURA No: 12345\n"
+                    "Fecha: 15/Nov/2023\n"
+                    "Paciente: Juan Pérez\n"
+                    "Servicio: Consulta médica\n"
+                    "Valor: $150.000",
+                    height=150
+                )
+
+with tab4:
+    st.subheader("Renombrador de Archivos")
+    st.info("Renombra archivos de forma masiva según patrones específicos")
     
-    # Gráfico de actividad (simulado)
-    st.markdown("#### 📊 Actividad Reciente")
+    bulk_files = st.file_uploader(
+        "Sube archivos para renombrar", 
+        accept_multiple_files=True,
+        key="bulk_rename"
+    )
+    
+    if bulk_files:
+        st.write(f"📂 Total de archivos: {len(bulk_files)}")
+        
+        rename_pattern = st.text_input(
+            "Patrón de renombrado:",
+            placeholder="Ej: factura_{numero}_{fecha}",
+            help="Usa {numero} para contador, {fecha} para fecha actual"
+        )
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            start_number = st.number_input("Número inicial:", value=1, min_value=1)
+        
+        with col2:
+            add_date = st.checkbox("Incluir fecha", value=True)
+        
+        if st.button("🔄 Renombrar Lote", use_container_width=True):
+            progress_bar = st.progress(0)
+            
+            for i, file in enumerate(bulk_files):
+                progress = (i + 1) / len(bulk_files)
+                progress_bar.progress(progress)
+                
+                # Simular renombrado
+                import time
+                time.sleep(0.3)
+            
+            st.success(f"✅ {len(bulk_files)} archivos renombrados exitosamente!")
+
+# SECCIÓN DE ESTADÍSTICAS Y MÉTRICAS
+st.header("📊 Métricas y Estadísticas")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric(
+        label="Archivos Procesados Hoy",
+        value="24",
+        delta="+5 vs ayer"
+    )
+
+with col2:
+    st.metric(
+        label="Tasa de Éxito",
+        value="98.2%",
+        delta="+0.5%"
+    )
+
+with col3:
+    st.metric(
+        label="Tiempo Promedio",
+        value="45s",
+        delta="-10s"
+    )
+
+# GRÁFICO DE ACTIVIDAD (SIMULADO)
+st.subheader("Actividad Reciente")
+
+# Crear datos de ejemplo para el gráfico
+try:
+    dates = pd.date_range(start='2024-01-01', end='2024-01-30', freq='D')
     activity_data = pd.DataFrame({
-        'Fecha': pd.date_range('2024-01-01', periods=30, freq='D'),
-        'Archivos': np.random.randint(10, 100, 30),
-        'Errores': np.random.randint(0, 5, 30)
+        'Fecha': dates,
+        'Archivos': np.random.randint(10, 100, len(dates)),  # LÍNEA CORREGIDA
+        'Errores': np.random.randint(0, 5, len(dates))
     })
-    st.line_chart(activity_data.set_index('Fecha'))
+    
+    fig = px.line(
+        activity_data, 
+        x='Fecha', 
+        y='Archivos',
+        title='Archivos Procesados por Día',
+        color_discrete_sequence=['#0066cc']
+    )
+    
+    fig.update_layout(
+        plot_bgcolor='white',
+        paper_bgcolor='white',
+        height=300
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
+    
+except Exception as e:
+    st.error(f"Error al generar gráfico: {e}")
+
+# SECCIÓN DE HISTORIAL
+st.header("📋 Historial de Procesos")
+
+# Datos de ejemplo para el historial
+historial_data = {
+    'Fecha': ['2024-01-15 10:30', '2024-01-15 11:15', '2024-01-14 16:45'],
+    'Archivo': ['facturas_enero.xlsx', 'rips_noviembre.csv', 'ocr_imagenes.zip'],
+    'Proceso': ['Conversión MANTIS', 'Renombrado RIPS', 'Procesamiento OCR'],
+    'Estado': ['✅ Completado', '✅ Completado', '⚠️ Advertencias'],
+    'Usuario': ['admin', 'operador1', 'operador2']
+}
+
+historial_df = pd.DataFrame(historial_data)
+st.dataframe(historial_df, use_container_width=True)
+
+# INSTRUCCIONES DE USO
+with st.expander("📖 Instrucciones de Uso"):
+    st.markdown("""
+    ### Guía Rápida:
+    
+    **SAVIA & COOSALUD - Conversores:**
+    - Sube archivos en formato Excel o CSV
+    - Selecciona el tipo de conversión (MANTIS/SISPRO)
+    - Descarga el archivo convertido
+    
+    **SAVIA & COOSALUD - Renombradores:**
+    - Selecciona múltiples archivos
+    - Elige la convención de nombres (CUV/RIPS)
+    - Los archivos se renombrarán automáticamente
+    
+    **SALUD TOTAL - Procesador OCR:**
+    - Sube imágenes (JPG, PNG) o PDFs
+    - Selecciona el idioma del texto
+    - El texto extraído estará disponible para descarga
+    
+    **SALUD TOTAL - Renombrador:**
+    - Renombra lotes grandes de archivos
+    - Usa patrones personalizados
+    - Incluye contadores y fechas automáticamente
+    """)
+
+# FOOTER
+st.markdown("---")
+st.markdown(
+    "**Cuentas Médicas** • Sistema de Automatización TodoDrogas • "
+    "Para soporte técnico contacte al administrador del sistema."
+)
