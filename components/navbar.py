@@ -66,10 +66,10 @@ def modern_navbar():
             <div class="nav-title">Todo<span>drogas</span></div>
             <div class="nav-links">
                 <a href="/" class="nav-link">Inicio</a>
-                <a href="/pages/1_Cuentas_Medicas" class="nav-link">Cuentas Médicas</a>
-                <a href="/pages/2_Cartera" class="nav-link">Cartera</a>
-                <a href="/pages/3_Tesoreria" class="nav-link">Tesorería</a>
-                <a href="/pages/4_Metricas_y_Contacto" class="nav-link">Métricas</a>
+                <a href="/Cuentas_Medicas" class="nav-link">Cuentas Médicas</a>
+                <a href="/Cartera" class="nav-link">Cartera</a>
+                <a href="/Tesoreria" class="nav-link">Tesorería</a>
+                <a href="/Metricas_y_Contacto" class="nav-link">Métricas</a>
             </div>
         </div>
     </div>
