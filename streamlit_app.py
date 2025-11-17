@@ -31,8 +31,8 @@ with col1:
             font-family: "Inter", sans-serif;
             letter-spacing: -0.5px;
         '>
-        Tododrogas
-        </h1>
+        SISTEMA DE AUTOMATIZACIÓN
+        </h2>
         
         <h2 style='
             color: #0066cc;
