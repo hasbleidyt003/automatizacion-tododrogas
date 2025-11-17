@@ -1,14 +1,14 @@
 import streamlit as st
 
-def minimalist_navbar():
+def modern_navbar():
     st.markdown("""
     <style>
-    .minimalist-navbar {
+    .modern-navbar {
         background: white;
-        padding: 1.5rem 2rem;
+        padding: 1.2rem 2rem;
         margin-bottom: 2rem;
-        border-bottom: 2px solid #0066cc;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        border-bottom: 1px solid #f0f0f0;
     }
     
     .nav-content {
@@ -20,16 +20,20 @@ def minimalist_navbar():
     }
     
     .nav-title {
-        color: #0066cc;
+        color: #1a1a1a;
         font-size: 1.8rem;
         font-weight: 700;
         letter-spacing: -0.5px;
-        font-family: "Arial", sans-serif;
+        font-family: "Inter", sans-serif;
+    }
+    
+    .nav-title span {
+        color: #0066cc;
     }
     
     .nav-links {
         display: flex;
-        gap: 0.5rem;
+        gap: 0.3rem;
         background: #f8f9fa;
         border-radius: 12px;
         padding: 0.4rem;
@@ -44,19 +48,20 @@ def minimalist_navbar():
         transition: all 0.3s ease;
         font-weight: 500;
         font-size: 0.9rem;
-        font-family: "Arial", sans-serif;
+        font-family: "Inter", sans-serif;
     }
     
     .nav-link:hover {
         background: white;
         color: #0066cc;
-        box-shadow: 0 2px 8px rgba(0,102,204,0.1);
+        box-shadow: 0 2px 12px rgba(0,102,204,0.15);
+        transform: translateY(-1px);
     }
     
     .nav-link.active {
         background: #0066cc;
         color: white;
-        box-shadow: 0 2px 8px rgba(0,102,204,0.2);
+        box-shadow: 0 2px 12px rgba(0,102,204,0.25);
     }
     
     @media (max-width: 768px) {
@@ -68,13 +73,19 @@ def minimalist_navbar():
         .nav-links {
             width: 100%;
             justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .nav-link {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
         }
     }
     </style>
 
-    <div class="minimalist-navbar">
+    <div class="modern-navbar">
         <div class="nav-content">
-            <div class="nav-title">Tododrogas</div>
+            <div class="nav-title">Todo<span>drogas</span></div>
             <div class="nav-links">
                 <a href="/" class="nav-link active">Inicio</a>
                 <a href="/pages/1_Cuentas_Medicas" class="nav-link">Cuentas Médicas</a>
