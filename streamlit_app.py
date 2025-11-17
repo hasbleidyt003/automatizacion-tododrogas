@@ -32,7 +32,7 @@ with col1:
             letter-spacing: -0.5px;
         '>
         SISTEMA DE AUTOMATIZACIÓN
-        </h2>
+        </h1>
         
         <h2 style='
             color: #0066cc;
