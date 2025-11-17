@@ -5,12 +5,22 @@ from datetime import datetime, timedelta
 import plotly.express as px
 import plotly.graph_objects as go
 
+# IMPORTAR EL NAVBAR - ESTO FALTABA
+from components.navbar import modern_navbar
+from config.theme import configure_modern_theme
+
+# Configurar tema moderno
+configure_modern_theme()
+
 # Configurar página
 st.set_page_config(
-    page_title="Cuentas Médicas - Toddrogas",
+    page_title="Cuentas Médicas - TodoDrogas",
     page_icon="📋",
     layout="wide"
 )
+
+# LLAMAR EL NAVBAR - ESTO FALTABA
+modern_navbar()
 
 # Título de la página
 st.title("📋 Cuentas Médicas")
@@ -19,7 +29,7 @@ st.markdown("Automatización de procesos para cuentas médicas")
 # SECCIÓN DE PROCESAMIENTO DE ARCHIVOS
 st.header("🔄 Procesamiento de Archivos")
 
-# Pestañas para diferentes procesos - CORREGIDO SEGÚN TUS INDICACIONES
+# Pestañas para diferentes procesos
 tab1, tab2, tab3 = st.tabs([
     "SAVIA & COOSALUD - Conversores JSON", 
     "SAVIA & COOSALUD - Renombradores", 
@@ -118,18 +128,18 @@ with tab2:
 
 with tab3:
     st.subheader("Procesador OCR y Renombrador - SALUD TOTAL")
-    st.info("Procesa PDFs con OCR y renombra archivos automáticamente")
+    st.info("Procesa documentos escaneados (PDF/Imágenes) con OCR y renombra archivos automáticamente")
     
-    # Subida de archivos PDF para OCR
+    # Subida de archivos escaneados para OCR
     ocr_files = st.file_uploader(
-        "Sube PDFs para procesamiento OCR", 
-        type=['pdf'],
+        "Sube documentos escaneados (PDF o imágenes)", 
+        type=['pdf', 'jpg', 'jpeg', 'png'],
         accept_multiple_files=True,
         key="ocr_salud_total"
     )
     
     if ocr_files:
-        st.write(f"📄 PDFs cargados: {len(ocr_files)}")
+        st.write(f"📄 Documentos escaneados cargados: {len(ocr_files)}")
         
         col1, col2 = st.columns(2)
         
@@ -162,7 +172,7 @@ with tab3:
         
         # Botón de procesamiento único para OCR y renombrado
         if st.button("🔍 Procesar OCR y Renombrar", use_container_width=True):
-            with st.spinner("Procesando PDFs con OCR y aplicando renombrado..."):
+            with st.spinner("Procesando documentos escaneados con OCR y aplicando renombrado..."):
                 progress_bar = st.progress(0)
                 status_text = st.empty()
                 
@@ -269,20 +279,20 @@ with st.expander("📖 Instrucciones de Uso - Actualizadas"):
     - Los archivos se renombrán según el estándar seleccionado
     
     **SALUD TOTAL - Procesador OCR y Renombrador:**
-    - Sube archivos PDF para procesamiento OCR
-    - Configura el idioma y tipo de extracción
+    - Sube documentos escaneados (PDF o imágenes)
+    - Configura el idioma y tipo de extracción OCR
     - El sistema procesa OCR y aplica renombrado automáticamente
     - **Nota:** Esta automatización combina OCR y renombrado en un solo proceso
     
     ### Formatos de Archivo:
-    - **JSON:** Para procesamiento de datos estructurados
-    - **PDF:** Para procesamiento OCR en Salud Total
+    - **JSON:** Para procesamiento de datos estructurados (SAVIA & COOSALUD)
+    - **PDF/Imágenes:** Para procesamiento OCR en Salud Total
     - **Excel/CSV:** Para renombrado en SAVIA & COOSALUD
     """)
 
 # FOOTER
 st.markdown("---")
 st.markdown(
-    "**Cuentas Médicas** • Sistema de Automatización Tododrogas • "
+    "**Cuentas Médicas** • Sistema de Automatización TodoDrogas • "
     "Para soporte técnico contacte al administrador del sistema."
 )
