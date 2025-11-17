@@ -1,14 +1,14 @@
 import streamlit as st
 
-def minimalist_navbar():
+def modern_navbar():
     st.markdown("""
     <style>
-    .minimalist-navbar {
+    .modern-navbar {
         background: white;
-        border-bottom: 3px solid #0066cc;
-        padding: 1.5rem 3rem;
+        padding: 1.2rem 2rem;
         margin-bottom: 2rem;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        border-bottom: 1px solid #f0f0f0;
     }
     
     .nav-content {
@@ -20,47 +20,56 @@ def minimalist_navbar():
     }
     
     .nav-title {
-        color: #0066cc;
-        font-size: 1.8rem;
+        color: #1a1a1a;
+        font-size: 1.6rem;
         font-weight: 700;
-        letter-spacing: 1px;
+        letter-spacing: -0.5px;
+    }
+    
+    .nav-title span {
+        color: #0066cc;
     }
     
     .nav-links {
         display: flex;
-        gap: 1rem;
+        gap: 0.2rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 0.3rem;
     }
     
     .nav-link {
-        color: #333;
+        color: #666666;
         text-decoration: none;
-        padding: 0.7rem 1.2rem;
-        border-radius: 6px;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
         transition: all 0.3s ease;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 0.9rem;
     }
     
     .nav-link:hover {
-        background: #0066cc;
-        color: white;
+        background: white;
+        color: #0066cc;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     
     .nav-link.active {
         background: #0066cc;
         color: white;
+        box-shadow: 0 2px 8px rgba(0,102,204,0.3);
     }
     </style>
 
-    <div class="minimalist-navbar">
+    <div class="modern-navbar">
         <div class="nav-content">
-            <div class="nav-title">TODO DROGAS</div>
+            <div class="nav-title">Todo<span>Drogas</span></div>
             <div class="nav-links">
-                <a href="/" class="nav-link active">INICIO</a>
-                <a href="/pages/1_Cuentas_Medicas" class="nav-link">CUENTAS MÉDICAS</a>
-                <a href="/pages/2_Cartera" class="nav-link">CARTERA</a>
-                <a href="/pages/3_Tesoreria" class="nav-link">TESORERÍA</a>
-                <a href="/pages/4_Metricas_y_Contacto" class="nav-link">MÉTRICAS</a>
+                <a href="/" class="nav-link active">Inicio</a>
+                <a href="/pages/1_Cuentas_Medicas" class="nav-link">Cuentas Médicas</a>
+                <a href="/pages/2_Cartera" class="nav-link">Cartera</a>
+                <a href="/pages/3_Tesoreria" class="nav-link">Tesorería</a>
+                <a href="/pages/4_Metricas_y_Contacto" class="nav-link">Métricas</a>
             </div>
         </div>
     </div>
