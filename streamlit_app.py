@@ -32,54 +32,40 @@ with col1:
         '>
         Sistema de<br>Automatización
         </h1>
-        
-        <div style='
-            color: #666666;
-            font-size: 1.3rem;
-            line-height: 1.6;
-            margin-bottom: 2.5rem;
-        '>
-            <p>El futuro es la tecnología, y hoy se convierte en nuestra mejor herramienta.</p>
-            <p>Centralizamos automatizaciones por área para optimizar procesos y mejorar la eficiencia operativa.</p>
-        </div>
-        
-        <div style='
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        '>
-            <button style='
-                background: #0066cc;
-                color: white;
-                border: none;
-                padding: 1rem 2rem;
-                border-radius: 8px;
-                font-weight: 600;
-                font-size: 1rem;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            ' onmouseover="this.style.background='#0052a3'" 
-            onmouseout="this.style.background='#0066cc'">
-                Explorar Automatizaciones
-            </button>
-            
-            <button style='
-                background: transparent;
-                color: #0066cc;
-                border: 2px solid #0066cc;
-                padding: 1rem 2rem;
-                border-radius: 8px;
-                font-weight: 600;
-                font-size: 1rem;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            ' onmouseover="this.style.background='#0066cc'; this.style.color='white'" 
-            onmouseout="this.style.background='transparent'; this.style.color='#0066cc'">
-                Ver Demo
-            </button>
-        </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    # Texto descriptivo
+    st.markdown("""
+    <div style='
+        color: #666666;
+        font-size: 1.3rem;
+        line-height: 1.6;
+        margin-bottom: 2.5rem;
+    '>
+        <p>El futuro es la tecnología, y hoy se convierte en nuestra mejor herramienta.</p>
+        <p>Centralizamos automatizaciones por área para optimizar procesos y mejorar la eficiencia operativa.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Botones con componentes nativos de Streamlit
+    col_btn1, col_btn2 = st.columns(2)
+    
+    with col_btn1:
+        if st.button(
+            "🚀 **Explorar Automatizaciones**", 
+            use_container_width=True,
+            type="primary"
+        ):
+            st.switch_page("pages/1_Cuentas_Medicas.py")
+    
+    with col_btn2:
+        if st.button(
+            "👀 **Ver Demo**", 
+            use_container_width=True,
+            type="secondary"
+        ):
+            st.info("🔍 Función de demo en desarrollo...")
 
 with col2:
     st.markdown("""
@@ -146,8 +132,7 @@ with col1:
         height: 320px;
         display: flex;
         flex-direction: column;
-    ' onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.12)'" 
-    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.08)'">
+    '>
         <div style='
             background: linear-gradient(135deg, #0066cc, #004499);
             width: 60px;
@@ -185,24 +170,11 @@ with col1:
             <p style='font-size: 0.9rem;'>• Procesador OCR</p>
             <p style='font-size: 0.9rem;'>• Renombrador archivos</p>
         </div>
-        
-        <button style='
-            background: #0066cc;
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-        ' onmouseover="this.style.background='#0052a3'" 
-        onmouseout="this.style.background='#0066cc'"
-        onclick="window.location.href='/pages/1_Cuentas_Medicas'">
-        Acceder
-        </button>
     </div>
     """, unsafe_allow_html=True)
+    
+    if st.button("Acceder a Cuentas Médicas", key="btn_cuentas", use_container_width=True):
+        st.switch_page("pages/1_Cuentas_Medicas.py")
 
 with col2:
     st.markdown("""
@@ -216,8 +188,7 @@ with col2:
         height: 320px;
         display: flex;
         flex-direction: column;
-    ' onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.12)'" 
-    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.08)'">
+    '>
         <div style='
             background: linear-gradient(135deg, #00a86b, #007a4d);
             width: 60px;
@@ -261,24 +232,11 @@ with col2:
                 </div>
             </div>
         </div>
-        
-        <button style='
-            background: #00a86b;
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-        ' onmouseover="this.style.background='#007a4d'" 
-        onmouseout="this.style.background='#00a86b'"
-        onclick="window.location.href='/pages/2_Cartera'">
-        Acceder
-        </button>
     </div>
     """, unsafe_allow_html=True)
+    
+    if st.button("Acceder a Cartera", key="btn_cartera", use_container_width=True):
+        st.switch_page("pages/2_Cartera.py")
 
 with col3:
     st.markdown("""
@@ -292,8 +250,7 @@ with col3:
         height: 320px;
         display: flex;
         flex-direction: column;
-    ' onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.12)'" 
-    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.08)'">
+    '>
         <div style='
             background: linear-gradient(135deg, #ff6b35, #cc552b);
             width: 60px;
@@ -337,24 +294,11 @@ with col3:
                 </div>
             </div>
         </div>
-        
-        <button style='
-            background: #ff6b35;
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-        ' onmouseover="this.style.background='#cc552b'" 
-        onmouseout="this.style.background='#ff6b35'"
-        onclick="window.location.href='/pages/3_Tesoreria'">
-        Acceder
-        </button>
     </div>
     """, unsafe_allow_html=True)
+    
+    if st.button("Acceder a Tesorería", key="btn_tesoreria", use_container_width=True):
+        st.switch_page("pages/3_Tesoreria.py")
 
 with col4:
     st.markdown("""
@@ -368,8 +312,7 @@ with col4:
         height: 320px;
         display: flex;
         flex-direction: column;
-    ' onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.12)'" 
-    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.08)'">
+    '>
         <div style='
             background: linear-gradient(135deg, #8a2be2, #6a1cb3);
             width: 60px;
@@ -407,24 +350,11 @@ with col4:
                 <p style='font-size: 0.8rem; color: #666; margin: 0.3rem 0 0 0;'>Contáctanos</p>
             </div>
         </div>
-        
-        <button style='
-            background: #8a2be2;
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-        ' onmouseover="this.style.background='#6a1cb3'" 
-        onmouseout="this.style.background='#8a2be2'"
-        onclick="window.location.href='/pages/4_Metricas_y_Contacto'">
-        Acceder
-        </button>
     </div>
     """, unsafe_allow_html=True)
+    
+    if st.button("Acceder a Métricas", key="btn_metricas", use_container_width=True):
+        st.switch_page("pages/4_Metricas_y_Contacto.py")
 
 # FOOTER MODERNO
 st.markdown("""
@@ -435,8 +365,8 @@ st.markdown("""
     text-align: center;
     border-top: 1px solid #e0e0e0;
 '>
-    <h4 style='color: #1a1a1a; margin-bottom: 1rem;'>TodoDrogas - Sistema de Automatización</h4>
+    <h4 style='color: #1a1a1a; margin-bottom: 1rem;'>Tododrogas - Sistema de Automatización</h4>
     <p style='color: #666666; margin-bottom: 0.5rem;'>Optimizando procesos mediante tecnología</p>
-    <p style='color: #999999; font-size: 0.9rem;'>© 2024 Todos los derechos reservados</p>
+    <p style='color: #999999; font-size: 0.9rem;'>© Todos los derechos reservados</p>
 </div>
 """, unsafe_allow_html=True)
