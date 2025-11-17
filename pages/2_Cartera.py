@@ -18,7 +18,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Sección principal
-st.markdown("### 📤 Procesar Estados de Cuenta de Clientes")
+st.markdown("### 📤 Procesar archivos")
 
 uploaded_files = st.file_uploader(
     "Subir estados de cuenta de clientes (archivos XLS/XLSX)",
