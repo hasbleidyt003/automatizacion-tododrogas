@@ -9,7 +9,7 @@ configure_modern_theme()
 
 # Configurar página
 st.set_page_config(
-    page_title="Sistema de Automatización - Tododrogas",
+    page_title="Plataforma Inteligente Tododrogas",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -30,26 +30,42 @@ def get_system_metrics():
 # Navbar moderna
 modern_navbar()
 
-# CSS mejorado con glass-morphism y efectos futuristas
+# CSS mejorado con fondo futurista animado
 st.markdown("""
 <style>
-    /* Base mejorada */
+    /* Base mejorada con fondo futurista */
     .main .block-container {
         padding-top: 1rem;
         padding-bottom: 0;
     }
     
-    /* Hero section con glass-morphism */
+    /* Fondo futurista animado para toda la app */
+    .stApp {
+        background: linear-gradient(-45deg, #0a0f2c, #1b2a41, #0d1b2a, #1b263b);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+    }
+    
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    /* Hero section con efecto cristal mejorado */
     .hero-glass {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 24px;
-        padding: 3rem 2rem;
-        margin: 1rem 0 3rem 0;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 28px;
+        padding: 4rem 2rem;
+        margin: 1rem 0 4rem 0;
         text-align: center;
         position: relative;
         overflow: hidden;
+        box-shadow: 
+            0 25px 50px rgba(0, 0, 0, 0.25),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
     
     .hero-glass::before {
@@ -59,8 +75,8 @@ st.markdown("""
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(0, 102, 204, 0.05), transparent);
-        transition: left 0.6s ease;
+        background: linear-gradient(90deg, transparent, rgba(0, 102, 204, 0.1), transparent);
+        transition: left 0.8s ease;
     }
     
     .hero-glass:hover::before {
@@ -68,45 +84,50 @@ st.markdown("""
     }
     
     .hero-title {
-        font-size: 3.5rem;
+        font-size: 4rem;
         font-weight: 800;
-        margin-bottom: 1rem;
+        margin-bottom: 1.2rem;
         line-height: 1.1;
         font-family: "Inter", sans-serif;
-        background: linear-gradient(135deg, #0066cc 0%, #00a8ff 50%, #004499 100%);
+        background: linear-gradient(135deg, #00a8ff 0%, #0066cc 50%, #0097e6 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
         letter-spacing: -0.02em;
+        text-shadow: 0 4px 20px rgba(0, 168, 255, 0.3);
     }
     
     .hero-subtitle {
-        color: #666;
-        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 1.4rem;
         font-weight: 400;
         margin-bottom: 2rem;
-        line-height: 1.4;
+        line-height: 1.5;
         font-family: "Inter", sans-serif;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
     }
     
-    /* Métricas interactivas */
+    /* Métricas interactivas con diseño mejorado */
     .metrics-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.2rem;
         margin: 2rem 0;
     }
     
     .metric-card {
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 16px;
-        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.07);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 20px;
+        padding: 2rem 1.5rem;
         text-align: center;
-        transition: all 0.3s ease;
+        transition: all 0.4s ease;
         position: relative;
         overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     }
     
     .metric-card::before {
@@ -116,39 +137,45 @@ st.markdown("""
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, #0066cc, #00a8ff);
+        background: linear-gradient(90deg, #00a8ff, #0097e6, #0066cc);
     }
     
     .metric-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(0, 102, 204, 0.15);
-        border-color: rgba(0, 102, 204, 0.3);
+        transform: translateY(-8px);
+        box-shadow: 
+            0 20px 40px rgba(0, 102, 204, 0.25),
+            0 0 30px rgba(0, 168, 255, 0.1);
+        border-color: rgba(0, 168, 255, 0.3);
     }
     
     .metric-value {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #0066cc;
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #00a8ff;
         margin-bottom: 0.5rem;
+        text-shadow: 0 2px 10px rgba(0, 168, 255, 0.3);
     }
     
     .metric-label {
-        font-size: 0.9rem;
-        color: #666;
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.7);
         font-weight: 500;
     }
     
-    /* Tarjetas con glass-morphism mejorado */
+    /* Tarjetas con glass-morphism mejorado para fondo oscuro */
     .card-glass {
-        background: rgba(255, 255, 255, 0.75);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        border-radius: 20px;
-        padding: 2rem;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 24px;
+        padding: 2.5rem;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         position: relative;
         overflow: hidden;
         height: 100%;
+        box-shadow: 
+            0 20px 40px rgba(0, 0, 0, 0.25),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
     
     .card-glass::before {
@@ -158,8 +185,8 @@ st.markdown("""
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, #0066cc, #00a8ff, #004499);
-        border-radius: 20px 20px 0 0;
+        background: linear-gradient(90deg, #00a8ff, #0097e6, #0066cc);
+        border-radius: 24px 24px 0 0;
     }
     
     .card-glass::after {
@@ -169,8 +196,8 @@ st.markdown("""
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-        transition: left 0.6s ease;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transition: left 0.8s ease;
     }
     
     .card-glass:hover::after {
@@ -178,62 +205,68 @@ st.markdown("""
     }
     
     .card-glass:hover {
-        transform: translateY(-8px) scale(1.02);
+        transform: translateY(-10px) scale(1.02);
         box-shadow: 
-            0 25px 50px rgba(0, 102, 204, 0.15),
-            0 10px 30px rgba(0, 0, 0, 0.1);
-        border-color: rgba(0, 102, 204, 0.3);
+            0 30px 60px rgba(0, 102, 204, 0.3),
+            0 0 40px rgba(0, 168, 255, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        border-color: rgba(0, 168, 255, 0.4);
     }
     
     .card-icon-glass {
-        width: 70px;
-        height: 70px;
-        border-radius: 16px;
+        width: 80px;
+        height: 80px;
+        border-radius: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, #0066cc, #00a8ff);
-        font-size: 1.8rem;
+        margin-bottom: 2rem;
+        background: linear-gradient(135deg, #00a8ff, #0066cc);
+        font-size: 2rem;
         color: white;
-        transition: all 0.3s ease;
-        box-shadow: 0 8px 25px rgba(0, 102, 204, 0.3);
+        transition: all 0.4s ease;
+        box-shadow: 
+            0 12px 30px rgba(0, 102, 204, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
     
     .card-glass:hover .card-icon-glass {
-        transform: scale(1.1) rotate(5deg);
-        box-shadow: 0 12px 35px rgba(0, 102, 204, 0.4);
+        transform: scale(1.15) rotate(8deg);
+        box-shadow: 
+            0 16px 40px rgba(0, 102, 204, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
     
     .card-title-glass {
-        color: #1a1a1a;
-        font-size: 1.4rem;
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 1.5rem;
         font-weight: 700;
-        margin-bottom: 1rem;
+        margin-bottom: 1.2rem;
         line-height: 1.3;
     }
     
     .card-description-glass {
-        color: #666;
+        color: rgba(255, 255, 255, 0.75);
         line-height: 1.6;
-        margin-bottom: 2rem;
-        font-size: 0.95rem;
+        margin-bottom: 2.5rem;
+        font-size: 1rem;
         flex-grow: 1;
     }
     
     .btn-glass {
         background: transparent;
-        color: #0066cc;
-        border: 2px solid #0066cc;
-        padding: 0.8rem 1.5rem;
-        border-radius: 12px;
+        color: #00a8ff;
+        border: 2px solid #00a8ff;
+        padding: 1rem 2rem;
+        border-radius: 14px;
         font-weight: 600;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.4s ease;
         width: 100%;
         position: relative;
         overflow: hidden;
+        backdrop-filter: blur(10px);
     }
     
     .btn-glass::before {
@@ -243,8 +276,8 @@ st.markdown("""
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(0, 102, 204, 0.1), transparent);
-        transition: left 0.5s;
+        background: linear-gradient(90deg, transparent, rgba(0, 168, 255, 0.2), transparent);
+        transition: left 0.6s ease;
     }
     
     .btn-glass:hover::before {
@@ -252,72 +285,84 @@ st.markdown("""
     }
     
     .btn-glass:hover {
-        background: #0066cc;
+        background: #00a8ff;
         color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 102, 204, 0.3);
+        transform: translateY(-3px);
+        box-shadow: 
+            0 12px 30px rgba(0, 168, 255, 0.4),
+            0 0 20px rgba(0, 168, 255, 0.2);
     }
     
-    /* Filtros interactivos */
+    /* Filtros interactivos mejorados */
     .filters-container {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 16px;
-        padding: 1.5rem;
-        margin: 2rem 0;
+        background: rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 3rem 0;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     }
     
-    /* Efectos de neón para elementos importantes */
+    /* Efectos de neón mejorados */
     .neon-glow {
         box-shadow: 
-            0 0 20px rgba(0, 102, 204, 0.3),
-            0 0 40px rgba(0, 102, 204, 0.2),
-            0 0 60px rgba(0, 102, 204, 0.1);
+            0 0 30px rgba(0, 168, 255, 0.4),
+            0 0 60px rgba(0, 168, 255, 0.2),
+            0 0 90px rgba(0, 168, 255, 0.1);
     }
     
     /* Animaciones mejoradas */
     @keyframes float {
         0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
+        50% { transform: translateY(-15px); }
     }
     
     .floating {
-        animation: float 6s ease-in-out infinite;
+        animation: float 8s ease-in-out infinite;
     }
     
     @keyframes pulse {
         0%, 100% { opacity: 1; }
-        50% { opacity: 0.7; }
+        50% { opacity: 0.8; }
     }
     
     .pulse {
-        animation: pulse 2s ease-in-out infinite;
+        animation: pulse 3s ease-in-out infinite;
+    }
+    
+    /* Ajustes para texto en fondo oscuro */
+    h1, h2, h3, h4, h5, h6 {
+        color: rgba(255, 255, 255, 0.95) !important;
+    }
+    
+    p, div, span {
+        color: rgba(255, 255, 255, 0.8) !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# HERO SECTION MEJORADA
+# HERO SECTION MEJORADA CON NUEVO TEXTO
 st.markdown("""
 <div class="hero-glass">
-    <h1 class="hero-title">Sistema de Automatización</h1>
-    <p class="hero-subtitle">Transformando procesos mediante tecnología inteligente de vanguardia</p>
+    <h1 class="hero-title">Plataforma Inteligente Tododrogas</h1>
+    <p class="hero-subtitle">Tecnología que impulsa tu operación al siguiente nivel</p>
 </div>
 """, unsafe_allow_html=True)
 
 # SECCIÓN DE AUTOMATIZACIONES MEJORADA
 st.markdown("""
 <div style='text-align: center; margin: 3rem 0 2rem 0;'>
-    <h2 style='color: #1a1a1a; font-size: 2.2rem; font-weight: 800; margin-bottom: 0.8rem;'>
+    <h2 style='color: rgba(255, 255, 255, 0.95); font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;'>
         Áreas de Automatización
     </h2>
-    <p style='color: #666; font-size: 1.1rem;'>
+    <p style='color: rgba(255, 255, 255, 0.75); font-size: 1.2rem;'>
         Selecciona un área para acceder a herramientas especializadas
     </p>
 </div>
 """, unsafe_allow_html=True)
 
-# GRID DE TARJETAS CON GLASS-MORPHISM
+# GRID DE TARJETAS CON GLASS-MORPHISM MEJORADO
 areas_data = [
     {
         "name": "Cuentas Médicas",
@@ -358,11 +403,11 @@ for i, area in enumerate(areas_data):
         <div class="card-glass">
             <div class="card-icon-glass">{area['icon']}</div>
             <h3 class="card-title-glass">{area['name']}</h3>
-            <div style='display: flex; justify-content: space-between; margin-bottom: 1rem;'>
-                <span style='background: {status_color}; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;'>
+            <div style='display: flex; justify-content: space-between; margin-bottom: 1.5rem;'>
+                <span style='background: {status_color}; color: white; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;'>
                     {area['status']}
                 </span>
-                <span style='color: #666; font-size: 0.8rem; font-weight: 500;'>
+                <span style='color: rgba(255, 255, 255, 0.7); font-size: 0.85rem; font-weight: 500;'>
                     {area['users']}
                 </span>
             </div>
@@ -374,15 +419,15 @@ for i, area in enumerate(areas_data):
         """, unsafe_allow_html=True)
 
 # SEPARADOR VISUAL MEJORADO
-st.markdown("<div style='height: 2px; background: linear-gradient(90deg, transparent, #0066cc, transparent); margin: 4rem 0;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='height: 3px; background: linear-gradient(90deg, transparent, #00a8ff, transparent); margin: 5rem 0;'></div>", unsafe_allow_html=True)
 
-# MÉTRICAS INTERACTIVAS EN TIEMPO REAL (MOVIDAS DESPUÉS DE LAS ÁREAS)
+# MÉTRICAS INTERACTIVAS EN TIEMPO REAL
 st.markdown("""
-<div style='text-align: center; margin-bottom: 1rem;'>
-    <h2 style='color: #1a1a1a; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem;'>
+<div style='text-align: center; margin-bottom: 2rem;'>
+    <h2 style='color: rgba(255, 255, 255, 0.95); font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem;'>
         Dashboard Ejecutivo
     </h2>
-    <p style='color: #666; font-size: 1rem;'>
+    <p style='color: rgba(255, 255, 255, 0.75); font-size: 1.1rem;'>
         Métricas en tiempo real del sistema
     </p>
 </div>
@@ -428,8 +473,8 @@ with col4:
 # FILTROS INTERACTIVOS
 st.markdown("""
 <div class="filters-container">
-    <div style='text-align: center; margin-bottom: 1rem;'>
-        <h3 style='color: #1a1a1a; font-size: 1.3rem; font-weight: 600;'>
+    <div style='text-align: center; margin-bottom: 1.5rem;'>
+        <h3 style='color: rgba(255, 255, 255, 0.95); font-size: 1.5rem; font-weight: 700;'>
             Filtros y Configuración
         </h3>
     </div>
@@ -454,8 +499,8 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 # SECCIÓN DE AYUDA Y SOPORTE
 st.markdown("""
-<div style='text-align: center; margin: 2rem 0;'>
-    <h2 style='color: #1a1a1a; font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem;'>
+<div style='text-align: center; margin: 3rem 0;'>
+    <h2 style='color: rgba(255, 255, 255, 0.95); font-size: 2rem; font-weight: 800; margin-bottom: 1.5rem;'>
         ¿Necesitas Ayuda?
     </h2>
 </div>
@@ -502,21 +547,22 @@ if st.session_state.get('show_support'):
 # FOOTER MEJORADO
 st.markdown("""
 <div style='
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 16px;
-    padding: 2rem;
-    margin-top: 4rem;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 3rem;
+    margin-top: 5rem;
     text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 '>
-    <h4 style='color: #1a1a1a; margin-bottom: 1rem; font-size: 1.2rem; font-weight: 600;'>
-        TodoDrogas - Sistema de Automatización Inteligente
+    <h4 style='color: rgba(255, 255, 255, 0.95); margin-bottom: 1.2rem; font-size: 1.4rem; font-weight: 700;'>
+        TodoDrogas - Plataforma Inteligente
     </h4>
-    <p style='color: #666; margin-bottom: 0.5rem; font-size: 0.9rem;'>
-        Optimizando procesos mediante tecnología avanzada • v2.1
+    <p style='color: rgba(255, 255, 255, 0.75); margin-bottom: 0.8rem; font-size: 1rem;'>
+        Tecnología que impulsa tu operación al siguiente nivel • v3.0
     </p>
-    <p style='color: #999; font-size: 0.8rem;'>
+    <p style='color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;'>
         Última actualización: """ + datetime.now().strftime("%d/%m/%Y %H:%M") + """ • © 2024 Todos los derechos reservados
     </p>
 </div>
