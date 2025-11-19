@@ -3,104 +3,95 @@ import streamlit as st
 def modern_navbar():
     st.markdown("""
     <style>
-    /* Navbar super cool con efectos 3D */
-    .cool-navbar {
-        background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
-        padding: 1rem 2rem;
-        border-radius: 0 0 20px 20px;
-        margin: -2rem -2rem 2rem -2rem;
-        box-shadow: 0 8px 32px rgba(0, 102, 204, 0.3);
-        position: relative;
-        overflow: hidden;
-        backdrop-filter: blur(10px);
-        border: none;
-    }
-    
-    .cool-navbar::before {
-        content: '';
-        position: absolute;
+    /* Navbar minimalista con borde flotante */
+    .minimal-navbar {
+        background: white;
+        padding: 1rem 0;
+        margin: -1rem -1rem 1rem -1rem;
+        border-bottom: 1px solid #e1e5e9;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        position: sticky;
         top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+        z-index: 100;
+        backdrop-filter: blur(10px);
     }
     
-    .cool-navbar::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: rgba(255,255,255,0.1);
-    }
-    
-    .navbar-content {
+    .nav-content {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: white;
-        position: relative;
-        z-index: 2;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
     }
     
-    .navbar-brand {
-        font-size: 1.4rem;
-        font-weight: 800;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    .nav-brand {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1a1a1a;
         display: flex;
         align-items: center;
         gap: 0.5rem;
     }
-
-
-    }
     
-    .navbar-stats {
+    .nav-items {
         display: flex;
-        gap: 1.5rem;
-        font-size: 0.9rem;
+        gap: 2rem;
+        align-items: center;
     }
     
-    .stat-item {
+    .nav-item {
+        color: #666666;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        padding: 0.3rem 0;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s ease;
+    }
+    
+    .nav-item:hover {
+        color: #0066cc;
+        border-bottom-color: #0066cc;
+    }
+    
+    .nav-status {
         display: flex;
         align-items: center;
-        gap: 0.3rem;
-        background: rgba(255,255,255,0.1);
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        color: #00a86b;
+        background: rgba(0, 168, 107, 0.1);
         padding: 0.3rem 0.8rem;
         border-radius: 12px;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.2);
+        border: 1px solid rgba(0, 168, 107, 0.2);
     }
     
     .status-dot {
-        width: 8px;
-        height: 8px;
+        width: 6px;
+        height: 6px;
         border-radius: 50%;
-        background: #00ff88;
-        box-shadow: 0 0 10px #00ff88;
-        animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
+        background: #00a86b;
     }
     </style>
     
-    <div class="cool-navbar">
-        <div class="navbar-content">
-            <div class="navbar-brand">
-                TODODROGAS
+    <div class="minimal-navbar">
+        <div class="nav-content">
+            <div class="nav-brand">
+                <span>⚡</span>
+                <span>TodoDrogas Automation</span>
             </div>
-            <div class="navbar-stats">
-                <div class="stat-item">
+            
+            <div class="nav-items">
+                <a href="#" class="nav-item">Inicio</a>
+                <a href="#" class="nav-item">Cuentas Médicas</a>
+                <a href="#" class="nav-item">Cartera</a>
+                <a href="#" class="nav-item">Tesorería</a>
+                <a href="#" class="nav-item">Métricas</a>
+                
+                <div class="nav-status">
                     <div class="status-dot"></div>
-                    <span>SISTEMA ACTIVO</span>
-                </div>
-                <div class="stat-item">
-                    <span>v2.1.0</span>
+                    <span>En línea</span>
                 </div>
             </div>
         </div>
