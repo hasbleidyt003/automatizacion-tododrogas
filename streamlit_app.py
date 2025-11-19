@@ -16,7 +16,7 @@ st.set_page_config(
 # Navbar moderna
 modern_navbar()
 
-# CSS personalizado para el diseño
+# CSS mínimo para mejorar el diseño
 st.markdown("""
 <style>
     .main-header {
@@ -28,37 +28,6 @@ st.markdown("""
         color: white;
     }
     
-    .main-title {
-        font-size: 3.5rem;
-        font-weight: 800;
-        margin-bottom: 1rem;
-        font-family: 'Inter', sans-serif;
-    }
-    
-    .main-subtitle {
-        font-size: 1.3rem;
-        opacity: 0.9;
-        font-weight: 300;
-    }
-    
-    .section-title {
-        text-align: center;
-        font-size: 2.2rem;
-        font-weight: 700;
-        margin: 3rem 0 1rem 0;
-        color: #1a1a1a;
-    }
-    
-    .section-description {
-        text-align: center;
-        font-size: 1.2rem;
-        color: #666;
-        margin-bottom: 3rem;
-        max-width: 800px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    
     .area-card {
         background: white;
         border-radius: 20px;
@@ -66,40 +35,9 @@ st.markdown("""
         margin: 2rem 0;
         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         border: 1px solid #f0f0f0;
-        transition: all 0.3s ease;
     }
     
-    .area-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-    }
-    
-    .area-header {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-    }
-    
-    .area-icon {
-        font-size: 3rem;
-    }
-    
-    .area-name {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin: 0;
-    }
-    
-    .area-desc {
-        font-size: 1.2rem;
-        color: #666;
-        margin-bottom: 2rem;
-        line-height: 1.6;
-    }
-    
-    .stats-grid {
+    .stats-container {
         display: flex;
         justify-content: space-around;
         margin: 2rem 0;
@@ -107,32 +45,12 @@ st.markdown("""
         gap: 1rem;
     }
     
-    .stat-item {
+    .stat-box {
         text-align: center;
         padding: 1.5rem;
         background: #f8f9fa;
         border-radius: 15px;
         min-width: 120px;
-    }
-    
-    .stat-number {
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: #0066cc;
-        margin-bottom: 0.5rem;
-    }
-    
-    .stat-label {
-        font-size: 0.9rem;
-        color: #666;
-        font-weight: 500;
-    }
-    
-    .automation-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1.5rem;
-        margin: 2rem 0;
     }
     
     .automation-card {
@@ -141,70 +59,7 @@ st.markdown("""
         border-radius: 15px;
         box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         border-left: 4px solid #0066cc;
-        transition: all 0.3s ease;
-    }
-    
-    .automation-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-    }
-    
-    .automation-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #1a1a1a;
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .automation-subtitle {
-        font-size: 0.9rem;
-        color: #666;
-        font-weight: 500;
-        margin-bottom: 1rem;
-    }
-    
-    .feature-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    
-    .feature-list li {
-        padding: 0.3rem 0;
-        color: #666;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .feature-list li:before {
-        content: "▸";
-        color: #0066cc;
-        font-weight: bold;
-    }
-    
-    .action-button {
-        background: linear-gradient(135deg, #0066cc, #004499);
-        color: white;
-        border: none;
-        padding: 1rem 2rem;
-        border-radius: 50px;
-        font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        text-decoration: none;
-    }
-    
-    .action-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0,102,204,0.3);
+        margin: 1rem 0;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -212,17 +67,19 @@ st.markdown("""
 # HERO SECTION
 st.markdown("""
 <div class="main-header">
-    <div class="main-title">Sistema de Automatización</div>
-    <div class="main-subtitle">Transformando procesos mediante tecnología inteligente</div>
+    <h1 style="font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem; font-family: 'Inter', sans-serif;">Sistema de Automatización</h1>
+    <p style="font-size: 1.3rem; opacity: 0.9; font-weight: 300;">Transformando procesos mediante tecnología inteligente</p>
 </div>
 """, unsafe_allow_html=True)
 
 # INTRODUCCIÓN
+st.markdown("## Optimización por Áreas Especializadas")
 st.markdown("""
-<div class="section-title">Optimización por Áreas Especializadas</div>
-<div class="section-description">
-    Centralizamos soluciones automatizadas diseñadas específicamente para cada departamento, 
-    maximizando la eficiencia y reduciendo tiempos operativos.
+<div style="text-align: center; margin-bottom: 3rem;">
+    <p style="font-size: 1.2rem; color: #666; max-width: 800px; margin: 0 auto;">
+        Centralizamos soluciones automatizadas diseñadas específicamente para cada departamento, 
+        maximizando la eficiencia y reduciendo tiempos operativos.
+    </p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -367,65 +224,52 @@ areas = [
     }
 ]
 
-# Renderizar cada área usando una función para evitar problemas con unsafe_allow_html
-def render_area_card(area):
-    # Construir el HTML para las estadísticas
-    stats_html = ""
-    for stat in area['stats']:
-        stats_html += f"""
-        <div class="stat-item">
-            <div class="stat-number" style="color: {area['color']}">{stat['number']}</div>
-            <div class="stat-label">{stat['label']}</div>
-        </div>
-        """
-    
-    # Construir el HTML para las automatizaciones
-    automations_html = ""
-    for automation in area['automations']:
-        features_html = "".join([f"<li>{feature}</li>" for feature in automation['features']])
-        automations_html += f"""
-        <div class="automation-card">
-            <div class="automation-title">{automation['title']}</div>
-            <div class="automation-subtitle">{automation['subtitle']}</div>
-            <ul class="feature-list">
-                {features_html}
-            </ul>
-        </div>
-        """
-    
-    # HTML completo de la tarjeta
-    area_html = f"""
-    <div class="area-card">
-        <div class="area-header">
-            <div class="area-icon">{area['name'].split()[0]}</div>
-            <div>
-                <h2 class="area-name">{area['name']}</h2>
-                <p class="area-desc">{area['description']}</p>
+# Renderizar cada área usando componentes nativos de Streamlit
+for area in areas:
+    with st.container():
+        # Tarjeta de área
+        st.markdown(f"""
+        <div class="area-card">
+            <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
+                <div style="font-size: 3rem;">{area['name'].split()[0]}</div>
+                <div>
+                    <h2 style="font-size: 2rem; font-weight: 700; color: #1a1a1a; margin: 0;">{area['name']}</h2>
+                    <p style="font-size: 1.2rem; color: #666; margin: 0.5rem 0 0 0;">{area['description']}</p>
+                </div>
             </div>
         </div>
+        """, unsafe_allow_html=True)
         
-        <div class="stats-grid">
-            {stats_html}
-        </div>
+        # Estadísticas
+        col1, col2, col3, col4 = st.columns(4)
+        stats = area['stats']
+        with col1:
+            st.metric(label=stats[0]['label'], value=stats[0]['number'])
+        with col2:
+            st.metric(label=stats[1]['label'], value=stats[1]['number'])
+        with col3:
+            st.metric(label=stats[2]['label'], value=stats[2]['number'])
+        with col4:
+            st.metric(label=stats[3]['label'], value=stats[3]['number'])
         
-        <div class="automation-grid">
-            {automations_html}
-        </div>
+        # Automatizaciones
+        st.subheader("🚀 Automatizaciones Disponibles")
+        for automation in area['automations']:
+            with st.expander(f"{automation['title']} - {automation['subtitle']}", expanded=True):
+                for feature in automation['features']:
+                    st.write(f"• {feature}")
         
-        <div style="text-align: center; margin-top: 2rem;">
-            <a href="/{area['page']}" class="action-button">
-                🚀 Acceder a {area['name'].split()[-1].replace('📊', 'Métricas')}
-            </a>
-        </div>
-    </div>
-    """
-    
-    return area_html
-
-# Mostrar cada área
-for area in areas:
-    area_html = render_area_card(area)
-    st.markdown(area_html, unsafe_allow_html=True)
+        # Botón de acción
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            if st.button(
+                f"🚀 Acceder a {area['name'].split()[-1].replace('📊', 'Métricas')}", 
+                key=f"btn_{area['page']}",
+                use_container_width=True
+            ):
+                st.switch_page(f"pages/{area['page']}.py")
+        
+        st.markdown("---")
 
 # FOOTER
 st.markdown("---")
