@@ -16,10 +16,10 @@ st.set_page_config(
 # Navbar moderna
 modern_navbar()
 
-# CSS optimizado con mejor tipografía para beneficios
+# CSS optimizado con efectos 3D mejorados
 st.markdown("""
 <style>
-    /* Efectos 3D para las tarjetas */
+    /* Efectos 3D mejorados para las tarjetas */
     .card-3d {
         background: white;
         border-radius: 16px;
@@ -117,48 +117,56 @@ st.markdown("""
             0 3px 6px rgba(0,0,0,0.15);
     }
     
-    /* Hero section mejorada */
-    .hero-gradient {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* Hero section con sombra 3D */
+    .hero-3d {
+        background: white;
         padding: 4rem 2rem;
         border-radius: 20px;
         margin: 1rem 0 3rem 0;
-        color: white;
+        color: #1a1a1a;
         position: relative;
         overflow: hidden;
+        box-shadow: 
+            0 15px 40px rgba(0,0,0,0.12),
+            0 5px 15px rgba(0,0,0,0.08),
+            inset 0 1px 0 rgba(255,255,255,0.9);
+        border: 1px solid rgba(255,255,255,0.5);
     }
     
-    .hero-gradient::before {
+    .hero-3d::before {
         content: '';
         position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-        background-size: 50px 50px;
-        animation: float 6s ease-in-out infinite;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #0066cc, #00a86b, #ff6b35, #8a2be2);
+        border-radius: 20px 20px 0 0;
     }
     
-    @keyframes float {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-10px) rotate(180deg); }
-    }
-    
-    /* BENEFICIOS MINIMALISTAS - TIPOGRAFÍA MÁS PEQUEÑA */
-    .benefits-minimal {
+    /* BENEFICIOS CON SOMBRA 3D */
+    .benefits-3d {
         background: white;
         border-radius: 16px;
         padding: 2.5rem;
         box-shadow: 
-            0 8px 25px rgba(0,0,0,0.08),
-            0 1px 6px rgba(0,0,0,0.04);
-        border: 1px solid rgba(0,0,0,0.05);
+            0 12px 35px rgba(0,0,0,0.1),
+            0 3px 10px rgba(0,0,0,0.06),
+            inset 0 1px 0 rgba(255,255,255,0.8);
+        border: 1px solid rgba(255,255,255,0.4);
         position: relative;
         margin: 2rem 0;
+        transition: all 0.3s ease;
     }
     
-    .benefits-minimal::before {
+    .benefits-3d:hover {
+        box-shadow: 
+            0 15px 45px rgba(0,0,0,0.15),
+            0 5px 15px rgba(0,0,0,0.1),
+            inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+    
+    .benefits-3d::before {
         content: '';
         position: absolute;
         top: 0;
@@ -175,6 +183,14 @@ st.markdown("""
         gap: 1rem;
         padding: 1rem 0;
         border-bottom: 1px solid rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .benefit-item:hover {
+        background: rgba(0,0,0,0.02);
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 0 -0.5rem;
     }
     
     .benefit-item:last-child {
@@ -185,6 +201,10 @@ st.markdown("""
         font-size: 1.2rem;
         min-width: 30px;
         text-align: center;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
     
     .benefit-content h4 {
@@ -202,27 +222,54 @@ st.markdown("""
         margin: 0;
         font-family: "Inter", sans-serif;
     }
+    
+    /* Footer con sombra 3D sutil */
+    .footer-3d {
+        background: white;
+        padding: 2rem 0;
+        margin-top: 3rem;
+        text-align: center;
+        border-radius: 16px 16px 0 0;
+        box-shadow: 
+            0 -5px 25px rgba(0,0,0,0.08),
+            0 -2px 10px rgba(0,0,0,0.04);
+        border-top: 1px solid rgba(0,0,0,0.05);
+        position: relative;
+    }
+    
+    .footer-3d::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #0066cc, #00a86b, #ff6b35, #8a2be2);
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# HERO SECTION - TÍTULO CON ANCHO COMPLETO
+# HERO SECTION - CON SOMBRA 3D (SIN FONDO AZUL)
 st.markdown("""
-<div class="hero-gradient">
+<div class="hero-3d">
     <h1 style='
-        color: white;
+        color: #1a1a1a;
         font-size: 3.5rem;
         font-weight: 800;
         margin-bottom: 0.5rem;
         line-height: 1.1;
         font-family: "Inter", sans-serif;
-        text-shadow: 0 4px 12px rgba(0,0,0,0.2);
         text-align: center;
+        background: linear-gradient(135deg, #1a1a1a, #0066cc, #00a86b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     '>
     SISTEMA DE AUTOMATIZACIÓN
     </h1>
     
     <h2 style='
-        color: rgba(255,255,255,0.9);
+        color: #666666;
         font-size: 1.8rem;
         font-weight: 400;
         margin-top: 0.5rem;
@@ -235,7 +282,7 @@ st.markdown("""
     </h2>
     
     <div style='
-        color: rgba(255,255,255,0.8);
+        color: #666666;
         font-size: 1.1rem;
         line-height: 1.6;
         margin-bottom: 2rem;
@@ -255,34 +302,22 @@ st.markdown("""
         justify-content: center;
         flex-wrap: wrap;
     '>
-        <button style='
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 2px solid rgba(255,255,255,0.3);
-            padding: 0.8rem 1.8rem;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        ' onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='translateY(-2px)'" 
-        onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='translateY(0)'">
+        <button class="btn-3d" style="--accent-color: #0066cc; --accent-dark: #004499; --accent-rgb: 0, 102, 204;">
             Explorar Automatizaciones
         </button>
         
         <button style='
             background: transparent;
-            color: white;
-            border: 2px solid rgba(255,255,255,0.5);
+            color: #0066cc;
+            border: 2px solid #0066cc;
             padding: 0.8rem 1.8rem;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
-        ' onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.transform='translateY(-2px)'" 
-        onmouseout="this.style.background='transparent'; this.style.transform='translateY(0)'">
+        ' onmouseover="this.style.background='#0066cc'; this.style.color='white'; this.style.transform='translateY(-2px)'" 
+        onmouseout="this.style.background='transparent'; this.style.color='#0066cc'; this.style.transform='translateY(0)'">
             Ver Demo
         </button>
     </div>
@@ -399,9 +434,9 @@ for i, (col, area) in enumerate(zip(columns, areas_data)):
 # SEPARADOR ANTES DE BENEFICIOS
 st.markdown("<div style='height: 1px; background: linear-gradient(90deg, transparent, #e0e0e0, transparent); margin: 3rem 0;'></div>", unsafe_allow_html=True)
 
-# BENEFICIOS CLAVE - VERSIÓN MINIMALISTA CON TIPOGRAFÍA MÁS PEQUEÑA
+# BENEFICIOS CLAVE - CON SOMBRA 3D (SIN FONDO AZUL)
 st.markdown("""
-<div class="benefits-minimal">
+<div class="benefits-3d">
     <div style='text-align: center; margin-bottom: 2rem;'>
         <h3 style='
             color: #1a1a1a;
@@ -469,15 +504,9 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# FOOTER MEJORADO
+# FOOTER CON SOMBRA 3D (SIN FONDO AZUL)
 st.markdown("""
-<div style='
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    padding: 2rem 0;
-    margin-top: 3rem;
-    text-align: center;
-    border-top: 1px solid #e0e0e0;
-'>
+<div class="footer-3d">
     <h4 style='color: #1a1a1a; margin-bottom: 0.8rem; font-size: 1.1rem; font-weight: 600; font-family: "Inter", sans-serif;'>TodoDrogas - Sistema de Automatización</h4>
     <p style='color: #666666; margin-bottom: 0.4rem; font-size: 0.9rem; font-family: "Inter", sans-serif;'>Optimizando procesos mediante tecnología avanzada</p>
     <p style='color: #999999; font-size: 0.8rem; font-family: "Inter", sans-serif;'>© 2024 Todos los derechos reservados</p>
