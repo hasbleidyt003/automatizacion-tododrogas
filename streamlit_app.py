@@ -7,7 +7,7 @@ configure_modern_theme()
 
 # Configurar página
 st.set_page_config(
-    page_title="Sistema de Automatización - TodoDrogas",
+    page_title="Sistema de Automatización - Tododrogas",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -438,7 +438,7 @@ st.markdown("<div style='height: 1px; background: linear-gradient(90deg, transpa
 st.markdown("""
 <div class="benefits-3d">
     <div style='text-align: center; margin-bottom: 2rem;'>
-        <h3 style='
+        <h style='
             color: #1a1a1a;
             font-size: 1.5rem;
             font-weight: 600;
