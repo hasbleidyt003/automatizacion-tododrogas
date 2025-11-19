@@ -1,34 +1,14 @@
 import streamlit as st
 
-def configure_modern_theme():
-    st.markdown("""
-    <style>
-    /* Tema principal profesional */
-    :root {
-        --primary-color: #0066cc;
-        --secondary-color: #00a86b;
-        --accent-color: #ff6b35;
-    }
+def modern_navbar():
+    # Usar columns nativas de Streamlit para el navbar
+    col1, col2, col3 = st.columns([2, 1, 1])
     
-    .stApp {
-        background-color: #fafbfc;
-    }
+    with col1:
+        st.write("### ⚡ TodoDrogas Automation")
     
-    /* Mejoras generales de Streamlit */
-    .stButton>button {
-        border-radius: 8px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
+    with col2:
+        st.write("**Sistema Centralizado**")
     
-    .stTextInput>div>div>input, .stTextArea>div>div>textarea {
-        border-radius: 8px;
-        border: 1px solid #e9ecef;
-    }
-    
-    /* Ocultar elementos por defecto de Streamlit */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    </style>
-    """, unsafe_allow_html=True)
+    with col3:
+        st.write("🟢 **En Línea**")
