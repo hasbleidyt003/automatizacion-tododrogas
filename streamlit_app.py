@@ -145,95 +145,118 @@ st.markdown("""
         50% { transform: translateY(-10px) rotate(180deg); }
     }
     
-    /* Grid de mini-cards para características */
-    .feature-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.5rem;
-        margin: 1rem 0;
-    }
-    
-    .feature-mini {
-        text-align: center;
-        padding: 0.6rem;
-        background: rgba(255,255,255,0.1);
-        border-radius: 8px;
+    /* Tarjeta de beneficios full width */
+    .benefits-card {
+        background: white;
+        border-radius: 16px;
+        padding: 3rem;
+        box-shadow: 
+            0 10px 30px rgba(0,0,0,0.1),
+            0 1px 8px rgba(0,0,0,0.05),
+            inset 0 1px 0 rgba(255,255,255,0.8);
+        border: 1px solid rgba(255,255,255,0.3);
+        position: relative;
+        overflow: hidden;
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.2);
+        margin: 2rem 0;
     }
     
-    /* Efectos de texto */
-    .text-glow {
-        text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    .benefits-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #0066cc, #00a86b, #ff6b35, #8a2be2);
+        border-radius: 16px 16px 0 0;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# HERO SECTION MEJORADA
-col1, col2 = st.columns([2, 1])
-
-with col1:
-    st.markdown("""
-    <div class="hero-gradient">
-        <h1 style='
+# HERO SECTION - TÍTULO CON ANCHO COMPLETO
+st.markdown("""
+<div class="hero-gradient">
+    <h1 style='
+        color: white;
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        line-height: 1.1;
+        font-family: "Inter", sans-serif;
+        text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        text-align: center;
+    '>
+    SISTEMA DE AUTOMATIZACIÓN
+    </h1>
+    
+    <h2 style='
+        color: rgba(255,255,255,0.9);
+        font-size: 1.8rem;
+        font-weight: 400;
+        margin-top: 0.5rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.3;
+        font-family: "Inter", sans-serif;
+        text-align: center;
+    '>
+    Transformando procesos mediante tecnología inteligente
+    </h2>
+    
+    <div style='
+        color: rgba(255,255,255,0.8);
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        text-align: center;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    '>
+        <p>El futuro es la tecnología, y hoy se convierte en nuestra mejor herramienta.</p>
+        <p>Centralizamos automatizaciones por área para optimizar procesos y mejorar la eficiencia operativa.</p>
+    </div>
+    
+    <div style='
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    '>
+        <button style='
+            background: rgba(255,255,255,0.2);
             color: white;
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            line-height: 1.1;
-            font-family: "Inter", sans-serif;
-            text-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        '>
-        SISTEMA DE<br>AUTOMATIZACIÓN
-        </h1>
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        ' onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='translateY(-2px)'" 
+        onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='translateY(0)'">
+            Explorar Automatizaciones
+        </button>
         
-        <h2 style='
-            color: rgba(255,255,255,0.9);
-            font-size: 1.8rem;
-            font-weight: 400;
-            margin-top: 0.5rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.3;
-            font-family: "Inter", sans-serif;
-        '>
-        Transformando procesos mediante tecnología inteligente
-        </h2>
-        
-        <div style='
-            color: rgba(255,255,255,0.8);
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        '>
-            <p>El futuro es la tecnología, y hoy se convierte en nuestra mejor herramienta.</p>
-            <p>Centralizamos automatizaciones por área para optimizar procesos y mejorar la eficiencia operativa.</p>
-        </div>
+        <button style='
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.5);
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        ' onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.transform='translateY(-2px)'" 
+        onmouseout="this.style.background='transparent'; this.style.transform='translateY(0)'">
+            Ver Demo
+        </button>
     </div>
-    """, unsafe_allow_html=True)
-
-with col2:
-    st.markdown("""
-    <div class="card-3d" style="--accent-color: #0066cc; --accent-dark: #004499; --accent-rgb: 0, 102, 204; height: 100%;">
-        <div style='text-align: center; color: #1a1a1a;'>
-            <div style='font-size: 2.5rem; margin-bottom: 1rem;'>🚀</div>
-            <h3 style='margin-bottom: 1rem; font-size: 1.2rem; color: #1a1a1a;'>Beneficios Clave</h3>
-            <div style='text-align: left; line-height: 1.6; color: #666;'>
-                <div style='display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.8rem;'>
-                    <span style='font-size: 1.2rem; color: #0066cc;'>✓</span> <span>Reducción de tiempos</span>
-                </div>
-                <div style='display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.8rem;'>
-                    <span style='font-size: 1.2rem; color: #0066cc;'>✓</span> <span>Mayor precisión</span>
-                </div>
-                <div style='display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.8rem;'>
-                    <span style='font-size: 1.2rem; color: #0066cc;'>✓</span> <span>Reportes automáticos</span>
-                </div>
-                <div style='display: flex; align-items: center; gap: 0.5rem;'>
-                    <span style='font-size: 1.2rem; color: #0066cc;'>✓</span> <span>Integración total</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+</div>
+""", unsafe_allow_html=True)
 
 # SEPARADOR
 st.markdown("<div style='height: 1px; background: linear-gradient(90deg, transparent, #e0e0e0, transparent); margin: 3rem 0;'></div>", unsafe_allow_html=True)
@@ -243,7 +266,7 @@ st.markdown("""
 <div style='text-align: center; margin-bottom: 2rem;'>
     <h2 style='
         color: #1a1a1a;
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 700;
         margin-bottom: 0.8rem;
         text-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -342,12 +365,65 @@ for i, (col, area) in enumerate(zip(columns, areas_data)):
         </div>
         """, unsafe_allow_html=True)
 
+# SEPARADOR ANTES DE BENEFICIOS
+st.markdown("<div style='height: 1px; background: linear-gradient(90deg, transparent, #e0e0e0, transparent); margin: 3rem 0;'></div>", unsafe_allow_html=True)
+
+# BENEFICIOS CLAVE - CON ANCHO COMPLETO AL FINAL
+st.markdown("""
+<div class="benefits-card">
+    <div style='text-align: center; margin-bottom: 2rem;'>
+        <h2 style='
+            color: #1a1a1a;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        '>
+        🚀 Beneficios Clave
+        </h2>
+        <p style='color: #666666; font-size: 1.1rem;'>
+        Descubre las ventajas de implementar nuestras soluciones de automatización
+        </p>
+    </div>
+    
+    <div style='
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    '>
+        <div style='text-align: center; padding: 1.5rem; background: #f8f9fa; border-radius: 12px;'>
+            <div style='font-size: 2.5rem; margin-bottom: 1rem;'>⚡</div>
+            <h4 style='color: #1a1a1a; margin-bottom: 0.5rem;'>Reducción de Tiempos</h4>
+            <p style='color: #666; font-size: 0.9rem;'>Procesa en minutos lo que antes tomaba horas de trabajo manual</p>
+        </div>
+        
+        <div style='text-align: center; padding: 1.5rem; background: #f8f9fa; border-radius: 12px;'>
+            <div style='font-size: 2.5rem; margin-bottom: 1rem;'>🎯</div>
+            <h4 style='color: #1a1a1a; margin-bottom: 0.5rem;'>Mayor Precisión</h4>
+            <p style='color: #666; font-size: 0.9rem;'>Elimina errores humanos con procesos automatizados y validados</p>
+        </div>
+        
+        <div style='text-align: center; padding: 1.5rem; background: #f8f9fa; border-radius: 12px;'>
+            <div style='font-size: 2.5rem; margin-bottom: 1rem;'>📊</div>
+            <h4 style='color: #1a1a1a; margin-bottom: 0.5rem;'>Reportes Automáticos</h4>
+            <p style='color: #666; font-size: 0.9rem;'>Genera reportes en tiempo real sin intervención manual</p>
+        </div>
+        
+        <div style='text-align: center; padding: 1.5rem; background: #f8f9fa; border-radius: 12px;'>
+            <div style='font-size: 2.5rem; margin-bottom: 1rem;'>🔗</div>
+            <h4 style='color: #1a1a1a; margin-bottom: 0.5rem;'>Integración Total</h4>
+            <p style='color: #666; font-size: 0.9rem;'>Conecta todos tus sistemas y procesos en una sola plataforma</p>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
 # FOOTER MEJORADO
 st.markdown("""
 <div style='
     background: linear-gradient(135deg, #f8f9fa, #e9ecef);
     padding: 2.5rem 0;
-    margin-top: 4rem;
+    margin-top: 3rem;
     text-align: center;
     border-top: 1px solid #e0e0e0;
 '>
