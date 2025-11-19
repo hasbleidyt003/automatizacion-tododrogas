@@ -305,7 +305,78 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# MÉTRICAS INTERACTIVAS EN TIEMPO REAL
+# SECCIÓN DE AUTOMATIZACIONES MEJORADA
+st.markdown("""
+<div style='text-align: center; margin: 3rem 0 2rem 0;'>
+    <h2 style='color: #1a1a1a; font-size: 2.2rem; font-weight: 800; margin-bottom: 0.8rem;'>
+        Áreas de Automatización
+    </h2>
+    <p style='color: #666; font-size: 1.1rem;'>
+        Selecciona un área para acceder a herramientas especializadas
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
+# GRID DE TARJETAS CON GLASS-MORPHISM
+areas_data = [
+    {
+        "name": "Cuentas Médicas",
+        "icon": "📋",
+        "description": "SAVIA & COOSALUD: Conversores JSON, Renombradores RIPS/CUV. SALUD TOTAL: Procesador OCR + Renombrado",
+        "status": "Activo",
+        "users": "8 usuarios"
+    },
+    {
+        "name": "Cartera", 
+        "icon": "💰",
+        "description": "Gestión automatizada de estados de cuenta y reportes financieros con análisis inteligente y predicciones",
+        "status": "Activo",
+        "users": "6 usuarios"
+    },
+    {
+        "name": "Tesorería",
+        "icon": "🏦",
+        "description": "Control automatizado de estados bancarios, flujo financiero y conciliaciones con máxima seguridad",
+        "status": "En desarrollo", 
+        "users": "4 usuarios"
+    },
+    {
+        "name": "Métricas",
+        "icon": "📊",
+        "description": "Dashboard ejecutivo con análisis de impacto, ROI y métricas de todas las automatizaciones implementadas",
+        "status": "Activo",
+        "users": "5 usuarios"
+    }
+]
+
+# Crear grid responsive
+cols = st.columns(2)
+for i, area in enumerate(areas_data):
+    with cols[i % 2]:  # Distribuye en 2 columnas
+        status_color = "#00a86b" if area["status"] == "Activo" else "#ff6b35"
+        st.markdown(f"""
+        <div class="card-glass">
+            <div class="card-icon-glass">{area['icon']}</div>
+            <h3 class="card-title-glass">{area['name']}</h3>
+            <div style='display: flex; justify-content: space-between; margin-bottom: 1rem;'>
+                <span style='background: {status_color}; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;'>
+                    {area['status']}
+                </span>
+                <span style='color: #666; font-size: 0.8rem; font-weight: 500;'>
+                    {area['users']}
+                </span>
+            </div>
+            <p class="card-description-glass">{area['description']}</p>
+            <button class="btn-glass" onclick="navigateTo('{area['name'].lower().replace(' ', '_').replace('métricas', 'metricas')}')">
+                Acceder al Módulo
+            </button>
+        </div>
+        """, unsafe_allow_html=True)
+
+# SEPARADOR VISUAL MEJORADO
+st.markdown("<div style='height: 2px; background: linear-gradient(90deg, transparent, #0066cc, transparent); margin: 4rem 0;'></div>", unsafe_allow_html=True)
+
+# MÉTRICAS INTERACTIVAS EN TIEMPO REAL (MOVIDAS DESPUÉS DE LAS ÁREAS)
 st.markdown("""
 <div style='text-align: center; margin-bottom: 1rem;'>
     <h2 style='color: #1a1a1a; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem;'>
@@ -380,77 +451,6 @@ with filter_col3:
     fecha_inicio = st.date_input("Fecha de inicio")
 
 st.markdown("</div>", unsafe_allow_html=True)
-
-# SECCIÓN DE AUTOMATIZACIONES MEJORADA
-st.markdown("""
-<div style='text-align: center; margin: 3rem 0 2rem 0;'>
-    <h2 style='color: #1a1a1a; font-size: 2.2rem; font-weight: 800; margin-bottom: 0.8rem;'>
-        Áreas de Automatización
-    </h2>
-    <p style='color: #666; font-size: 1.1rem;'>
-        Selecciona un área para acceder a herramientas especializadas
-    </p>
-</div>
-""", unsafe_allow_html=True)
-
-# GRID DE TARJETAS CON GLASS-MORPHISM
-areas_data = [
-    {
-        "name": "Cuentas Médicas",
-        "icon": "📋",
-        "description": "SAVIA & COOSALUD: Conversores JSON, Renombradores RIPS/CUV. SALUD TOTAL: Procesador OCR + Renombrado",
-        "status": "Activo",
-        "users": "8 usuarios"
-    },
-    {
-        "name": "Cartera", 
-        "icon": "💰",
-        "description": "Gestión automatizada de estados de cuenta y reportes financieros con análisis inteligente y predicciones",
-        "status": "Activo",
-        "users": "6 usuarios"
-    },
-    {
-        "name": "Tesorería",
-        "icon": "🏦",
-        "description": "Control automatizado de estados bancarios, flujo financiero y conciliaciones con máxima seguridad",
-        "status": "En desarrollo", 
-        "users": "4 usuarios"
-    },
-    {
-        "name": "Métricas",
-        "icon": "📊",
-        "description": "Dashboard ejecutivo con análisis de impacto, ROI y métricas de todas las automatizaciones implementadas",
-        "status": "Activo",
-        "users": "5 usuarios"
-    }
-]
-
-# Crear grid responsive
-cols = st.columns(2)
-for i, area in enumerate(areas_data):
-    with cols[i % 2]:  # Distribuye en 2 columnas
-        status_color = "#00a86b" if area["status"] == "Activo" else "#ff6b35"
-        st.markdown(f"""
-        <div class="card-glass">
-            <div class="card-icon-glass">{area['icon']}</div>
-            <h3 class="card-title-glass">{area['name']}</h3>
-            <div style='display: flex; justify-content: space-between; margin-bottom: 1rem;'>
-                <span style='background: {status_color}; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;'>
-                    {area['status']}
-                </span>
-                <span style='color: #666; font-size: 0.8rem; font-weight: 500;'>
-                    {area['users']}
-                </span>
-            </div>
-            <p class="card-description-glass">{area['description']}</p>
-            <button class="btn-glass" onclick="navigateTo('{area['name'].lower().replace(' ', '_').replace('métricas', 'metricas')}')">
-                Acceder al Módulo
-            </button>
-        </div>
-        """, unsafe_allow_html=True)
-
-# SEPARADOR VISUAL MEJORADO
-st.markdown("<div style='height: 2px; background: linear-gradient(90deg, transparent, #0066cc, transparent); margin: 4rem 0;'></div>", unsafe_allow_html=True)
 
 # SECCIÓN DE AYUDA Y SOPORTE
 st.markdown("""
