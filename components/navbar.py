@@ -53,11 +53,8 @@ def modern_navbar():
         align-items: center;
         gap: 0.5rem;
     }
-    
-    .navbar-brand::before {
-        content: '⚡';
-        font-size: 1.6rem;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+
+
     }
     
     .navbar-stats {
