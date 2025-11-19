@@ -266,7 +266,8 @@ areas = [
                     "Renombrado automático por contenido"
                 ]
             }
-        ]
+        ],
+        "page": "Cuentas_Medicas"
     },
     {
         "name": "💰 Cartera",
@@ -297,7 +298,8 @@ areas = [
                     "Análisis predictivo de cartera"
                 ]
             }
-        ]
+        ],
+        "page": "Cartera"
     },
     {
         "name": "🏦 Tesorería",
@@ -328,7 +330,8 @@ areas = [
                     "Reportes de flujo de caja automáticos"
                 ]
             }
-        ]
+        ],
+        "page": "Tesoreria"
     },
     {
         "name": "📊 Métricas y Contacto",
@@ -359,51 +362,70 @@ areas = [
                     "Capacitación y documentación"
                 ]
             }
-        ]
+        ],
+        "page": "Metricas_y_Contacto"
     }
 ]
 
-# Renderizar cada área
-for area in areas:
-    with st.container():
-        st.markdown(f"""
-        <div class="area-card">
-            <div class="area-header">
-                <div class="area-icon">{area['name'].split()[0]}</div>
-                <div>
-                    <h2 class="area-name">{area['name']}</h2>
-                    <p class="area-desc">{area['description']}</p>
-                </div>
-            </div>
-            
-            <div class="stats-grid">
-                {''.join([f'''
-                <div class="stat-item">
-                    <div class="stat-number" style="color: {area['color']}">{stat['number']}</div>
-                    <div class="stat-label">{stat['label']}</div>
-                </div>
-                ''' for stat in area['stats']])}
-            </div>
-            
-            <div class="automation-grid">
-                {''.join([f'''
-                <div class="automation-card">
-                    <div class="automation-title">{automation['title']}</div>
-                    <div class="automation-subtitle">{automation['subtitle']}</div>
-                    <ul class="feature-list">
-                        {''.join([f'<li>{feature}</li>' for feature in automation['features']])}
-                    </ul>
-                </div>
-                ''' for automation in area['automations']])}
-            </div>
-            
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="/{area['name'].split()[-1].replace('📊', 'Metricas_y_Contacto')}" class="action-button">
-                    🚀 Acceder a {area['name'].split()[-1].replace('📊', 'Métricas')}
-                </a>
+# Renderizar cada área usando una función para evitar problemas con unsafe_allow_html
+def render_area_card(area):
+    # Construir el HTML para las estadísticas
+    stats_html = ""
+    for stat in area['stats']:
+        stats_html += f"""
+        <div class="stat-item">
+            <div class="stat-number" style="color: {area['color']}">{stat['number']}</div>
+            <div class="stat-label">{stat['label']}</div>
+        </div>
+        """
+    
+    # Construir el HTML para las automatizaciones
+    automations_html = ""
+    for automation in area['automations']:
+        features_html = "".join([f"<li>{feature}</li>" for feature in automation['features']])
+        automations_html += f"""
+        <div class="automation-card">
+            <div class="automation-title">{automation['title']}</div>
+            <div class="automation-subtitle">{automation['subtitle']}</div>
+            <ul class="feature-list">
+                {features_html}
+            </ul>
+        </div>
+        """
+    
+    # HTML completo de la tarjeta
+    area_html = f"""
+    <div class="area-card">
+        <div class="area-header">
+            <div class="area-icon">{area['name'].split()[0]}</div>
+            <div>
+                <h2 class="area-name">{area['name']}</h2>
+                <p class="area-desc">{area['description']}</p>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        
+        <div class="stats-grid">
+            {stats_html}
+        </div>
+        
+        <div class="automation-grid">
+            {automations_html}
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="/{area['page']}" class="action-button">
+                🚀 Acceder a {area['name'].split()[-1].replace('📊', 'Métricas')}
+            </a>
+        </div>
+    </div>
+    """
+    
+    return area_html
+
+# Mostrar cada área
+for area in areas:
+    area_html = render_area_card(area)
+    st.markdown(area_html, unsafe_allow_html=True)
 
 # FOOTER
 st.markdown("---")
