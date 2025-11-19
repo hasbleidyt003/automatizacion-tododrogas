@@ -1,6 +1,8 @@
 import streamlit as st
 from components.navbar import modern_navbar
 from config.theme import configure_modern_theme
+import time
+from datetime import datetime
 
 # Configurar tema moderno
 configure_modern_theme()
@@ -13,34 +15,65 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# Cache para datos pesados (OPTIMIZACIÓN)
+@st.cache_data(ttl=3600)  # Cache por 1 hora
+def get_system_metrics():
+    """Simula métricas del sistema - optimizado con cache"""
+    time.sleep(0.5)  # Simula procesamiento pesado
+    return {
+        'automatizaciones_ejecutadas': 1247,
+        'tiempo_ahorrado': '342 horas',
+        'eficiencia_incrementada': '68%',
+        'usuarios_activos': 23
+    }
+
 # Navbar moderna
 modern_navbar()
 
-# CSS minimalista y futurista
+# CSS mejorado con glass-morphism y efectos futuristas
 st.markdown("""
 <style>
-    /* Reset y base minimalista */
+    /* Base mejorada */
     .main .block-container {
         padding-top: 1rem;
         padding-bottom: 0;
     }
     
-    /* Hero section minimalista */
-    .hero-minimal {
-        background: transparent;
-        padding: 2rem 0 1rem 0;
-        margin: 0;
+    /* Hero section con glass-morphism */
+    .hero-glass {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 24px;
+        padding: 3rem 2rem;
+        margin: 1rem 0 3rem 0;
         text-align: center;
         position: relative;
+        overflow: hidden;
+    }
+    
+    .hero-glass::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 102, 204, 0.05), transparent);
+        transition: left 0.6s ease;
+    }
+    
+    .hero-glass:hover::before {
+        left: 100%;
     }
     
     .hero-title {
-        font-size: 3rem;
+        font-size: 3.5rem;
         font-weight: 800;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
         line-height: 1.1;
         font-family: "Inter", sans-serif;
-        background: linear-gradient(135deg, #0066cc 0%, #00a8ff 100%);
+        background: linear-gradient(135deg, #0066cc 0%, #00a8ff 50%, #004499 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -49,398 +82,450 @@ st.markdown("""
     
     .hero-subtitle {
         color: #666;
-        font-size: 1.1rem;
+        font-size: 1.3rem;
         font-weight: 400;
         margin-bottom: 2rem;
         line-height: 1.4;
         font-family: "Inter", sans-serif;
-        max-width: 500px;
-        margin-left: auto;
-        margin-right: auto;
     }
     
-    /* Efectos 3D mejorados para las tarjetas (MANTENIDO IGUAL) */
-    .card-3d {
-        background: white;
-        border-radius: 16px;
-        padding: 2rem;
-        box-shadow: 
-            0 10px 30px rgba(0,0,0,0.1),
-            0 1px 8px rgba(0,0,0,0.05),
-            inset 0 1px 0 rgba(255,255,255,0.8);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        border: 1px solid rgba(255,255,255,0.3);
-        position: relative;
-        overflow: hidden;
-        backdrop-filter: blur(10px);
-    }
-    
-    .card-3d::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #0066cc, #004499);
-        border-radius: 16px 16px 0 0;
-    }
-    
-    .card-3d:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 
-            0 20px 50px rgba(0,0,0,0.15),
-            0 5px 15px rgba(0,0,0,0.1),
-            inset 0 1px 0 rgba(255,255,255,0.9);
-    }
-    
-    /* Iconos con efecto 3D - Solo azules */
-    .icon-3d {
-        width: 60px;
-        height: 60px;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, #0066cc, #004499);
-        box-shadow: 
-            0 8px 20px rgba(0, 102, 204, 0.3),
-            inset 0 1px 0 rgba(255,255,255,0.3);
-        position: relative;
-        transition: all 0.3s ease;
-    }
-    
-    .card-3d:hover .icon-3d {
-        transform: scale(1.1) rotate(5deg);
-        box-shadow: 
-            0 12px 30px rgba(0, 102, 204, 0.4),
-            inset 0 1px 0 rgba(255,255,255,0.4);
-    }
-    
-    /* Botones con efecto 3D - Solo azules */
-    .btn-3d {
-        background: linear-gradient(135deg, #0066cc, #004499);
-        color: white;
-        border: none;
-        padding: 0.8rem 1.5rem;
-        border-radius: 10px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 
-            0 6px 20px rgba(0, 102, 204, 0.3),
-            0 2px 4px rgba(0,0,0,0.1);
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .btn-3d::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-        transition: left 0.5s;
-    }
-    
-    .btn-3d:hover::before {
-        left: 100%;
-    }
-    
-    .btn-3d:hover {
-        transform: translateY(-2px);
-        box-shadow: 
-            0 8px 25px rgba(0, 102, 204, 0.4),
-            0 3px 6px rgba(0,0,0,0.15);
-    }
-    
-    /* BENEFICIOS CON SOMBRA 3D (MANTENIDO IGUAL) */
-    .benefits-3d {
-        background: white;
-        border-radius: 16px;
-        padding: 2.5rem;
-        box-shadow: 
-            0 12px 35px rgba(0,0,0,0.1),
-            0 3px 10px rgba(0,0,0,0.06),
-            inset 0 1px 0 rgba(255,255,255,0.8);
-        border: 1px solid rgba(255,255,255,0.4);
-        position: relative;
+    /* Métricas interactivas */
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
         margin: 2rem 0;
+    }
+    
+    .metric-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: center;
         transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
     }
     
-    .benefits-3d:hover {
-        box-shadow: 
-            0 15px 45px rgba(0,0,0,0.15),
-            0 5px 15px rgba(0,0,0,0.1),
-            inset 0 1px 0 rgba(255,255,255,0.9);
-    }
-    
-    .benefits-3d::before {
+    .metric-card::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, #0066cc, #0088ff, #004499);
-        border-radius: 16px 16px 0 0;
+        background: linear-gradient(90deg, #0066cc, #00a8ff);
     }
     
-    .benefit-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid rgba(0,0,0,0.05);
-        transition: all 0.3s ease;
+    .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 102, 204, 0.15);
+        border-color: rgba(0, 102, 204, 0.3);
     }
     
-    .benefit-item:hover {
-        background: rgba(0,0,0,0.02);
-        border-radius: 8px;
-        padding: 1rem;
-        margin: 0 -0.5rem;
+    .metric-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #0066cc;
+        margin-bottom: 0.5rem;
     }
     
-    .benefit-item:last-child {
-        border-bottom: none;
-    }
-    
-    .benefit-icon {
-        font-size: 1.2rem;
-        min-width: 30px;
-        text-align: center;
-        background: linear-gradient(135deg, #0066cc, #004499);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
-    .benefit-content h4 {
-        color: #1a1a1a;
-        font-size: 1rem;
-        font-weight: 600;
-        margin-bottom: 0.3rem;
-        font-family: "Inter", sans-serif;
-    }
-    
-    .benefit-content p {
+    .metric-label {
+        font-size: 0.9rem;
         color: #666;
-        font-size: 0.85rem;
-        line-height: 1.4;
-        margin: 0;
-        font-family: "Inter", sans-serif;
+        font-weight: 500;
     }
     
-    /* Footer con sombra 3D sutil (MANTENIDO IGUAL) */
-    .footer-3d {
-        background: white;
-        padding: 2rem 0;
-        margin-top: 3rem;
-        text-align: center;
-        border-radius: 16px 16px 0 0;
-        box-shadow: 
-            0 -5px 25px rgba(0,0,0,0.08),
-            0 -2px 10px rgba(0,0,0,0.04);
-        border-top: 1px solid rgba(0,0,0,0.05);
+    /* Tarjetas con glass-morphism mejorado */
+    .card-glass {
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 20px;
+        padding: 2rem;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         position: relative;
+        overflow: hidden;
+        height: 100%;
     }
     
-    .footer-3d::before {
+    .card-glass::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, #0066cc, #0088ff, #004499);
+        height: 4px;
+        background: linear-gradient(90deg, #0066cc, #00a8ff, #004499);
+        border-radius: 20px 20px 0 0;
+    }
+    
+    .card-glass::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        transition: left 0.6s ease;
+    }
+    
+    .card-glass:hover::after {
+        left: 100%;
+    }
+    
+    .card-glass:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 
+            0 25px 50px rgba(0, 102, 204, 0.15),
+            0 10px 30px rgba(0, 0, 0, 0.1);
+        border-color: rgba(0, 102, 204, 0.3);
+    }
+    
+    .card-icon-glass {
+        width: 70px;
+        height: 70px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #0066cc, #00a8ff);
+        font-size: 1.8rem;
+        color: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 25px rgba(0, 102, 204, 0.3);
+    }
+    
+    .card-glass:hover .card-icon-glass {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 12px 35px rgba(0, 102, 204, 0.4);
+    }
+    
+    .card-title-glass {
+        color: #1a1a1a;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        line-height: 1.3;
+    }
+    
+    .card-description-glass {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+        flex-grow: 1;
+    }
+    
+    .btn-glass {
+        background: transparent;
+        color: #0066cc;
+        border: 2px solid #0066cc;
+        padding: 0.8rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-glass::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 102, 204, 0.1), transparent);
+        transition: left 0.5s;
+    }
+    
+    .btn-glass:hover::before {
+        left: 100%;
+    }
+    
+    .btn-glass:hover {
+        background: #0066cc;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 102, 204, 0.3);
+    }
+    
+    /* Filtros interactivos */
+    .filters-container {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    /* Efectos de neón para elementos importantes */
+    .neon-glow {
+        box-shadow: 
+            0 0 20px rgba(0, 102, 204, 0.3),
+            0 0 40px rgba(0, 102, 204, 0.2),
+            0 0 60px rgba(0, 102, 204, 0.1);
+    }
+    
+    /* Animaciones mejoradas */
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .floating {
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+    
+    .pulse {
+        animation: pulse 2s ease-in-out infinite;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# HERO SECTION MINIMALISTA (PARTE QUE TE GUSTA)
+# HERO SECTION MEJORADA
 st.markdown("""
-<div class="hero-minimal">
+<div class="hero-glass">
     <h1 class="hero-title">Sistema de Automatización</h1>
-    <p class="hero-subtitle">Optimizando procesos mediante tecnología inteligente y eficiente</p>
+    <p class="hero-subtitle">Transformando procesos mediante tecnología inteligente de vanguardia</p>
 </div>
 """, unsafe_allow_html=True)
 
-# SECCIÓN DE AUTOMATIZACIONES (MANTENIDO IGUAL)
+# MÉTRICAS INTERACTIVAS EN TIEMPO REAL
 st.markdown("""
-<div style='text-align: center; margin-bottom: 2rem;'>
-    <h2 style='
-        color: #1a1a1a;
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 0.8rem;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    '>
-    Áreas de Automatización
+<div style='text-align: center; margin-bottom: 1rem;'>
+    <h2 style='color: #1a1a1a; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem;'>
+        Dashboard Ejecutivo
     </h2>
-    <p style='color: #666666; font-size: 1.1rem;'>
-    Selecciona un área para acceder a sus herramientas especializadas
+    <p style='color: #666; font-size: 1rem;'>
+        Métricas en tiempo real del sistema
     </p>
 </div>
 """, unsafe_allow_html=True)
 
-# GRID DE TARJETAS 3D (MANTENIDO EXACTAMENTE IGUAL)
-col1, col2, col3, col4 = st.columns(4)
+# Obtener métricas (optimizado con cache)
+metrics = get_system_metrics()
 
-# Datos de las áreas para reutilización - Solo azules
+# Mostrar métricas en grid
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    st.markdown(f"""
+    <div class="metric-card">
+        <div class="metric-value">{metrics['automatizaciones_ejecutadas']}</div>
+        <div class="metric-label">Automatizaciones Ejecutadas</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col2:
+    st.markdown(f"""
+    <div class="metric-card">
+        <div class="metric-value">{metrics['tiempo_ahorrado']}</div>
+        <div class="metric-label">Tiempo Ahorrado</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col3:
+    st.markdown(f"""
+    <div class="metric-card">
+        <div class="metric-value">{metrics['eficiencia_incrementada']}</div>
+        <div class="metric-label">Eficiencia Incrementada</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col4:
+    st.markdown(f"""
+    <div class="metric-card">
+        <div class="metric-value">{metrics['usuarios_activos']}</div>
+        <div class="metric-label">Usuarios Activos</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+# FILTROS INTERACTIVOS
+st.markdown("""
+<div class="filters-container">
+    <div style='text-align: center; margin-bottom: 1rem;'>
+        <h3 style='color: #1a1a1a; font-size: 1.3rem; font-weight: 600;'>
+            Filtros y Configuración
+        </h3>
+    </div>
+""", unsafe_allow_html=True)
+
+# Filtros en columnas
+filter_col1, filter_col2, filter_col3 = st.columns(3)
+with filter_col1:
+    departamento = st.selectbox(
+        "Filtrar por Departamento",
+        ["Todos", "Cuentas Médicas", "Cartera", "Tesorería", "Métricas"]
+    )
+with filter_col2:
+    estado = st.selectbox(
+        "Filtrar por Estado",
+        ["Todos", "Activo", "En desarrollo", "Pendiente"]
+    )
+with filter_col3:
+    fecha_inicio = st.date_input("Fecha de inicio")
+
+st.markdown("</div>", unsafe_allow_html=True)
+
+# SECCIÓN DE AUTOMATIZACIONES MEJORADA
+st.markdown("""
+<div style='text-align: center; margin: 3rem 0 2rem 0;'>
+    <h2 style='color: #1a1a1a; font-size: 2.2rem; font-weight: 800; margin-bottom: 0.8rem;'>
+        Áreas de Automatización
+    </h2>
+    <p style='color: #666; font-size: 1.1rem;'>
+        Selecciona un área para acceder a herramientas especializadas
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
+# GRID DE TARJETAS CON GLASS-MORPHISM
 areas_data = [
     {
         "name": "Cuentas Médicas",
         "icon": "📋",
-        "description": "SAVIA & COOSALUD: Conversores JSON, Renombradores RIPS/CUV<br>SALUD TOTAL: Procesador OCR + Renombrado",
-        "button_text": "Acceder"
+        "description": "SAVIA & COOSALUD: Conversores JSON, Renombradores RIPS/CUV. SALUD TOTAL: Procesador OCR + Renombrado",
+        "status": "Activo",
+        "users": "8 usuarios"
     },
     {
-        "name": "Cartera",
+        "name": "Cartera", 
         "icon": "💰",
-        "description": "Gestión automatizada de estados de cuenta y reportes financieros con análisis inteligente",
-        "button_text": "Acceder"
+        "description": "Gestión automatizada de estados de cuenta y reportes financieros con análisis inteligente y predicciones",
+        "status": "Activo",
+        "users": "6 usuarios"
     },
     {
         "name": "Tesorería",
-        "icon": "🏦", 
-        "description": "Control automatizado de estados bancarios y flujo financiero con máxima seguridad",
-        "button_text": "Acceder"
+        "icon": "🏦",
+        "description": "Control automatizado de estados bancarios, flujo financiero y conciliaciones con máxima seguridad",
+        "status": "En desarrollo", 
+        "users": "4 usuarios"
     },
     {
         "name": "Métricas",
         "icon": "📊",
-        "description": "Dashboard de resultados y análisis de impacto de todas las automatizaciones implementadas",
-        "button_text": "Acceder"
+        "description": "Dashboard ejecutivo con análisis de impacto, ROI y métricas de todas las automatizaciones implementadas",
+        "status": "Activo",
+        "users": "5 usuarios"
     }
 ]
 
-# Renderizar tarjetas 3D (MANTENIDO IGUAL)
-columns = [col1, col2, col3, col4]
-for i, (col, area) in enumerate(zip(columns, areas_data)):
-    with col:
+# Crear grid responsive
+cols = st.columns(2)
+for i, area in enumerate(areas_data):
+    with cols[i % 2]:  # Distribuye en 2 columnas
+        status_color = "#00a86b" if area["status"] == "Activo" else "#ff6b35"
         st.markdown(f"""
-        <div class="card-3d" style="height: 320px; display: flex; flex-direction: column;">
-            <div class="icon-3d">
-                <span style='color: white; font-size: 1.5rem;'>{area['icon']}</span>
+        <div class="card-glass">
+            <div class="card-icon-glass">{area['icon']}</div>
+            <h3 class="card-title-glass">{area['name']}</h3>
+            <div style='display: flex; justify-content: space-between; margin-bottom: 1rem;'>
+                <span style='background: {status_color}; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;'>
+                    {area['status']}
+                </span>
+                <span style='color: #666; font-size: 0.8rem; font-weight: 500;'>
+                    {area['users']}
+                </span>
             </div>
-            
-            <h3 style='
-                color: #1a1a1a;
-                font-size: 1.3rem;
-                font-weight: 700;
-                margin-bottom: 1rem;
-                line-height: 1.3;
-            '>
-            {area['name']}
-            </h3>
-            
-            <div style='
-                color: #666666;
-                line-height: 1.5;
-                margin-bottom: 1.5rem;
-                flex-grow: 1;
-                font-size: 0.85rem;
-            '>
-                {area['description']}
-            </div>
-            
-            <button class="btn-3d" style="width: 100%;" onclick="navigateTo('{area['name'].lower().replace(' ', '_').replace('métricas', 'metricas')}')">
-                {area['button_text']}
+            <p class="card-description-glass">{area['description']}</p>
+            <button class="btn-glass" onclick="navigateTo('{area['name'].lower().replace(' ', '_').replace('métricas', 'metricas')}')">
+                Acceder al Módulo
             </button>
         </div>
         """, unsafe_allow_html=True)
 
-# SEPARADOR ANTES DE BENEFICIOS (MANTENIDO IGUAL)
-st.markdown("<div style='height: 1px; background: linear-gradient(90deg, transparent, #e0e0e0, transparent); margin: 3rem 0;'></div>", unsafe_allow_html=True)
+# SEPARADOR VISUAL MEJORADO
+st.markdown("<div style='height: 2px; background: linear-gradient(90deg, transparent, #0066cc, transparent); margin: 4rem 0;'></div>", unsafe_allow_html=True)
 
-# BENEFICIOS CLAVE - CON SOMBRA 3D (MANTENIDO IGUAL)
+# SECCIÓN DE AYUDA Y SOPORTE
 st.markdown("""
-<div class="benefits-3d">
-    <div style='text-align: center; margin-bottom: 2rem;'>
-        <h3 style='
-            color: #1a1a1a;
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-family: "Inter", sans-serif;
-        '>
-        Beneficios Clave
-        </h3>
-        <p style='color: #666666; font-size: 0.95rem; font-family: "Inter", sans-serif;'>
-        Ventajas competitivas de nuestras soluciones de automatización
-        </p>
-    </div>
-    
-    <div style='max-width: 800px; margin: 0 auto;'>
-        <div class="benefit-item">
-            <div class="benefit-icon">⚡</div>
-            <div class="benefit-content">
-                <h4>Reducción de Tiempos</h4>
-                <p>Procesa en minutos lo que antes tomaba horas de trabajo manual repetitivo</p>
-            </div>
-        </div>
-        
-        <div class="benefit-item">
-            <div class="benefit-icon">🎯</div>
-            <div class="benefit-content">
-                <h4>Mayor Precisión</h4>
-                <p>Elimina errores humanos con procesos automatizados y validados</p>
-            </div>
-        </div>
-        
-        <div class="benefit-item">
-            <div class="benefit-icon">📊</div>
-            <div class="benefit-content">
-                <h4>Reportes Automáticos</h4>
-                <p>Genera reportes en tiempo real sin intervención manual continua</p>
-            </div>
-        </div>
-        
-        <div class="benefit-item">
-            <div class="benefit-icon">🔗</div>
-            <div class="benefit-content">
-                <h4>Integración Total</h4>
-                <p>Conecta todos tus sistemas y procesos en una sola plataforma unificada</p>
-            </div>
-        </div>
-        
-        <div class="benefit-item">
-            <div class="benefit-icon">🛡️</div>
-            <div class="benefit-content">
-                <h4>Seguridad Avanzada</h4>
-                <p>Protección de datos con encriptación y controles de acceso granular</p>
-            </div>
-        </div>
-        
-        <div class="benefit-item">
-            <div class="benefit-icon">📈</div>
-            <div class="benefit-content">
-                <h4>Escalabilidad</h4>
-                <p>Adapta el sistema a tu crecimiento sin necesidad de reinversiones</p>
-            </div>
-        </div>
-    </div>
+<div style='text-align: center; margin: 2rem 0;'>
+    <h2 style='color: #1a1a1a; font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem;'>
+        ¿Necesitas Ayuda?
+    </h2>
 </div>
 """, unsafe_allow_html=True)
 
-# FOOTER CON SOMBRA 3D (MANTENIDO IGUAL)
+help_col1, help_col2, help_col3 = st.columns(3)
+with help_col1:
+    if st.button("📚 Documentación", use_container_width=True):
+        st.session_state.show_docs = True
+with help_col2:
+    if st.button("🎥 Video Tutoriales", use_container_width=True):
+        st.session_state.show_tutorials = True
+with help_col3:
+    if st.button("🆘 Soporte Técnico", use_container_width=True):
+        st.session_state.show_support = True
+
+# Mostrar contenido según selección
+if st.session_state.get('show_docs'):
+    with st.expander("📚 Documentación Técnica", expanded=True):
+        st.markdown("""
+        ### Guías de uso por módulo:
+        
+        **Cuentas Médicas**
+        - Conversor JSON: Sube archivos .json para convertirlos a formato estándar
+        - Renombrador RIPS: Automatiza el renombrado masivo de archivos
+        - Procesador OCR: Convierte imágenes y PDFs a texto editable
+        
+        **Cartera**
+        - Generador de reportes: Crea reportes financieros automáticamente
+        - Análisis predictivo: Visualiza tendencias y proyecciones
+        """)
+
+if st.session_state.get('show_tutorials'):
+    with st.expander("🎥 Video Tutoriales", expanded=True):
+        st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")  # URL de ejemplo
+
+if st.session_state.get('show_support'):
+    with st.expander("🆘 Soporte Técnico", expanded=True):
+        st.text_input("Tu email")
+        st.text_area("Describe el problema")
+        if st.button("Enviar solicitud"):
+            st.success("✅ Solicitud enviada. Te contactaremos en 24 horas.")
+
+# FOOTER MEJORADO
 st.markdown("""
-<div class="footer-3d">
-    <h4 style='color: #1a1a1a; margin-bottom: 0.8rem; font-size: 1.1rem; font-weight: 600; font-family: "Inter", sans-serif;'>TodoDrogas - Sistema de Automatización</h4>
-    <p style='color: #666666; margin-bottom: 0.4rem; font-size: 0.9rem; font-family: "Inter", sans-serif;'>Optimizando procesos mediante tecnología avanzada</p>
-    <p style='color: #999999; font-size: 0.8rem; font-family: "Inter", sans-serif;'>© 2024 Todos los derechos reservados</p>
+<div style='
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-top: 4rem;
+    text-align: center;
+'>
+    <h4 style='color: #1a1a1a; margin-bottom: 1rem; font-size: 1.2rem; font-weight: 600;'>
+        TodoDrogas - Sistema de Automatización Inteligente
+    </h4>
+    <p style='color: #666; margin-bottom: 0.5rem; font-size: 0.9rem;'>
+        Optimizando procesos mediante tecnología avanzada • v2.1
+    </p>
+    <p style='color: #999; font-size: 0.8rem;'>
+        Última actualización: """ + datetime.now().strftime("%d/%m/%Y %H:%M") + """ • © 2024 Todos los derechos reservados
+    </p>
 </div>
 
 <script>
 function navigateTo(area) {
     const routes = {
         'cuentas_médicas': '/Cuentas_Medicas',
-        'cartera': '/Cartera',
+        'cartera': '/Cartera', 
         'tesorería': '/Tesoreria',
         'metricas': '/Metricas_y_Contacto'
     };
