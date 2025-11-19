@@ -13,509 +13,380 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# CSS para navbar más compacto
+# Navbar moderna
+modern_navbar()
+
+# CSS minimalista y futurista
 st.markdown("""
 <style>
-    /* Navbar más compacto y limpio */
-    .navbar {
-        height: 60px !important;
-        min-height: 60px !important;
-        padding: 0.5rem 1rem !important;
-        background: rgba(255, 255, 255, 0.95) !important;
-        backdrop-filter: blur(10px) !important;
-        border-bottom: 1px solid rgba(0, 102, 204, 0.1) !important;
-        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08) !important;
+    /* Reset y base minimalista */
+    .main .block-container {
+        padding-top: 1rem;
+        padding-bottom: 0;
     }
     
-    .navbar-title {
-        font-size: 1.3rem !important;
-        font-weight: 700 !important;
-        color: #0066cc !important;
-        margin: 0 !important;
-        padding: 0 !important;
+    /* Hero section minimalista */
+    .hero-minimal {
+        background: transparent;
+        padding: 2rem 0 1rem 0;
+        margin: 0;
+        text-align: center;
+        position: relative;
     }
     
-    .navbar-logo {
-        height: 35px !important;
-        width: 35px !important;
-        margin-right: 0.5rem !important;
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        line-height: 1.1;
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(135deg, #0066cc 0%, #00a8ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.02em;
     }
     
-    /* Efectos 3D mejorados para las tarjetas */
-    .card-3d {
-        background: white;
+    .hero-subtitle {
+        color: #666;
+        font-size: 1.1rem;
+        font-weight: 400;
+        margin-bottom: 2rem;
+        line-height: 1.4;
+        font-family: "Inter", sans-serif;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    /* Grid de tarjetas futuristas */
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .card-futurist {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
         border-radius: 16px;
         padding: 2rem;
-        box-shadow: 
-            0 10px 30px rgba(0,0,0,0.1),
-            0 1px 8px rgba(0,0,0,0.05),
-            inset 0 1px 0 rgba(255,255,255,0.8);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        border: 1px solid rgba(255,255,255,0.3);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         overflow: hidden;
-        backdrop-filter: blur(10px);
     }
     
-    .card-3d::before {
+    .card-futurist::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #0066cc, #004499);
-        border-radius: 16px 16px 0 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #0066cc, transparent);
     }
     
-    .card-3d:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 
-            0 20px 50px rgba(0,0,0,0.15),
-            0 5px 15px rgba(0,0,0,0.1),
-            inset 0 1px 0 rgba(255,255,255,0.9);
-    }
-    
-    /* Iconos con efecto 3D - Solo azules */
-    .icon-3d {
-        width: 60px;
-        height: 60px;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, #0066cc, #004499);
-        box-shadow: 
-            0 8px 20px rgba(0, 102, 204, 0.3),
-            inset 0 1px 0 rgba(255,255,255,0.3);
-        position: relative;
-        transition: all 0.3s ease;
-    }
-    
-    .card-3d:hover .icon-3d {
-        transform: scale(1.1) rotate(5deg);
-        box-shadow: 
-            0 12px 30px rgba(0, 102, 204, 0.4),
-            inset 0 1px 0 rgba(255,255,255,0.4);
-    }
-    
-    /* Botones con efecto 3D - Solo azules */
-    .btn-3d {
-        background: linear-gradient(135deg, #0066cc, #004499);
-        color: white;
-        border: none;
-        padding: 0.8rem 1.5rem;
-        border-radius: 10px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 
-            0 6px 20px rgba(0, 102, 204, 0.3),
-            0 2px 4px rgba(0,0,0,0.1);
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .btn-3d::before {
+    .card-futurist::after {
         content: '';
         position: absolute;
         top: 0;
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-        transition: left 0.5s;
+        background: linear-gradient(90deg, transparent, rgba(0, 102, 204, 0.05), transparent);
+        transition: left 0.6s ease;
     }
     
-    .btn-3d:hover::before {
+    .card-futurist:hover::after {
         left: 100%;
     }
     
-    .btn-3d:hover {
-        transform: translateY(-2px);
+    .card-futurist:hover {
+        transform: translateY(-5px);
         box-shadow: 
-            0 8px 25px rgba(0, 102, 204, 0.4),
-            0 3px 6px rgba(0,0,0,0.15);
+            0 20px 40px rgba(0, 102, 204, 0.1),
+            0 8px 25px rgba(0, 0, 0, 0.05);
+        border-color: rgba(0, 102, 204, 0.2);
     }
     
-    /* Hero section con sombra 3D */
-    .hero-3d {
-        background: white;
-        padding: 4rem 2rem;
-        border-radius: 20px;
-        margin: 1rem 0 3rem 0;
-        color: #1a1a1a;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 
-            0 15px 40px rgba(0,0,0,0.12),
-            0 5px 15px rgba(0,0,0,0.08),
-            inset 0 1px 0 rgba(255,255,255,0.9);
-        border: 1px solid rgba(255,255,255,0.5);
-    }
-    
-    .hero-3d::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #0066cc, #0088ff, #004499);
-        border-radius: 20px 20px 0 0;
-    }
-    
-    /* BENEFICIOS CON SOMBRA 3D */
-    .benefits-3d {
-        background: white;
-        border-radius: 16px;
-        padding: 2.5rem;
-        box-shadow: 
-            0 12px 35px rgba(0,0,0,0.1),
-            0 3px 10px rgba(0,0,0,0.06),
-            inset 0 1px 0 rgba(255,255,255,0.8);
-        border: 1px solid rgba(255,255,255,0.4);
-        position: relative;
-        margin: 2rem 0;
+    .card-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #0066cc, #00a8ff);
+        font-size: 1.3rem;
+        color: white;
         transition: all 0.3s ease;
     }
     
-    .benefits-3d:hover {
-        box-shadow: 
-            0 15px 45px rgba(0,0,0,0.15),
-            0 5px 15px rgba(0,0,0,0.1),
-            inset 0 1px 0 rgba(255,255,255,0.9);
+    .card-futurist:hover .card-icon {
+        transform: scale(1.1) rotate(5deg);
     }
     
-    .benefits-3d::before {
+    .card-title {
+        color: #1a1a1a;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 0.8rem;
+        line-height: 1.3;
+    }
+    
+    .card-description {
+        color: #666;
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .card-button {
+        background: transparent;
+        color: #0066cc;
+        border: 1.5px solid #0066cc;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .card-button::before {
         content: '';
         position: absolute;
         top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, #0066cc, #0088ff, #004499);
-        border-radius: 16px 16px 0 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 102, 204, 0.1), transparent);
+        transition: left 0.5s;
+    }
+    
+    .card-button:hover::before {
+        left: 100%;
+    }
+    
+    .card-button:hover {
+        background: #0066cc;
+        color: white;
+        transform: translateY(-1px);
+    }
+    
+    /* Sección de beneficios minimalista */
+    .benefits-section {
+        background: transparent;
+        margin: 3rem 0;
+    }
+    
+    .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
     }
     
     .benefit-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid rgba(0,0,0,0.05);
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
         transition: all 0.3s ease;
     }
     
     .benefit-item:hover {
-        background: rgba(0,0,0,0.02);
-        border-radius: 8px;
-        padding: 1rem;
-        margin: 0 -0.5rem;
-    }
-    
-    .benefit-item:last-child {
-        border-bottom: none;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 102, 204, 0.1);
+        border-color: rgba(0, 102, 204, 0.2);
     }
     
     .benefit-icon {
-        font-size: 1.2rem;
-        min-width: 30px;
-        text-align: center;
-        background: linear-gradient(135deg, #0066cc, #004499);
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #0066cc, #00a8ff);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
     
-    .benefit-content h4 {
+    .benefit-title {
         color: #1a1a1a;
         font-size: 1rem;
         font-weight: 600;
-        margin-bottom: 0.3rem;
-        font-family: "Inter", sans-serif;
+        margin-bottom: 0.5rem;
     }
     
-    .benefit-content p {
+    .benefit-description {
         color: #666;
         font-size: 0.85rem;
         line-height: 1.4;
-        margin: 0;
-        font-family: "Inter", sans-serif;
     }
     
-    /* Footer con sombra 3D sutil */
-    .footer-3d {
-        background: white;
+    /* Footer minimalista */
+    .footer-minimal {
+        background: transparent;
         padding: 2rem 0;
         margin-top: 3rem;
         text-align: center;
-        border-radius: 16px 16px 0 0;
-        box-shadow: 
-            0 -5px 25px rgba(0,0,0,0.08),
-            0 -2px 10px rgba(0,0,0,0.04);
-        border-top: 1px solid rgba(0,0,0,0.05);
-        position: relative;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
     }
     
-    .footer-3d::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, #0066cc, #0088ff, #004499);
+    /* Efectos de partículas sutiles */
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .floating {
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.2rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+        
+        .cards-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Navbar moderna
-modern_navbar()
-
-# HERO SECTION - CON SOMBRA 3D (SIN FONDO AZUL)
+# HERO SECTION MINIMALISTA
 st.markdown("""
-<div class="hero-3d">
-    <h1 style='
-        color: #1a1a1a;
-        font-size: 3.5rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        line-height: 1.1;
-        font-family: "Inter", sans-serif;
-        text-align: center;
-        background: linear-gradient(135deg, #1a1a1a, #0066cc, #004499);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    '>
-    SISTEMA DE AUTOMATIZACIÓN
-    </h1>
-    
-    <h2 style='
-        color: #666666;
-        font-size: 1.8rem;
-        font-weight: 400;
-        margin-top: 0.5rem;
-        margin-bottom: 1.5rem;
-        line-height: 1.3;
-        font-family: "Inter", sans-serif;
-        text-align: center;
-    '>
-    Transformando procesos mediante tecnología inteligente
-    </h2>
-    
-    <div style='
-        color: #666666;
-        font-size: 1.1rem;
-        line-height: 1.6;
-        margin-bottom: 2rem;
-        text-align: center;
-        max-width: 800px;
-        margin-left: auto;
-        margin-right: auto;
-    '>
-        <p>El futuro es la tecnología, y hoy se convierte en nuestra mejor herramienta.</p>
-        <p>Centralizamos automatizaciones por área para optimizar procesos y mejorar la eficiencia operativa.</p>
-    </div>
-    
-    <div style='
-        display: flex;
-        gap: 1rem;
-        margin-top: 1.5rem;
-        justify-content: center;
-        flex-wrap: wrap;
-    '>
-        <button class="btn-3d">
-            Explorar Automatizaciones
-        </button>
-        
-        <button style='
-            background: transparent;
-            color: #0066cc;
-            border: 2px solid #0066cc;
-            padding: 0.8rem 1.8rem;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        ' onmouseover="this.style.background='#0066cc'; this.style.color='white'; this.style.transform='translateY(-2px)'" 
-        onmouseout="this.style.background='transparent'; this.style.color='#0066cc'; this.style.transform='translateY(0)'">
-            Ver Demo
-        </button>
-    </div>
+<div class="hero-minimal">
+    <h1 class="hero-title">Sistema de Automatización</h1>
+    <p class="hero-subtitle">Optimizando procesos mediante tecnología inteligente y eficiente</p>
 </div>
 """, unsafe_allow_html=True)
 
-# SEPARADOR
-st.markdown("<div style='height: 1px; background: linear-gradient(90deg, transparent, #e0e0e0, transparent); margin: 3rem 0;'></div>", unsafe_allow_html=True)
-
 # SECCIÓN DE AUTOMATIZACIONES
 st.markdown("""
-<div style='text-align: center; margin-bottom: 2rem;'>
-    <h2 style='
-        color: #1a1a1a;
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 0.8rem;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    '>
-    Áreas de Automatización
+<div style='text-align: center; margin: 2rem 0;'>
+    <h2 style='color: #1a1a1a; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem;'>
+        Áreas de Automatización
     </h2>
-    <p style='color: #666666; font-size: 1.1rem;'>
-    Selecciona un área para acceder a sus herramientas especializadas
+    <p style='color: #666; font-size: 0.95rem;'>
+        Herramientas especializadas para cada departamento
     </p>
 </div>
 """, unsafe_allow_html=True)
 
-# GRID DE TARJETAS 3D
-col1, col2, col3, col4 = st.columns(4)
-
-# Datos de las áreas para reutilización - Solo azules
+# GRID DE TARJETAS FUTURISTAS
 areas_data = [
     {
         "name": "Cuentas Médicas",
         "icon": "📋",
-        "description": "SAVIA & COOSALUD: Conversores JSON, Renombradores RIPS/CUV<br>SALUD TOTAL: Procesador OCR + Renombrado",
+        "description": "Procesamiento automatizado de documentos médicos y conversión de formatos",
         "button_text": "Acceder"
     },
     {
         "name": "Cartera",
-        "icon": "💰",
-        "description": "Gestión automatizada de estados de cuenta y reportes financieros con análisis inteligente",
+        "icon": "💰", 
+        "description": "Gestión inteligente de estados de cuenta y reportes financieros",
         "button_text": "Acceder"
     },
     {
         "name": "Tesorería",
-        "icon": "🏦", 
-        "description": "Control automatizado de estados bancarios y flujo financiero con máxima seguridad",
+        "icon": "🏦",
+        "description": "Control automatizado de estados bancarios y flujo financiero",
         "button_text": "Acceder"
     },
     {
         "name": "Métricas",
         "icon": "📊",
-        "description": "Dashboard de resultados y análisis de impacto de todas las automatizaciones implementadas",
+        "description": "Dashboard de resultados y análisis de impacto en tiempo real",
         "button_text": "Acceder"
     }
 ]
 
-# Renderizar tarjetas 3D
-columns = [col1, col2, col3, col4]
-for i, (col, area) in enumerate(zip(columns, areas_data)):
-    with col:
-        st.markdown(f"""
-        <div class="card-3d" style="height: 320px; display: flex; flex-direction: column;">
-            <div class="icon-3d">
-                <span style='color: white; font-size: 1.5rem;'>{area['icon']}</span>
-            </div>
-            
-            <h3 style='
-                color: #1a1a1a;
-                font-size: 1.3rem;
-                font-weight: 700;
-                margin-bottom: 1rem;
-                line-height: 1.3;
-            '>
-            {area['name']}
-            </h3>
-            
-            <div style='
-                color: #666666;
-                line-height: 1.5;
-                margin-bottom: 1.5rem;
-                flex-grow: 1;
-                font-size: 0.85rem;
-            '>
-                {area['description']}
-            </div>
-            
-            <button class="btn-3d" style="width: 100%;" onclick="navigateTo('{area['name'].lower().replace(' ', '_').replace('métricas', 'metricas')}')">
-                {area['button_text']}
-            </button>
-        </div>
-        """, unsafe_allow_html=True)
+# Crear el grid con HTML
+st.markdown("""
+<div class="cards-grid">
+""", unsafe_allow_html=True)
 
-# SEPARADOR ANTES DE BENEFICIOS
+for area in areas_data:
+    st.markdown(f"""
+    <div class="card-futurist">
+        <div class="card-icon">{area['icon']}</div>
+        <h3 class="card-title">{area['name']}</h3>
+        <p class="card-description">{area['description']}</p>
+        <button class="card-button" onclick="navigateTo('{area['name'].lower().replace(' ', '_').replace('métricas', 'metricas')}')">
+            {area['button_text']}
+        </button>
+    </div>
+    """, unsafe_allow_html=True)
+
+st.markdown("</div>", unsafe_allow_html=True)
+
+# SEPARADOR SUTIL
 st.markdown("<div style='height: 1px; background: linear-gradient(90deg, transparent, #e0e0e0, transparent); margin: 3rem 0;'></div>", unsafe_allow_html=True)
 
-# BENEFICIOS CLAVE - CON SOMBRA 3D (SIN FONDO AZUL)
+# BENEFICIOS CLAVE
 st.markdown("""
-<div class="benefits-3d">
-    <div style='text-align: center; margin-bottom: 2rem;'>
-        <h3 style='
-            color: #1a1a1a;
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-family: "Inter", sans-serif;
-        '>
-        Beneficios Clave
-        </h3>
-        <p style='color: #666666; font-size: 0.95rem; font-family: "Inter", sans-serif;'>
-        Ventajas competitivas de nuestras soluciones de automatización
+<div class="benefits-section">
+    <div style='text-align: center;'>
+        <h2 style='color: #1a1a1a; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem;'>
+            Beneficios Clave
+        </h2>
+        <p style='color: #666; font-size: 0.95rem; margin-bottom: 2rem;'>
+            Ventajas competitivas de nuestra plataforma
         </p>
     </div>
     
-    <div style='max-width: 800px; margin: 0 auto;'>
+    <div class="benefits-grid">
         <div class="benefit-item">
             <div class="benefit-icon">⚡</div>
-            <div class="benefit-content">
-                <h4>Reducción de Tiempos</h4>
-                <p>Procesa en minutos lo que antes tomaba horas de trabajo manual repetitivo</p>
-            </div>
+            <h4 class="benefit-title">Reducción de Tiempos</h4>
+            <p class="benefit-description">Procesa en minutos lo que antes tomaba horas</p>
         </div>
         
         <div class="benefit-item">
             <div class="benefit-icon">🎯</div>
-            <div class="benefit-content">
-                <h4>Mayor Precisión</h4>
-                <p>Elimina errores humanos con procesos automatizados y validados</p>
-            </div>
+            <h4 class="benefit-title">Mayor Precisión</h4>
+            <p class="benefit-description">Elimina errores humanos con validaciones automáticas</p>
         </div>
         
         <div class="benefit-item">
             <div class="benefit-icon">📊</div>
-            <div class="benefit-content">
-                <h4>Reportes Automáticos</h4>
-                <p>Genera reportes en tiempo real sin intervención manual continua</p>
-            </div>
+            <h4 class="benefit-title">Reportes Automáticos</h4>
+            <p class="benefit-description">Genera insights en tiempo real sin intervención manual</p>
         </div>
         
         <div class="benefit-item">
             <div class="benefit-icon">🔗</div>
-            <div class="benefit-content">
-                <h4>Integración Total</h4>
-                <p>Conecta todos tus sistemas y procesos en una sola plataforma unificada</p>
-            </div>
-        </div>
-        
-        <div class="benefit-item">
-            <div class="benefit-icon">🛡️</div>
-            <div class="benefit-content">
-                <h4>Seguridad Avanzada</h4>
-                <p>Protección de datos con encriptación y controles de acceso granular</p>
-            </div>
-        </div>
-        
-        <div class="benefit-item">
-            <div class="benefit-icon">📈</div>
-            <div class="benefit-content">
-                <h4>Escalabilidad</h4>
-                <p>Adapta el sistema a tu crecimiento sin necesidad de reinversiones</p>
-            </div>
+            <h4 class="benefit-title">Integración Total</h4>
+            <p class="benefit-description">Conecta todos tus sistemas en una plataforma unificada</p>
         </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# FOOTER CON SOMBRA 3D (SIN FONDO AZUL)
+# FOOTER MINIMALISTA
 st.markdown("""
-<div class="footer-3d">
-    <h4 style='color: #1a1a1a; margin-bottom: 0.8rem; font-size: 1.1rem; font-weight: 600; font-family: "Inter", sans-serif;'>TodoDrogas - Sistema de Automatización</h4>
-    <p style='color: #666666; margin-bottom: 0.4rem; font-size: 0.9rem; font-family: "Inter", sans-serif;'>Optimizando procesos mediante tecnología avanzada</p>
-    <p style='color: #999999; font-size: 0.8rem; font-family: "Inter", sans-serif;'>© 2024 Todos los derechos reservados</p>
+<div class="footer-minimal">
+    <h4 style='color: #1a1a1a; margin-bottom: 0.5rem; font-size: 1rem; font-weight: 600;'>
+        TodoDrogas - Sistema de Automatización
+    </h4>
+    <p style='color: #666; font-size: 0.85rem; margin: 0;'>
+        Optimizando procesos mediante tecnología avanzada
+    </p>
 </div>
 
 <script>
