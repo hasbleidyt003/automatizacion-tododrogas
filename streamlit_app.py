@@ -17,7 +17,7 @@ st.set_page_config(
 # Navbar moderna
 modern_navbar()
 
-# CSS mejorado para plataforma profesional
+# CSS mejorado con paleta azul/blanco/gris
 st.markdown("""
 <style>
     /* Reset y base profesional */
@@ -26,66 +26,50 @@ st.markdown("""
         max-width: 1200px;
     }
     
-    /* Tarjetas profesionales para plataforma */
+    /* Tarjetas profesionales */
     .platform-card {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        border-radius: 12px;
+        background: white;
+        border-radius: 8px;
         padding: 1.5rem;
-        border: 1px solid #e9ecef;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        transition: all 0.3s ease;
+        border: 1px solid #e1e5e9;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        transition: all 0.2s ease;
         height: 100%;
         position: relative;
         overflow: hidden;
     }
     
-    .platform-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 100%;
-        background: linear-gradient(180deg, var(--accent-color), var(--accent-dark));
-        transition: width 0.3s ease;
-    }
-    
     .platform-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        border-color: var(--accent-color);
-    }
-    
-    .platform-card:hover::before {
-        width: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-color: #0066cc;
     }
     
     /* Iconos profesionales */
     .platform-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 10px;
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
         margin-bottom: 1rem;
-        background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
+        background: #0066cc;
         color: white;
         font-size: 1.2rem;
-        box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.2);
     }
     
-    /* Botones de acción profesional */
+    /* Botones de acción */
     .platform-btn {
-        background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
+        background: #0066cc;
         color: white;
         border: none;
-        padding: 0.7rem 1.2rem;
-        border-radius: 8px;
-        font-weight: 600;
+        padding: 0.6rem 1rem;
+        border-radius: 6px;
+        font-weight: 500;
         font-size: 0.9rem;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
         width: 100%;
         text-align: center;
         text-decoration: none;
@@ -93,318 +77,213 @@ st.markdown("""
     }
     
     .platform-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
+        background: #0052a3;
         color: white;
         text-decoration: none;
     }
     
     /* Header profesional */
     .platform-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 3rem 2rem;
-        border-radius: 12px;
-        margin: 1rem 0 2rem 0;
-        color: white;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .platform-header::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 200px;
-        height: 200px;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-    }
-    
-    /* Estadísticas rápidas */
-    .stats-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 1rem;
-        margin: 1.5rem 0;
-    }
-    
-    .stat-item {
-        text-align: center;
-        padding: 1rem;
-        background: rgba(255,255,255,0.1);
+        background: white;
+        padding: 2rem;
         border-radius: 8px;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.2);
+        margin: 1rem 0 2rem 0;
+        border: 1px solid #e1e5e9;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     
     /* Badges de estado */
     .status-badge {
         display: inline-block;
         padding: 0.3rem 0.8rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 600;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 500;
         margin-bottom: 0.5rem;
     }
     
     .status-active {
-        background: rgba(76, 175, 80, 0.1);
-        color: #4caf50;
-        border: 1px solid rgba(76, 175, 80, 0.3);
+        background: #e6f2ff;
+        color: #0066cc;
+        border: 1px solid #b3d9ff;
     }
     
     .status-development {
-        background: rgba(255, 152, 0, 0.1);
-        color: #ff9800;
-        border: 1px solid rgba(255, 152, 0, 0.3);
+        background: #fff4e6;
+        color: #cc5500;
+        border: 1px solid #ffd9b3;
+    }
+    
+    /* Features badges */
+    .feature-badge {
+        display: inline-block;
+        background: #f8f9fa;
+        color: #495057;
+        padding: 0.2rem 0.6rem;
+        border-radius: 10px;
+        font-size: 0.7rem;
+        margin: 0.1rem;
+        border: 1px solid #e9ecef;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# HEADER PROFESIONAL
-st.markdown("""
-<div class="platform-header">
-    <div style="position: relative; z-index: 2;">
-        <h1 style='
-            color: white;
-            font-size: 2.8rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            line-height: 1.1;
-        '>
-        Plataforma de Automatización
-        </h1>
+# HEADER CON COMPONENTES NATIVOS DE STREAMLIT
+with st.container():
+    col1, col2 = st.columns([3, 1])
+    
+    with col1:
+        st.title("Plataforma de Automatización")
+        st.subheader("TodoDrogas - Sistema integrado de gestión automatizada")
         
-        <h2 style='
-            color: rgba(255,255,255,0.9);
-            font-size: 1.4rem;
-            font-weight: 400;
-            margin-bottom: 1.5rem;
-        '>
-        TodoDrogas - Sistema integrado de gestión automatizada
-        </h2>
-        
-        <div class="stats-container">
-            <div class="stat-item">
-                <div style="font-size: 1.8rem; font-weight: 700;">3</div>
-                <div style="font-size: 0.8rem; opacity: 0.9;">Áreas Activas</div>
-            </div>
-            <div class="stat-item">
-                <div style="font-size: 1.8rem; font-weight: 700;">12+</div>
-                <div style="font-size: 0.8rem; opacity: 0.9;">Automatizaciones</div>
-            </div>
-            <div class="stat-item">
-                <div style="font-size: 1.8rem; font-weight: 700;">99.8%</div>
-                <div style="font-size: 0.8rem; opacity: 0.9;">Eficiencia</div>
-            </div>
-        </div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+        # Métricas usando columns nativas
+        metric_cols = st.columns(3)
+        with metric_cols[0]:
+            st.metric("Áreas Activas", "3", "100% operativas")
+        with metric_cols[1]:
+            st.metric("Automatizaciones", "12+", "En crecimiento")
+        with metric_cols[2]:
+            st.metric("Eficiencia", "99.8%", "+0.2%")
+    
+    with col2:
+        st.info("✅ **Sistema Operativo**\n\nTodas las funciones activas y estables")
 
 # SECCIÓN PRINCIPAL - MÓDULOS DE AUTOMATIZACIÓN
-st.markdown("""
-<div style='margin-bottom: 2rem;'>
-    <h2 style='
-        color: #1a1a1a;
-        font-size: 1.8rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-    '>
-    Módulos de Automatización
-    </h2>
-    <p style='color: #666666;'>
-    Sistemas especializados por área operativa. Selecciona un módulo para acceder a sus herramientas.
-    </p>
-</div>
-""", unsafe_allow_html=True)
+st.header("Módulos de Automatización")
+st.write("Sistemas especializados por área operativa. Selecciona un módulo para acceder a sus herramientas.")
 
-# DATOS DE LOS MÓDULOS - ACTUALIZADO PARA MATCH CON TU ESTRUCTURA
+# DATOS DE LOS MÓDULOS
 modules_data = [
     {
         "name": "Cuentas Médicas",
         "icon": "📋",
-        "accent_color": "#0066cc",
-        "accent_dark": "#004499", 
-        "accent_rgb": "0, 102, 204",
         "description": "Procesamiento automatizado de cuentas médicas con conversores JSON, renombrado RIPS/CUV y procesamiento OCR.",
         "status": "active",
         "status_text": "En Producción",
         "features": ["SAVIA & COOSALUD", "SALUD TOTAL", "Procesador OCR"],
-        "page": "1_Cuentas_Medicas"  # Match con tu estructura de archivos
+        "page": "Cuentas_Medicas"
     },
     {
         "name": "Cartera", 
         "icon": "💰",
-        "accent_color": "#00a86b",
-        "accent_dark": "#007a4d",
-        "accent_rgb": "0, 168, 107",
         "description": "Gestión automatizada de estados de cuenta, reportes financieros y análisis de cartera.",
         "status": "active", 
         "status_text": "En Producción",
         "features": ["Estados de Cuenta", "Reportes Financieros", "Análisis Inteligente"],
-        "page": "2_Cartera"  # Match con tu estructura de archivos
+        "page": "Cartera"
     },
     {
         "name": "Tesorería",
         "icon": "🏦",
-        "accent_color": "#ff6b35", 
-        "accent_dark": "#cc552b",
-        "accent_rgb": "255, 107, 53",
         "description": "Control automatizado de estados bancarios, conciliación y gestión de flujo financiero.",
         "status": "active",
         "status_text": "En Producción", 
         "features": ["Estados Bancarios", "Conciliación", "Flujo Financiero"],
-        "page": "3_Tesoreria"  # Match con tu estructura de archivos
+        "page": "Tesoreria"
     },
     {
         "name": "Métricas & Reportes",
         "icon": "📊",
-        "accent_color": "#8a2be2",
-        "accent_dark": "#6a1cb3",
-        "accent_rgb": "138, 43, 226", 
         "description": "Dashboard de métricas, análisis de impacto y reportes consolidados del sistema.",
         "status": "development",
         "status_text": "En Desarrollo",
         "features": ["Dashboard", "Análisis de Impacto", "Reportes"],
-        "page": "Metricas"  # Puedes crear este archivo después
+        "page": "Metricas"
     }
 ]
 
-# GRID DE MÓDULOS
-cols = st.columns(2)
-for i, module in enumerate(modules_data):
-    with cols[i % 2]:  # Distribuye en 2 columnas
-        status_class = "status-active" if module["status"] == "active" else "status-development"
-        
-        st.markdown(f"""
-        <div class="platform-card" style="
-            --accent-color: {module['accent_color']}; 
-            --accent-dark: {module['accent_dark']}; 
-            --accent-rgb: {module['accent_rgb']};
-        ">
-            <div class="status-badge {status_class}">
-                {module['status_text']}
-            </div>
-            
-            <div class="platform-icon">
-                {module['icon']}
-            </div>
-            
-            <h3 style='
-                color: #1a1a1a;
-                font-size: 1.3rem;
-                font-weight: 600;
-                margin-bottom: 0.8rem;
-            '>
-            {module['name']}
-            </h3>
-            
-            <div style='
-                color: #666666;
-                line-height: 1.5;
-                margin-bottom: 1.2rem;
-                font-size: 0.9rem;
-            '>
-                {module['description']}
-            </div>
-            
-            <div style='margin-bottom: 1.5rem;'>
-        """, unsafe_allow_html=True)
-        
-        # Features como badges
-        for feature in module["features"]:
-            st.markdown(f"""
-            <span style='
-                display: inline-block;
-                background: rgba(var(--accent-rgb), 0.1);
-                color: var(--accent-color);
-                padding: 0.2rem 0.6rem;
-                border-radius: 12px;
-                font-size: 0.75rem;
-                margin: 0.2rem;
-                border: 1px solid rgba(var(--accent-rgb), 0.2);
-            '>
-            {feature}
-            </span>
-            """, unsafe_allow_html=True)
-        
-        st.markdown(f"""
-            </div>
-            
-            <a href="/{module['page']}" class="platform-btn" style="text-decoration: none;">
-                Acceder al Módulo
-            </a>
-        </div>
-        """, unsafe_allow_html=True)
+# GRID DE MÓDULOS USANDO COLUMNS NATIVAS
+for i in range(0, len(modules_data), 2):
+    cols = st.columns(2)
+    
+    for j in range(2):
+        if i + j < len(modules_data):
+            module = modules_data[i + j]
+            with cols[j]:
+                # Usar container nativo de Streamlit
+                with st.container():
+                    # Status badge
+                    status_color = "🟢" if module["status"] == "active" else "🟡"
+                    st.write(f"{status_color} **{module['status_text']}**")
+                    
+                    # Icono y título
+                    col_icon, col_title = st.columns([1, 4])
+                    with col_icon:
+                        st.write(f"<div class='platform-icon'>{module['icon']}</div>", unsafe_allow_html=True)
+                    with col_title:
+                        st.subheader(module["name"])
+                    
+                    # Descripción
+                    st.write(module["description"])
+                    
+                    # Features
+                    features_html = "".join([f"<span class='feature-badge'>{feature}</span>" for feature in module["features"]])
+                    st.write(f"<div style='margin: 0.5rem 0;'>{features_html}</div>", unsafe_allow_html=True)
+                    
+                    # Botón de acceso
+                    if st.button(f"Acceder a {module['name']}", key=f"btn_{module['page']}"):
+                        st.switch_page(f"pages/{module['page']}.py")
 
 # SEPARADOR
-st.markdown("<div style='height: 1px; background: #e9ecef; margin: 2rem 0;'></div>", unsafe_allow_html=True)
+st.divider()
 
 # SECCIÓN DE ESTADO DEL SISTEMA
-st.markdown("""
-<div style='margin-bottom: 2rem;'>
-    <h2 style='
-        color: #1a1a1a;
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-    '>
-    Estado del Sistema
-    </h2>
-</div>
-""", unsafe_allow_html=True)
+st.header("Estado del Sistema")
 
-# ESTADÍSTICAS RÁPIDAS
+# ESTADÍSTICAS USANDO METRICS NATIVAS
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.markdown("""
-    <div class="platform-card" style="--accent-color: #00a86b; --accent-dark: #007a4d; --accent-rgb: 0, 168, 107;">
-        <div style="text-align: center;">
-            <div style="font-size: 2rem; color: #00a86b; margin-bottom: 0.5rem;">⚡</div>
-            <h3 style="color: #1a1a1a; font-size: 1.1rem; margin-bottom: 0.5rem;">Tiempo Activo</h3>
-            <div style="font-size: 1.5rem; font-weight: 700; color: #00a86b;">24/7</div>
-            <div style="color: #666666; font-size: 0.8rem;">Operación continua</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.metric(
+        label="Tiempo Activo", 
+        value="24/7", 
+        delta="Operación continua",
+        delta_color="off"
+    )
 
 with col2:
-    st.markdown("""
-    <div class="platform-card" style="--accent-color: #0066cc; --accent-dark: #004499; --accent-rgb: 0, 102, 204;">
-        <div style="text-align: center;">
-            <div style="font-size: 2rem; color: #0066cc; margin-bottom: 0.5rem;">🔄</div>
-            <h3 style="color: #1a1a1a; font-size: 1.1rem; margin-bottom: 0.5rem;">Procesos Hoy</h3>
-            <div style="font-size: 1.5rem; font-weight: 700; color: #0066cc;">1,247</div>
-            <div style="color: #666666; font-size: 0.8rem;">Automatizaciones ejecutadas</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.metric(
+        label="Procesos Hoy", 
+        value="1,247", 
+        delta="+12% vs ayer"
+    )
 
 with col3:
-    st.markdown("""
-    <div class="platform-card" style="--accent-color: #8a2be2; --accent-dark: #6a1cb3; --accent-rgb: 138, 43, 226;">
-        <div style="text-align: center;">
-            <div style="font-size: 2rem; color: #8a2be2; margin-bottom: 0.5rem;">✅</div>
-            <h3 style="color: #1a1a1a; font-size: 1.1rem; margin-bottom: 0.5rem;">Eficiencia</h3>
-            <div style="font-size: 1.5rem; font-weight: 700; color: #8a2be2;">99.8%</div>
-            <div style="color: #666666; font-size: 0.8rem;">Tasa de éxito</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.metric(
+        label="Eficiencia del Sistema", 
+        value="99.8%", 
+        delta="+0.2%",
+        delta_color="normal"
+    )
 
-# FOOTER PROFESIONAL
-st.markdown("""
-<div style='
-    background: #f8f9fa;
-    padding: 2rem 0;
-    margin-top: 3rem;
-    text-align: center;
-    border-top: 1px solid #e9ecef;
-'>
-    <div style='color: #1a1a1a; font-weight: 600; margin-bottom: 0.5rem;'>TodoDrogas - Plataforma de Automatización</div>
-    <div style='color: #666666; font-size: 0.9rem;'>Sistema integrado de gestión • v2.1.0</div>
-    <div style='color: #999999; font-size: 0.8rem; margin-top: 0.5rem;'>© 2024 Sistema de Automatización</div>
-</div>
-""", unsafe_allow_html=True)
+# INFORMACIÓN ADICIONAL DEL SISTEMA
+with st.expander("📋 Información Técnica del Sistema"):
+    tech_cols = st.columns(2)
+    
+    with tech_cols[0]:
+        st.write("**Versiones Activas:**")
+        st.write("- Cuentas Médicas: v2.1.0")
+        st.write("- Cartera: v1.8.2") 
+        st.write("- Tesorería: v1.5.1")
+        
+    with tech_cols[1]:
+        st.write("**Próximas Actualizaciones:**")
+        st.write("- Métricas & Reportes: Q1 2024")
+        st.write("- API Integration: Q2 2024")
+        st.write("- Mobile App: Q3 2024")
+
+# FOOTER CON COMPONENTES NATIVOS
+st.divider()
+footer_cols = st.columns(3)
+
+with footer_cols[0]:
+    st.write("**TodoDrogas Automation**")
+    st.write("Sistema integrado de gestión")
+
+with footer_cols[1]:
+    st.write("**Versión:** 2.1.0")
+    st.write("**Última actualización:** Enero 2024")
+
+with footer_cols[2]:
+    st.write("**Soporte Técnico**")
+    st.write("soporte@tododrogas.com")
