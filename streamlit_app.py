@@ -16,7 +16,7 @@ st.set_page_config(
 # Navbar moderna
 modern_navbar()
 
-# CSS para efectos 3D y mejoras visuales
+# CSS optimizado con mejor tipografía para beneficios
 st.markdown("""
 <style>
     /* Efectos 3D para las tarjetas */
@@ -145,31 +145,62 @@ st.markdown("""
         50% { transform: translateY(-10px) rotate(180deg); }
     }
     
-    /* Tarjeta de beneficios full width */
-    .benefits-card {
+    /* BENEFICIOS MINIMALISTAS - TIPOGRAFÍA MÁS PEQUEÑA */
+    .benefits-minimal {
         background: white;
         border-radius: 16px;
-        padding: 3rem;
+        padding: 2.5rem;
         box-shadow: 
-            0 10px 30px rgba(0,0,0,0.1),
-            0 1px 8px rgba(0,0,0,0.05),
-            inset 0 1px 0 rgba(255,255,255,0.8);
-        border: 1px solid rgba(255,255,255,0.3);
+            0 8px 25px rgba(0,0,0,0.08),
+            0 1px 6px rgba(0,0,0,0.04);
+        border: 1px solid rgba(0,0,0,0.05);
         position: relative;
-        overflow: hidden;
-        backdrop-filter: blur(10px);
         margin: 2rem 0;
     }
     
-    .benefits-card::before {
+    .benefits-minimal::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 4px;
+        height: 3px;
         background: linear-gradient(90deg, #0066cc, #00a86b, #ff6b35, #8a2be2);
         border-radius: 16px 16px 0 0;
+    }
+    
+    .benefit-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .benefit-item:last-child {
+        border-bottom: none;
+    }
+    
+    .benefit-icon {
+        font-size: 1.2rem;
+        min-width: 30px;
+        text-align: center;
+    }
+    
+    .benefit-content h4 {
+        color: #1a1a1a;
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.3rem;
+        font-family: "Inter", sans-serif;
+    }
+    
+    .benefit-content p {
+        color: #666;
+        font-size: 0.85rem;
+        line-height: 1.4;
+        margin: 0;
+        font-family: "Inter", sans-serif;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -368,51 +399,71 @@ for i, (col, area) in enumerate(zip(columns, areas_data)):
 # SEPARADOR ANTES DE BENEFICIOS
 st.markdown("<div style='height: 1px; background: linear-gradient(90deg, transparent, #e0e0e0, transparent); margin: 3rem 0;'></div>", unsafe_allow_html=True)
 
-# BENEFICIOS CLAVE - CON ANCHO COMPLETO AL FINAL
+# BENEFICIOS CLAVE - VERSIÓN MINIMALISTA CON TIPOGRAFÍA MÁS PEQUEÑA
 st.markdown("""
-<div class="benefits-card">
+<div class="benefits-minimal">
     <div style='text-align: center; margin-bottom: 2rem;'>
-        <h2 style='
+        <h3 style='
             color: #1a1a1a;
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 1.5rem;
+            font-weight: 600;
             margin-bottom: 0.5rem;
+            font-family: "Inter", sans-serif;
         '>
-        🚀 Beneficios Clave
-        </h2>
-        <p style='color: #666666; font-size: 1.1rem;'>
-        Descubre las ventajas de implementar nuestras soluciones de automatización
+        Beneficios Clave
+        </h3>
+        <p style='color: #666666; font-size: 0.95rem; font-family: "Inter", sans-serif;'>
+        Ventajas competitivas de nuestras soluciones de automatización
         </p>
     </div>
     
-    <div style='
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-        margin-top: 2rem;
-    '>
-        <div style='text-align: center; padding: 1.5rem; background: #f8f9fa; border-radius: 12px;'>
-            <div style='font-size: 2.5rem; margin-bottom: 1rem;'>⚡</div>
-            <h4 style='color: #1a1a1a; margin-bottom: 0.5rem;'>Reducción de Tiempos</h4>
-            <p style='color: #666; font-size: 0.9rem;'>Procesa en minutos lo que antes tomaba horas de trabajo manual</p>
+    <div style='max-width: 800px; margin: 0 auto;'>
+        <div class="benefit-item">
+            <div class="benefit-icon">⚡</div>
+            <div class="benefit-content">
+                <h4>Reducción de Tiempos</h4>
+                <p>Procesa en minutos lo que antes tomaba horas de trabajo manual repetitivo</p>
+            </div>
         </div>
         
-        <div style='text-align: center; padding: 1.5rem; background: #f8f9fa; border-radius: 12px;'>
-            <div style='font-size: 2.5rem; margin-bottom: 1rem;'>🎯</div>
-            <h4 style='color: #1a1a1a; margin-bottom: 0.5rem;'>Mayor Precisión</h4>
-            <p style='color: #666; font-size: 0.9rem;'>Elimina errores humanos con procesos automatizados y validados</p>
+        <div class="benefit-item">
+            <div class="benefit-icon">🎯</div>
+            <div class="benefit-content">
+                <h4>Mayor Precisión</h4>
+                <p>Elimina errores humanos con procesos automatizados y validados</p>
+            </div>
         </div>
         
-        <div style='text-align: center; padding: 1.5rem; background: #f8f9fa; border-radius: 12px;'>
-            <div style='font-size: 2.5rem; margin-bottom: 1rem;'>📊</div>
-            <h4 style='color: #1a1a1a; margin-bottom: 0.5rem;'>Reportes Automáticos</h4>
-            <p style='color: #666; font-size: 0.9rem;'>Genera reportes en tiempo real sin intervención manual</p>
+        <div class="benefit-item">
+            <div class="benefit-icon">📊</div>
+            <div class="benefit-content">
+                <h4>Reportes Automáticos</h4>
+                <p>Genera reportes en tiempo real sin intervención manual continua</p>
+            </div>
         </div>
         
-        <div style='text-align: center; padding: 1.5rem; background: #f8f9fa; border-radius: 12px;'>
-            <div style='font-size: 2.5rem; margin-bottom: 1rem;'>🔗</div>
-            <h4 style='color: #1a1a1a; margin-bottom: 0.5rem;'>Integración Total</h4>
-            <p style='color: #666; font-size: 0.9rem;'>Conecta todos tus sistemas y procesos en una sola plataforma</p>
+        <div class="benefit-item">
+            <div class="benefit-icon">🔗</div>
+            <div class="benefit-content">
+                <h4>Integración Total</h4>
+                <p>Conecta todos tus sistemas y procesos en una sola plataforma unificada</p>
+            </div>
+        </div>
+        
+        <div class="benefit-item">
+            <div class="benefit-icon">🛡️</div>
+            <div class="benefit-content">
+                <h4>Seguridad Avanzada</h4>
+                <p>Protección de datos con encriptación y controles de acceso granular</p>
+            </div>
+        </div>
+        
+        <div class="benefit-item">
+            <div class="benefit-icon">📈</div>
+            <div class="benefit-content">
+                <h4>Escalabilidad</h4>
+                <p>Adapta el sistema a tu crecimiento sin necesidad de reinversiones</p>
+            </div>
         </div>
     </div>
 </div>
@@ -422,14 +473,14 @@ st.markdown("""
 st.markdown("""
 <div style='
     background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    padding: 2.5rem 0;
+    padding: 2rem 0;
     margin-top: 3rem;
     text-align: center;
     border-top: 1px solid #e0e0e0;
 '>
-    <h4 style='color: #1a1a1a; margin-bottom: 0.8rem; font-size: 1.2rem; font-weight: 600;'>TodoDrogas - Sistema de Automatización</h4>
-    <p style='color: #666666; margin-bottom: 0.4rem; font-size: 0.95rem;'>Optimizando procesos mediante tecnología avanzada</p>
-    <p style='color: #999999; font-size: 0.8rem;'>© 2024 Todos los derechos reservados</p>
+    <h4 style='color: #1a1a1a; margin-bottom: 0.8rem; font-size: 1.1rem; font-weight: 600; font-family: "Inter", sans-serif;'>TodoDrogas - Sistema de Automatización</h4>
+    <p style='color: #666666; margin-bottom: 0.4rem; font-size: 0.9rem; font-family: "Inter", sans-serif;'>Optimizando procesos mediante tecnología avanzada</p>
+    <p style='color: #999999; font-size: 0.8rem; font-family: "Inter", sans-serif;'>© 2024 Todos los derechos reservados</p>
 </div>
 
 <script>
