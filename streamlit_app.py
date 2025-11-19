@@ -13,12 +13,34 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Navbar moderna
-modern_navbar()
-
-# CSS optimizado con efectos 3D mejorados
+# CSS para navbar más compacto
 st.markdown("""
 <style>
+    /* Navbar más compacto y limpio */
+    .navbar {
+        height: 60px !important;
+        min-height: 60px !important;
+        padding: 0.5rem 1rem !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px) !important;
+        border-bottom: 1px solid rgba(0, 102, 204, 0.1) !important;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08) !important;
+    }
+    
+    .navbar-title {
+        font-size: 1.3rem !important;
+        font-weight: 700 !important;
+        color: #0066cc !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .navbar-logo {
+        height: 35px !important;
+        width: 35px !important;
+        margin-right: 0.5rem !important;
+    }
+    
     /* Efectos 3D mejorados para las tarjetas */
     .card-3d {
         background: white;
@@ -42,7 +64,7 @@ st.markdown("""
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, var(--accent-color), var(--accent-dark));
+        background: linear-gradient(90deg, #0066cc, #004499);
         border-radius: 16px 16px 0 0;
     }
     
@@ -54,7 +76,7 @@ st.markdown("""
             inset 0 1px 0 rgba(255,255,255,0.9);
     }
     
-    /* Iconos con efecto 3D */
+    /* Iconos con efecto 3D - Solo azules */
     .icon-3d {
         width: 60px;
         height: 60px;
@@ -63,9 +85,9 @@ st.markdown("""
         align-items: center;
         justify-content: center;
         margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
+        background: linear-gradient(135deg, #0066cc, #004499);
         box-shadow: 
-            0 8px 20px rgba(var(--accent-rgb), 0.3),
+            0 8px 20px rgba(0, 102, 204, 0.3),
             inset 0 1px 0 rgba(255,255,255,0.3);
         position: relative;
         transition: all 0.3s ease;
@@ -74,13 +96,13 @@ st.markdown("""
     .card-3d:hover .icon-3d {
         transform: scale(1.1) rotate(5deg);
         box-shadow: 
-            0 12px 30px rgba(var(--accent-rgb), 0.4),
+            0 12px 30px rgba(0, 102, 204, 0.4),
             inset 0 1px 0 rgba(255,255,255,0.4);
     }
     
-    /* Botones con efecto 3D */
+    /* Botones con efecto 3D - Solo azules */
     .btn-3d {
-        background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
+        background: linear-gradient(135deg, #0066cc, #004499);
         color: white;
         border: none;
         padding: 0.8rem 1.5rem;
@@ -89,7 +111,7 @@ st.markdown("""
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 
-            0 6px 20px rgba(var(--accent-rgb), 0.3),
+            0 6px 20px rgba(0, 102, 204, 0.3),
             0 2px 4px rgba(0,0,0,0.1);
         position: relative;
         overflow: hidden;
@@ -113,7 +135,7 @@ st.markdown("""
     .btn-3d:hover {
         transform: translateY(-2px);
         box-shadow: 
-            0 8px 25px rgba(var(--accent-rgb), 0.4),
+            0 8px 25px rgba(0, 102, 204, 0.4),
             0 3px 6px rgba(0,0,0,0.15);
     }
     
@@ -140,7 +162,7 @@ st.markdown("""
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, #0066cc, #00a86b, #ff6b35, #8a2be2);
+        background: linear-gradient(90deg, #0066cc, #0088ff, #004499);
         border-radius: 20px 20px 0 0;
     }
     
@@ -173,7 +195,7 @@ st.markdown("""
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, #0066cc, #00a86b, #ff6b35, #8a2be2);
+        background: linear-gradient(90deg, #0066cc, #0088ff, #004499);
         border-radius: 16px 16px 0 0;
     }
     
@@ -201,7 +223,7 @@ st.markdown("""
         font-size: 1.2rem;
         min-width: 30px;
         text-align: center;
-        background: linear-gradient(135deg, #667eea, #764ba2);
+        background: linear-gradient(135deg, #0066cc, #004499);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -244,10 +266,13 @@ st.markdown("""
         left: 0;
         right: 0;
         height: 2px;
-        background: linear-gradient(90deg, #0066cc, #00a86b, #ff6b35, #8a2be2);
+        background: linear-gradient(90deg, #0066cc, #0088ff, #004499);
     }
 </style>
 """, unsafe_allow_html=True)
+
+# Navbar moderna
+modern_navbar()
 
 # HERO SECTION - CON SOMBRA 3D (SIN FONDO AZUL)
 st.markdown("""
@@ -260,7 +285,7 @@ st.markdown("""
         line-height: 1.1;
         font-family: "Inter", sans-serif;
         text-align: center;
-        background: linear-gradient(135deg, #1a1a1a, #0066cc, #00a86b);
+        background: linear-gradient(135deg, #1a1a1a, #0066cc, #004499);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -302,7 +327,7 @@ st.markdown("""
         justify-content: center;
         flex-wrap: wrap;
     '>
-        <button class="btn-3d" style="--accent-color: #0066cc; --accent-dark: #004499; --accent-rgb: 0, 102, 204;">
+        <button class="btn-3d">
             Explorar Automatizaciones
         </button>
         
@@ -348,41 +373,29 @@ st.markdown("""
 # GRID DE TARJETAS 3D
 col1, col2, col3, col4 = st.columns(4)
 
-# Datos de las áreas para reutilización
+# Datos de las áreas para reutilización - Solo azules
 areas_data = [
     {
         "name": "Cuentas Médicas",
         "icon": "📋",
-        "accent_color": "#0066cc",
-        "accent_dark": "#004499", 
-        "accent_rgb": "0, 102, 204",
         "description": "SAVIA & COOSALUD: Conversores JSON, Renombradores RIPS/CUV<br>SALUD TOTAL: Procesador OCR + Renombrado",
         "button_text": "Acceder"
     },
     {
         "name": "Cartera",
         "icon": "💰",
-        "accent_color": "#00a86b",
-        "accent_dark": "#007a4d",
-        "accent_rgb": "0, 168, 107", 
         "description": "Gestión automatizada de estados de cuenta y reportes financieros con análisis inteligente",
         "button_text": "Acceder"
     },
     {
         "name": "Tesorería",
         "icon": "🏦", 
-        "accent_color": "#ff6b35",
-        "accent_dark": "#cc552b",
-        "accent_rgb": "255, 107, 53",
         "description": "Control automatizado de estados bancarios y flujo financiero con máxima seguridad",
         "button_text": "Acceder"
     },
     {
         "name": "Métricas",
         "icon": "📊",
-        "accent_color": "#8a2be2",
-        "accent_dark": "#6a1cb3",
-        "accent_rgb": "138, 43, 226",
         "description": "Dashboard de resultados y análisis de impacto de todas las automatizaciones implementadas",
         "button_text": "Acceder"
     }
@@ -393,14 +406,7 @@ columns = [col1, col2, col3, col4]
 for i, (col, area) in enumerate(zip(columns, areas_data)):
     with col:
         st.markdown(f"""
-        <div class="card-3d" style="
-            --accent-color: {area['accent_color']}; 
-            --accent-dark: {area['accent_dark']}; 
-            --accent-rgb: {area['accent_rgb']};
-            height: 320px;
-            display: flex;
-            flex-direction: column;
-        ">
+        <div class="card-3d" style="height: 320px; display: flex; flex-direction: column;">
             <div class="icon-3d">
                 <span style='color: white; font-size: 1.5rem;'>{area['icon']}</span>
             </div>
@@ -438,7 +444,7 @@ st.markdown("<div style='height: 1px; background: linear-gradient(90deg, transpa
 st.markdown("""
 <div class="benefits-3d">
     <div style='text-align: center; margin-bottom: 2rem;'>
-        <h style='
+        <h3 style='
             color: #1a1a1a;
             font-size: 1.5rem;
             font-weight: 600;
