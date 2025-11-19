@@ -95,7 +95,7 @@ def modern_navbar():
     <div class="cool-navbar">
         <div class="navbar-content">
             <div class="navbar-brand">
-                TODO DROGAS AUTOMATION
+                TODODROGAS
             </div>
             <div class="navbar-stats">
                 <div class="stat-item">
