@@ -17,211 +17,77 @@ st.set_page_config(
 # Navbar moderna minimalista
 modern_navbar()
 
-# CSS minimalista
-st.markdown("""
-<style>
-    /* Reset minimalista */
-    .main .block-container {
-        padding-top: 1rem;
-        max-width: 1200px;
-    }
-    
-    /* Tarjetas minimalistas con borde flotante */
-    .minimal-card {
-        background: white;
-        border-radius: 12px;
-        padding: 1.5rem;
-        border: 1px solid #e1e5e9;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        transition: all 0.3s ease;
-        height: 100%;
-        position: relative;
-    }
-    
-    .minimal-card:hover {
-        border-color: #0066cc;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-        transform: translateY(-2px);
-    }
-    
-    /* Iconos minimalistas */
-    .minimal-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        background: #f8f9fa;
-        color: #0066cc;
-        font-size: 1rem;
-        border: 1px solid #e9ecef;
-    }
-    
-    /* Botones minimalistas */
-    .minimal-btn {
-        background: white;
-        color: #0066cc;
-        border: 1px solid #0066cc;
-        padding: 0.5rem 1rem;
-        border-radius: 6px;
-        font-weight: 500;
-        font-size: 0.85rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        width: 100%;
-        text-align: center;
-        text-decoration: none;
-        display: block;
-    }
-    
-    .minimal-btn:hover {
-        background: #0066cc;
-        color: white;
-    }
-    
-    /* Header minimalista */
-    .minimal-header {
-        background: white;
-        padding: 2rem 0;
-        margin: 0.5rem 0 2rem 0;
-        border-bottom: 1px solid #e1e5e9;
-    }
-    
-    /* Beneficios en horizontal */
-    .benefits-horizontal {
-        display: flex;
-        gap: 1.5rem;
-        justify-content: space-between;
-        margin: 1rem 0;
-    }
-    
-    .benefit-item {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.9rem;
-        color: #495057;
-    }
-    
-    .benefit-check {
-        color: #00a86b;
-        font-weight: bold;
-    }
-</style>
-""", unsafe_allow_html=True)
-
 # HEADER MINIMALISTA
-with st.container():
-    col1, col2 = st.columns([3, 2])
-    
-    with col1:
-        st.markdown("""
-        <div class="minimal-header">
-            <h1 style='
-                color: #1a1a1a;
-                font-size: 2rem;
-                font-weight: 600;
-                margin-bottom: 0.5rem;
-                line-height: 1.2;
-            '>
-            Sistema de Automatización
-            </h1>
-            
-            <h2 style='
-                color: #666666;
-                font-size: 1.1rem;
-                font-weight: 400;
-                margin-bottom: 1rem;
-                line-height: 1.4;
-            '>
-            Transformando procesos mediante tecnología inteligente
-            </h2>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div class="minimal-card">
-            <h3 style='
-                color: #1a1a1a;
-                font-size: 1rem;
-                font-weight: 600;
-                margin-bottom: 1rem;
-            '>
-            Beneficios Clave
-            </h3>
-            <div class="benefits-horizontal">
-                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                    <div class="benefit-item">
-                        <span class="benefit-check">✓</span> Reducción de tiempos
-                    </div>
-                    <div class="benefit-item">
-                        <span class="benefit-check">✓</span> Mayor precisión
-                    </div>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                    <div class="benefit-item">
-                        <span class="benefit-check">✓</span> Reportes automáticos
-                    </div>
-                    <div class="benefit-item">
-                        <span class="benefit-check">✓</span> Integración total
-                    </div>
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+col1, col2 = st.columns([3, 2])
 
-# SEPARADOR SUTIL
-st.markdown("<div style='height: 1px; background: #f1f3f4; margin: 2rem 0;'></div>", unsafe_allow_html=True)
+with col1:
+    st.title("Sistema de Automatización")
+    st.subheader("Transformando procesos mediante tecnología inteligente")
+    
+    # Métricas del sistema
+    col1_1, col1_2, col1_3 = st.columns(3)
+    with col1_1:
+        st.metric("Automatizaciones", "12+")
+    with col1_2:
+        st.metric("Eficiencia", "99.8%")
+    with col1_3:
+        st.metric("Áreas Activas", "3")
+
+with col2:
+    with st.container():
+        st.write("**Beneficios Clave**")
+        
+        # Beneficios en dos columnas
+        ben_col1, ben_col2 = st.columns(2)
+        
+        with ben_col1:
+            st.write("✓ Reducción de tiempos")
+            st.write("✓ Mayor precisión")
+            
+        with ben_col2:
+            st.write("✓ Reportes automáticos")
+            st.write("✓ Integración total")
+
+# SEPARADOR
+st.divider()
 
 # SECCIÓN DE MÓDULOS
-st.markdown("""
-<div style='margin-bottom: 1.5rem;'>
-    <h3 style='
-        color: #1a1a1a;
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-    '>
-    Áreas de Automatización
-    </h3>
-    <p style='color: #666666; font-size: 0.9rem;'>
-    Selecciona un área para acceder a sus herramientas especializadas
-    </p>
-</div>
-""", unsafe_allow_html=True)
+st.header("Áreas de Automatización")
+st.caption("Selecciona un área para acceder a sus herramientas especializadas")
 
-# DATOS DE LOS MÓDULOS MINIMALISTAS
+# DATOS DE LOS MÓDULOS
 modules_data = [
     {
         "name": "Cuentas Médicas",
         "icon": "📋",
         "description": "Procesamiento automatizado de cuentas médicas con conversores JSON y renombrado RIPS/CUV",
         "features": ["SAVIA & COOSALUD", "SALUD TOTAL", "Procesador OCR"],
-        "status": "active"
+        "status": "active",
+        "page": "1_Cuentas_Medicas"
     },
     {
         "name": "Cartera", 
         "icon": "💰",
         "description": "Gestión automatizada de estados de cuenta y reportes financieros con análisis inteligente",
         "features": ["Estados de Cuenta", "Reportes Financieros", "Análisis"],
-        "status": "active"
+        "status": "active",
+        "page": "2_Cartera"
     },
     {
         "name": "Tesorería",
         "icon": "🏦",
         "description": "Control automatizado de estados bancarios y gestión de flujo financiero",
         "features": ["Estados Bancarios", "Conciliación", "Flujo Financiero"],
-        "status": "active"
+        "status": "active",
+        "page": "3_Tesoreria"
     },
     {
         "name": "Métricas",
         "icon": "📊",
         "description": "Dashboard de métricas y análisis de impacto de las automatizaciones",
         "features": ["Dashboard", "Análisis", "Reportes"],
-        "status": "development"
+        "status": "development",
+        "page": "4_Metricas"
     }
 ]
 
@@ -229,88 +95,36 @@ modules_data = [
 cols = st.columns(4)
 for i, (col, module) in enumerate(zip(cols, modules_data)):
     with col:
-        status_color = "#00a86b" if module["status"] == "active" else "#ff6b35"
-        status_text = "Activo" if module["status"] == "active" else "Desarrollo"
-        
-        st.markdown(f"""
-        <div class="minimal-card">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                <div class="minimal-icon">
-                    {module['icon']}
-                </div>
-                <div style="font-size: 0.7rem; font-weight: 500; color: {status_color}; 
-                          background: rgba({status_color.replace('#', '')}, 0.1); 
-                          padding: 0.2rem 0.5rem; border-radius: 8px; border: 1px solid rgba({status_color.replace('#', '')}, 0.2);">
-                    {status_text}
-                </div>
-            </div>
+        with st.container():
+            # Header con icono y estado
+            icon_col, status_col = st.columns([1, 2])
+            with icon_col:
+                st.write(f"#### {module['icon']}")
+            with status_col:
+                status_color = "🟢" if module["status"] == "active" else "🟡"
+                st.write(f"{status_color} **{module['status'].title()}**")
             
-            <h4 style='
-                color: #1a1a1a;
-                font-size: 1rem;
-                font-weight: 600;
-                margin-bottom: 0.5rem;
-                line-height: 1.3;
-            '>
-            {module['name']}
-            </h4>
+            # Título
+            st.write(f"**{module['name']}**")
             
-            <div style='
-                color: #666666;
-                line-height: 1.4;
-                margin-bottom: 1rem;
-                font-size: 0.8rem;
-            '>
-                {module['description']}
-            </div>
+            # Descripción
+            st.write(module['description'])
             
-            <div style='margin-bottom: 1rem;'>
-        """, unsafe_allow_html=True)
-        
-        # Features como mini badges
-        for feature in module["features"]:
-            st.markdown(f"""
-            <span style='
-                display: inline-block;
-                background: #f8f9fa;
-                color: #495057;
-                padding: 0.15rem 0.4rem;
-                border-radius: 6px;
-                font-size: 0.65rem;
-                margin: 0.1rem;
-                border: 1px solid #e9ecef;
-            '>
-            {feature}
-            </span>
-            """, unsafe_allow_html=True)
-        
-        st.markdown(f"""
-            </div>
+            # Features
+            for feature in module["features"]:
+                st.caption(f"• {feature}")
             
-            <a href="/{module['name'].replace(' ', '_').replace('&', 'y')}" class="minimal-btn">
-                Acceder
-            </a>
-        </div>
-        """, unsafe_allow_html=True)
+            # Botón de acceso
+            if st.button(f"Acceder a {module['name']}", key=f"btn_{module['page']}"):
+                st.switch_page(f"pages/{module['page']}.py")
 
 # SEPARADOR
-st.markdown("<div style='height: 1px; background: #f1f3f4; margin: 2rem 0;'></div>", unsafe_allow_html=True)
+st.divider()
 
-# ESTADÍSTICAS MINIMALISTAS
-st.markdown("""
-<div style='margin-bottom: 1rem;'>
-    <h3 style='
-        color: #1a1a1a;
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-    '>
-    Estado del Sistema
-    </h3>
-</div>
-""", unsafe_allow_html=True)
-
+# ESTADÍSTICAS DEL SISTEMA
+st.header("Estado del Sistema")
 stats_cols = st.columns(4)
+
 with stats_cols[0]:
     st.metric("Tiempo Activo", "24/7", "Operación continua")
 with stats_cols[1]:
@@ -320,17 +134,35 @@ with stats_cols[2]:
 with stats_cols[3]:
     st.metric("Áreas Activas", "3/4", "75%")
 
-# FOOTER MINIMALISTA
-st.markdown("""
-<div style='
-    background: #f8f9fa;
-    padding: 1.5rem 0;
-    margin-top: 3rem;
-    text-align: center;
-    border-top: 1px solid #e9ecef;
-'>
-    <div style='color: #666666; font-size: 0.9rem;'>
-        <strong>TodoDrogas Automation</strong> • v2.1.0 • Sistema integrado de gestión
-    </div>
-</div>
-""", unsafe_allow_html=True)
+# INFORMACIÓN ADICIONAL
+with st.expander("📋 Información del Sistema"):
+    info_cols = st.columns(2)
+    
+    with info_cols[0]:
+        st.write("**Versiones Activas:**")
+        st.write("- Cuentas Médicas: v2.1.0")
+        st.write("- Cartera: v1.8.2") 
+        st.write("- Tesorería: v1.5.1")
+        st.write("- Métricas: v0.9.0")
+        
+    with info_cols[1]:
+        st.write("**Soporte Técnico:**")
+        st.write("**Email:** soporte@tododrogas.com")
+        st.write("**Horario:** 24/7")
+        st.write("**Versión Plataforma:** 2.1.0")
+
+# FOOTER
+st.divider()
+footer_cols = st.columns(3)
+
+with footer_cols[0]:
+    st.write("**TodoDrogas Automation**")
+    st.write("Sistema integrado de gestión")
+
+with footer_cols[1]:
+    st.write("**Versión:** 2.1.0")
+    st.write("**Última actualización:** Enero 2024")
+
+with footer_cols[2]:
+    st.write("**Estado:** 🟢 En línea")
+    st.write("**Soporte:** Disponible 24/7")
