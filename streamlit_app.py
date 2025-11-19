@@ -14,32 +14,26 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Navbar moderna
+# Navbar moderna minimalista
 modern_navbar()
 
-# HERO SECTION - Misma estructura exacta
-col1, col2 = st.columns([2, 1])
+# HEADER MINIMALISTA
+col1, col2 = st.columns([3, 2])
 
 with col1:
     # Título principal
-    st.markdown("# SISTEMA DE AUTOMATIZACIÓN")
-    
-    # Subtítulo
+    st.markdown("# Sistema de Automatización")
     st.markdown("### Transformando procesos mediante tecnología inteligente")
     
-    # Descripción
-    st.write("El futuro es la tecnología, y hoy se convierte en nuestra mejor herramienta.")
-    st.write("Centralizamos automatizaciones por área para optimizar procesos y mejorar la eficiencia operativa.")
-    
-    # Grid de características
-    col1_1, col1_2, col1_3, col1_4 = st.columns(4)
-    with col1_1:
+    # Métricas en grid
+    metric_cols = st.columns(4)
+    with metric_cols[0]:
         st.metric("12+", "Automatizaciones")
-    with col1_2:
+    with metric_cols[1]:
         st.metric("99.8%", "Eficiencia")
-    with col1_3:
+    with metric_cols[2]:
         st.metric("24/7", "Operación")
-    with col1_4:
+    with metric_cols[3]:
         st.metric("3", "Áreas Activas")
 
 with col2:
@@ -47,93 +41,108 @@ with col2:
     with st.container():
         st.markdown("#### Beneficios Clave")
         
-        # Beneficios en lista
-        st.write("✓ Reducción de tiempos")
-        st.write("✓ Mayor precisión") 
-        st.write("✓ Reportes automáticos")
-        st.write("✓ Integración total")
+        # Beneficios en dos columnas
+        ben_col1, ben_col2 = st.columns(2)
+        
+        with ben_col1:
+            st.write("✓ Reducción de tiempos")
+            st.write("✓ Mayor precisión")
+            
+        with ben_col2:
+            st.write("✓ Reportes automáticos")
+            st.write("✓ Integración total")
 
-# SEPARADOR
-st.markdown("---")
+# SEPARADOR SUTIL
+st.divider()
 
-# SECCIÓN DE ÁREAS - Misma estructura exacta
-st.markdown("## Áreas de Automatización")
-st.write("Selecciona un área para acceder a sus herramientas especializadas")
+# SECCIÓN DE MÓDULOS
+st.markdown("### Áreas de Automatización")
+st.caption("Selecciona un área para acceder a sus herramientas especializadas")
 
-# GRID DE TARJETAS - Misma estructura de 4 columnas
-col1, col2, col3, col4 = st.columns(4)
-
-# Datos de las áreas (mismo contenido)
-areas_data = [
+# DATOS DE LOS MÓDULOS
+modules_data = [
     {
         "name": "Cuentas Médicas",
         "icon": "📋",
-        "description": "SAVIA & COOSALUD: Conversores JSON, Renombradores RIPS/CUV\nSALUD TOTAL: Procesador OCR + Renombrado",
-        "button_text": "Acceder",
-        "status": "🟢 ACTIVO"
+        "description": "Procesamiento automatizado de cuentas médicas con conversores JSON y renombrado RIPS/CUV",
+        "features": ["SAVIA & COOSALUD", "SALUD TOTAL", "Procesador OCR"],
+        "status": "active",
+        "page": "1_Cuentas_Medicas"
     },
     {
-        "name": "Cartera",
-        "icon": "💰", 
+        "name": "Cartera", 
+        "icon": "💰",
         "description": "Gestión automatizada de estados de cuenta y reportes financieros con análisis inteligente",
-        "button_text": "Acceder",
-        "status": "🟢 ACTIVO"
+        "features": ["Estados de Cuenta", "Reportes Financieros", "Análisis"],
+        "status": "active",
+        "page": "2_Cartera"
     },
     {
         "name": "Tesorería",
         "icon": "🏦",
-        "description": "Control automatizado de estados bancarios y flujo financiero con máxima seguridad", 
-        "button_text": "Acceder",
-        "status": "🟢 ACTIVO"
+        "description": "Control automatizado de estados bancarios y gestión de flujo financiero",
+        "features": ["Estados Bancarios", "Conciliación", "Flujo Financiero"],
+        "status": "active",
+        "page": "3_Tesoreria"
     },
     {
         "name": "Métricas",
         "icon": "📊",
-        "description": "Dashboard de resultados y análisis de impacto de todas las automatizaciones implementadas",
-        "button_text": "Acceder", 
-        "status": "🟡 DESARROLLO"
+        "description": "Dashboard de métricas y análisis de impacto de las automatizaciones",
+        "features": ["Dashboard", "Análisis", "Reportes"],
+        "status": "development",
+        "page": "4_Metricas"
     }
 ]
 
-# Renderizar tarjetas en las mismas posiciones
-columns = [col1, col2, col3, col4]
-for i, (col, area) in enumerate(zip(columns, areas_data)):
+# GRID DE MÓDULOS
+cols = st.columns(4)
+for i, (col, module) in enumerate(zip(cols, modules_data)):
     with col:
         with st.container():
             # Header con icono y estado
-            icon_col, status_col = st.columns([1, 1])
+            icon_col, status_col = st.columns([1, 2])
             with icon_col:
-                st.write(f"### {area['icon']}")
+                st.markdown(f"#### {module['icon']}")
             with status_col:
-                st.write(area['status'])
+                status_color = "🟢" if module["status"] == "active" else "🟡"
+                st.caption(f"{status_color} {module['status'].title()}")
             
             # Título
-            st.write(f"**{area['name']}**")
+            st.markdown(f"**{module['name']}**")
             
             # Descripción
-            st.write(area['description'])
+            st.write(module['description'])
             
-            # Botón
-            if st.button(area['button_text'], key=f"btn_{i}"):
-                # Navegación a las páginas según tu estructura
-                if area['name'] == "Cuentas Médicas":
-                    st.switch_page("pages/1_Cuentas_Medicas.py")
-                elif area['name'] == "Cartera":
-                    st.switch_page("pages/2_Cartera.py") 
-                elif area['name'] == "Tesorería":
-                    st.switch_page("pages/3_Tesoreria.py")
-                elif area['name'] == "Métricas":
-                    st.switch_page("pages/4_Metricas.py")
+            # Features como badges
+            for feature in module["features"]:
+                st.code(feature, language="")
+            
+            # Botón de acceso
+            if st.button(f"Acceder", key=f"btn_{module['page']}", use_container_width=True):
+                st.switch_page(f"pages/{module['page']}.py")
 
-# FOOTER - Misma estructura exacta  
-st.markdown("---")
-footer_col1, footer_col2, footer_col3 = st.columns([1, 1, 1])
+# SEPARADOR
+st.divider()
 
-with footer_col1:
-    st.write("**TodoDrogas - Sistema de Automatización**")
+# ESTADÍSTICAS DEL SISTEMA
+st.markdown("### Estado del Sistema")
+stats_cols = st.columns(4)
 
-with footer_col2:
-    st.write("Optimizando procesos mediante tecnología avanzada")
+with stats_cols[0]:
+    st.metric("Tiempo Activo", "24/7", "Operación continua")
+with stats_cols[1]:
+    st.metric("Procesos Hoy", "1,247", "+12%")
+with stats_cols[2]:
+    st.metric("Eficiencia", "99.8%", "+0.2%")
+with stats_cols[3]:
+    st.metric("Áreas Activas", "3/4", "75%")
 
-with footer_col3:
-    st.write("© 2024 Todos los derechos reservados")
+# FOOTER MINIMALISTA
+st.divider()
+st.markdown(
+    "<div style='text-align: center; color: #666666; font-size: 0.9rem;'>"
+    "<strong>TodoDrogas Automation</strong> • v2.1.0 • Sistema integrado de gestión"
+    "</div>",
+    unsafe_allow_html=True
+)
