@@ -1,20 +1,40 @@
 import streamlit as st
 
 def modern_navbar():
-    # Barra lateral para navegación (MEJORA DE ACCESIBILIDAD)
+    # Barra lateral simplificada para navegación
     with st.sidebar:
         st.markdown("### 🧭 Navegación Rápida")
-        st.page_link("app.py", label="🏠 Inicio", icon="🏠")
-        st.page_link("pages/Cuentas_Medicas.py", label="📋 Cuentas Médicas", icon="📋")
-        st.page_link("pages/Cartera.py", label="💰 Cartera", icon="💰") 
-        st.page_link("pages/Tesoreria.py", label="🏦 Tesorería", icon="🏦")
-        st.page_link("pages/Metricas_y_Contacto.py", label="📊 Métricas", icon="📊")
+        
+        # Botones de navegación simples
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("🏠 Inicio", use_container_width=True):
+                st.switch_page("streamlit_app.py")
+        with col2:
+            if st.button("📊 Métricas", use_container_width=True):
+                st.switch_page("pages/Metricas_y_Contacto.py")
+        
+        col3, col4 = st.columns(2)
+        with col3:
+            if st.button("📋 Médicas", use_container_width=True):
+                st.switch_page("pages/Cuentas_Medicas.py")
+        with col4:
+            if st.button("💰 Cartera", use_container_width=True):
+                st.switch_page("pages/Cartera.py")
+        
+        if st.button("🏦 Tesorería", use_container_width=True):
+            st.switch_page("pages/Tesoreria.py")
         
         st.markdown("---")
         st.markdown("### 🔐 Sesión")
+        
+        # Estado de la sesión
+        st.info("🟢 Conectado como Administrador")
         if st.button("🚪 Cerrar Sesión", use_container_width=True):
             st.success("Sesión cerrada exitosamente")
-    
+            # Aquí iría la lógica real de cierre de sesión
+
+    # Navbar principal
     st.markdown("""
     <style>
     .modern-navbar {
@@ -70,6 +90,12 @@ def modern_navbar():
     .user-role {
         color: #666;
         font-size: 0.8rem;
+    }
+    
+    /* Sidebar styling */
+    .css-1d391kg {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border-right: 1px solid rgba(0, 102, 204, 0.1);
     }
     
     @media (max-width: 768px) {
