@@ -5,8 +5,8 @@ def modern_navbar():
     <style>
     .modern-navbar {
         background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        padding: 1rem 2rem;
-        margin-bottom: 2rem;
+        padding: 0.8rem 2rem;
+        margin-bottom: 1rem;
         box-shadow: 
             0 4px 20px rgba(0,0,0,0.08),
             0 2px 8px rgba(0,0,0,0.05),
@@ -15,6 +15,7 @@ def modern_navbar():
         position: relative;
         z-index: 1000;
         backdrop-filter: blur(10px);
+        height: 70px;
     }
     
     .modern-navbar::before {
@@ -24,7 +25,7 @@ def modern_navbar():
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, #0066cc, #00a86b, #ff6b35, #8a2be2);
+        background: linear-gradient(90deg, #0066cc, #0088ff, #004499);
         border-radius: 0 0 10px 10px;
     }
     
@@ -34,11 +35,12 @@ def modern_navbar():
         align-items: center;
         max-width: 1200px;
         margin: 0 auto;
+        height: 100%;
     }
     
     .nav-title {
         color: #1a1a1a;
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         font-weight: 800;
         letter-spacing: -0.5px;
         font-family: 'Inter', sans-serif;
@@ -69,8 +71,8 @@ def modern_navbar():
         display: flex;
         gap: 0.3rem;
         background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-        border-radius: 12px;
-        padding: 0.4rem;
+        border-radius: 10px;
+        padding: 0.3rem;
         border: 1px solid rgba(255,255,255,0.5);
         box-shadow: 
             inset 0 1px 0 rgba(255,255,255,0.6),
@@ -87,18 +89,18 @@ def modern_navbar():
         right: 0;
         bottom: 0;
         background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.4));
-        border-radius: 12px;
+        border-radius: 10px;
         z-index: -1;
     }
     
     .nav-link {
         color: #666666;
         text-decoration: none;
-        padding: 0.7rem 1.5rem;
+        padding: 0.6rem 1.2rem;
         border-radius: 8px;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         font-weight: 500;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         font-family: 'Inter', sans-serif;
         position: relative;
         overflow: hidden;
@@ -152,7 +154,8 @@ def modern_navbar():
     /* Responsive */
     @media (max-width: 768px) {
         .modern-navbar {
-            padding: 1rem;
+            padding: 0.8rem 1rem;
+            height: auto;
         }
         
         .nav-content {
