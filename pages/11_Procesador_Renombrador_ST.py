@@ -16,7 +16,7 @@ configure_modern_theme()
 
 # Configurar página
 st.set_page_config(
-    page_title="Procesador Salud Total - Cloud",
+    page_title="Procesador - Salud Total",
     page_icon="🏥",
     layout="wide"
 )
