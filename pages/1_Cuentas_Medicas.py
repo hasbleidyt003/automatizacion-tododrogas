@@ -59,12 +59,12 @@ with tab2:
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### 🏷️ Renombradores")
+        st.markdown("### 📋 Renombradores")
         if st.button("🔢 Renombrador CUV Savia", use_container_width=True, key="savia_cuv"):
             st.switch_page("pages/9_Renombrador_cuv_Savia.py")
     
     with col2:
-        st.markdown("### 📋 Procesadores RIPS")
+        st.markdown("### 📋 Renombrador RIPS")
         if st.button("📋 Renombrador RIPS Savia", use_container_width=True, key="savia_rips"):
             st.switch_page("pages/10_Renombrador_rips_Savia.py")
 
