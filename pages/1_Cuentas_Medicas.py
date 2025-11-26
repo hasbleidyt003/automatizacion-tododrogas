@@ -420,7 +420,7 @@ with tab3:
                 "Procesador OCR", 
                 "🔄 Iniciado"
             )
-            st.switch_page("pages/11_Processador_Renombrador_ST.py")
+            st.switch_page("pages/11_Procesador_Renombrador_ST.py")
     
     with col2:
         st.markdown("**⚡ Procesamiento Avanzado**")
