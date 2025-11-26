@@ -1,55 +1,6 @@
 import streamlit as st
 
 def modern_navbar():
-    # CSS MÁS AGGRESIVO PARA ELIMINAR TODO EL HEADER
-    st.markdown("""
-    <style>
-    /* ELIMINAR COMPLETAMENTE EL HEADER DE STREAMLIT */
-    header {display: none !important;}
-    
-    /* ELIMINAR MENÚ HAMBURGUESA */
-    #MainMenu {display: none !important;}
-    
-    /* ELIMINAR FOOTER */
-    footer {display: none !important;}
-    
-    /* ELIMINAR BOTONES DE ACCIÓN SUPERIORES */
-    .stAppDeployButton {display: none !important;}
-    .stToolbar {display: none !important;}
-    
-    /* ELIMINAR BOTÓN DE GITHUB */
-    [data-testid="stGitHubButton"] {display: none !important;}
-    
-    /* ELIMINAR BOTÓN DE COMPARTIR */
-    [data-testid="stShareButton"] {display: none !important;}
-    
-    /* ELIMINAR BOTÓN DE ESTRELLA/FAVORITO */
-    [data-testid="stAppMarkdownContainer"] > div:first-child {display: none !important;}
-    
-    /* ELIMINAR TODO EL TOOLBAR */
-    [data-testid="stToolbar"] {display: none !important;}
-    
-    /* ELIMINAR DECORACIONES DEL HEADER */
-    .stApp > header {display: none !important;}
-    
-    /* AJUSTAR MARGEN SUPERIOR */
-    .stApp {
-        margin-top: -60px !important;
-    }
-    
-    /* MANTENER TU SIDEBAR */
-    section[data-testid="stSidebar"] {
-        visibility: visible !important;
-    }
-    
-    /* OCULTAR CUALQUIER ELEMENTO CON TEXTO "Share" */
-    div:contains("Share") {display: none !important;}
-    
-    /* OCULTAR CUALQUIER ELEMENTO CON ICONO DE GITHUB */
-    svg:contains("github") {display: none !important;}
-    </style>
-    """, unsafe_allow_html=True)
-def modern_navbar():
     # Barra lateral simplificada para navegación
     with st.sidebar:
         st.markdown("### 🧭 Navegación Rápida")
