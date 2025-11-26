@@ -319,7 +319,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# SECCIÓN DE AUTOMATIZACIONES MEJORADA
+# SECCIÓN DE AUTOMATIZACIONES MEJORADA - CON BOTONES FUNCIONALES
 st.markdown("""
 <div style='text-align: center; margin: 3rem 0 2rem 0;'>
     <h2 style='color: #1a1a1a; font-size: 2.2rem; font-weight: 800; margin-bottom: 0.8rem;'>
@@ -331,43 +331,49 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# GRID DE TARJETAS CON EFECTOS AL HOVER
+# ÁREAS CON BOTONES STREAMLIT NATIVOS - ESTO SÍ FUNCIONA
 areas_data = [
     {
         "name": "Cuentas Médicas",
         "icon": "📋",
         "description": "SAVIA & COOSALUD: Conversores JSON, Renombradores RIPS/CUV. SALUD TOTAL: Procesador OCR + Renombrado",
         "status": "Activo",
-        "users": "8 usuarios"
+        "users": "8 usuarios",
+        "page": "pages/1_Cuentas_Medicas.py"  # ✅ RUTA CORRECTA
     },
     {
         "name": "Cartera", 
         "icon": "💰",
         "description": "Gestión automatizada de estados de cuenta y reportes financieros con análisis inteligente y predicciones",
-        "status": "Activo",
-        "users": "6 usuarios"
+        "status": "Activo", 
+        "users": "6 usuarios",
+        "page": "pages/2_Cartera.py"  # ✅ RUTA CORRECTA
     },
     {
         "name": "Tesorería",
-        "icon": "🏦",
+        "icon": "🏦", 
         "description": "Control automatizado de estados bancarios, flujo financiero y conciliaciones con máxima seguridad",
-        "status": "En desarrollo", 
-        "users": "4 usuarios"
+        "status": "En desarrollo",
+        "users": "4 usuarios", 
+        "page": "pages/3_Tesoreria.py"  # ✅ RUTA CORRECTA
     },
     {
         "name": "Métricas",
         "icon": "📊",
-        "description": "Dashboard ejecutivo con análisis de impacto, ROI y métricas de todas las automatizaciones implementadas",
+        "description": "Dashboard ejecutivo con análisis de impacto, ROI y métricas de todas las automatizaciones implementadas", 
         "status": "Activo",
-        "users": "5 usuarios"
+        "users": "5 usuarios",
+        "page": "pages/Metricas_y_Contacto.py"  # ✅ RUTA CORRECTA
     }
 ]
 
-# Crear grid responsive
+# CREAR GRID CON BOTONES QUE SÍ FUNCIONAN
 cols = st.columns(2)
 for i, area in enumerate(areas_data):
-    with cols[i % 2]:  # Distribuye en 2 columnas
+    with cols[i % 2]:
         status_color = "#00a86b" if area["status"] == "Activo" else "#ff6b35"
+        
+        # Tarjeta con diseño (solo visual)
         st.markdown(f"""
         <div class="card-glass">
             <div class="card-icon-glass">{area['icon']}</div>
@@ -381,11 +387,14 @@ for i, area in enumerate(areas_data):
                 </span>
             </div>
             <p class="card-description-glass">{area['description']}</p>
-            <button class="btn-glass" onclick="navigateTo('{area['name'].lower().replace(' ', '_').replace('métricas', 'metricas')}')">
-                Acceder al Módulo
-            </button>
         </div>
         """, unsafe_allow_html=True)
+        
+        # ✅ BOTÓN STREAMLIT NATIVO - ESTE SÍ FUNCIONA
+        if st.button(f"Acceder al Módulo - {area['name']}", 
+                    key=f"area_btn_{i}", 
+                    use_container_width=True):
+            st.switch_page(area["page"])
 
 # SEPARADOR VISUAL MEJORADO
 st.markdown("<div style='height: 2px; background: linear-gradient(90deg, transparent, #0066cc, transparent); margin: 4rem 0;'></div>", unsafe_allow_html=True)
@@ -534,18 +543,4 @@ st.markdown("""
         Última actualización: """ + datetime.now().strftime("%d/%m/%Y %H:%M") + """ • © 2024 Todos los derechos reservados
     </p>
 </div>
-
-<script>
-function navigateTo(area) {
-    const routes = {
-        'cuentas_médicas': '/1_Cuentas_Medicas',   
-        'cartera': '/2_Cartera',                   
-        'tesorería': '/3_Tesoreria',
-        'metricas': '/Metricas_y_Contacto'
-    };
-    if (routes[area]) {
-        window.location.href = routes[area];
-    }
-}
-</script>
 """, unsafe_allow_html=True)
