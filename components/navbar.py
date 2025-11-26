@@ -1,53 +1,52 @@
 import streamlit as st
-import streamlit as st
 
 def modern_navbar():
-    # CSS PARA OCULTAR ELEMENTOS NO DESEADOS
+    # CSS MÁS AGGRESIVO PARA ELIMINAR TODO EL HEADER
     st.markdown("""
     <style>
-    /* OCULTAR HEADER DE STREAMLIT POR DEFECTO */
-    #MainMenu {visibility: hidden;}
-    header {visibility: hidden;}
-    footer {visibility: hidden;}
+    /* ELIMINAR COMPLETAMENTE EL HEADER DE STREAMLIT */
+    header {display: none !important;}
     
-    /* OCULTAR BOTONES DE COMPARTIR Y GITHUB */
-    .stAppDeployButton {display: none;}
-    .stAppViewContainerMain [data-testid="stToolbar"] {display: none;}
+    /* ELIMINAR MENÚ HAMBURGUESA */
+    #MainMenu {display: none !important;}
     
-    /* OCULTAR BOTÓN DE HAMBURGUESA (MENÚ) */
-    .stAppViewContainerMain [data-testid="stSidebarNav"] {display: none;}
+    /* ELIMINAR FOOTER */
+    footer {display: none !important;}
     
-    /* OCULTAR ELEMENTOS DEL HEADER SUPERIOR */
-    .stAppViewContainerMain [data-testid="stHeader"] {display: none;}
+    /* ELIMINAR BOTONES DE ACCIÓN SUPERIORES */
+    .stAppDeployButton {display: none !important;}
+    .stToolbar {display: none !important;}
     
-    /* OCULTAR BOTÓN DE GITHUB */
-    .stAppViewContainerMain [data-testid="stGitHubButton"] {display: none;}
+    /* ELIMINAR BOTÓN DE GITHUB */
+    [data-testid="stGitHubButton"] {display: none !important;}
     
-    /* OCULTAR BOTÓN DE COMPARTIR */
-    .stAppViewContainerMain [data-testid="stShareButton"] {display: none;}
+    /* ELIMINAR BOTÓN DE COMPARTIR */
+    [data-testid="stShareButton"] {display: none !important;}
     
-    /* OCULTAR BOTÓN DE ESTRELLA (FAVORITO) */
-    .stAppViewContainerMain [data-testid="stAppMarkdownContainer"] > div:first-child {display: none;}
+    /* ELIMINAR BOTÓN DE ESTRELLA/FAVORITO */
+    [data-testid="stAppMarkdownContainer"] > div:first-child {display: none !important;}
     
-    /* ELIMINAR ESPACIO EXTRA DEL HEADER */
-    .stApp > header {
-        display: none !important;
-    }
+    /* ELIMINAR TODO EL TOOLBAR */
+    [data-testid="stToolbar"] {display: none !important;}
     
-    /* OCULTAR TODO EL TOOLBAR SUPERIOR */
-    .stAppViewContainerMain [data-testid="stToolbar"] {
-        display: none !important;
-    }
+    /* ELIMINAR DECORACIONES DEL HEADER */
+    .stApp > header {display: none !important;}
     
-    /* ELIMINAR PADDING SUPERIOR */
+    /* AJUSTAR MARGEN SUPERIOR */
     .stApp {
-        margin-top: -50px;
+        margin-top: -60px !important;
     }
     
-    /* MANTENER TU SIDEBAR VISIBLE */
-    .css-1d391kg {
+    /* MANTENER TU SIDEBAR */
+    section[data-testid="stSidebar"] {
         visibility: visible !important;
     }
+    
+    /* OCULTAR CUALQUIER ELEMENTO CON TEXTO "Share" */
+    div:contains("Share") {display: none !important;}
+    
+    /* OCULTAR CUALQUIER ELEMENTO CON ICONO DE GITHUB */
+    svg:contains("github") {display: none !important;}
     </style>
     """, unsafe_allow_html=True)
 def modern_navbar():
