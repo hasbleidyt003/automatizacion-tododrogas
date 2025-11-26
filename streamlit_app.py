@@ -218,52 +218,83 @@ st.markdown("""
         flex-grow: 1;
     }
     
-    /* Botones con efectos futuristas al hover */
-    .btn-glass {
-        background: transparent;
-        color: #0066cc;
-        border: 2px solid #0066cc;
-        padding: 0.8rem 1.5rem;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        width: 100%;
-        position: relative;
-        overflow: hidden;
+    /* BOTONES FUTURISTAS - TEXTO NEGRO Y EFECTO AZUL */
+    .stButton > button {
+        background: transparent !important;
+        color: #000000 !important;
+        border: 2px solid #0066cc !important;
+        padding: 0.8rem 1.5rem !important;
+        border-radius: 12px !important;
+        font-weight: 600 !important;
+        font-size: 0.9rem !important;
+        cursor: pointer !important;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+        width: 100% !important;
+        position: relative !important;
+        overflow: hidden !important;
+        font-family: "Inter", sans-serif !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
     }
     
-    .btn-glass::before {
+    .stButton > button::before {
         content: '';
         position: absolute;
         top: 0;
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(0, 102, 204, 0.1), transparent);
-        transition: left 0.5s;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(0, 102, 204, 0.2), 
+            rgba(0, 168, 255, 0.4),
+            rgba(0, 102, 204, 0.2),
+            transparent);
+        transition: left 0.6s ease-in-out;
     }
     
-    .btn-glass:hover::before {
+    .stButton > button:hover {
+        background: linear-gradient(135deg, #0066cc, #00a8ff) !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        transform: translateY(-3px) scale(1.02) !important;
+        box-shadow: 
+            0 10px 25px rgba(0, 102, 204, 0.4),
+            0 5px 15px rgba(0, 168, 255, 0.3),
+            0 0 30px rgba(0, 102, 204, 0.2) !important;
+        border-color: #00a8ff !important;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
+    }
+    
+    .stButton > button:hover::before {
         left: 100%;
     }
     
-    .btn-glass:hover {
-        background: #0066cc;
-        color: white;
-        transform: translateY(-2px);
+    .stButton > button:active {
+        transform: translateY(-1px) scale(1.01) !important;
         box-shadow: 
-            0 8px 25px rgba(0, 102, 204, 0.3),
-            0 0 20px rgba(0, 102, 204, 0.2);
-        border-color: #0066cc;
+            0 5px 15px rgba(0, 102, 204, 0.4),
+            0 2px 8px rgba(0, 168, 255, 0.3),
+            inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
     
-    .btn-glass:active {
-        transform: translateY(0);
-        box-shadow: 
-            0 4px 15px rgba(0, 102, 204, 0.3),
-            inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* EFECTO DE PULSO EN HOVER */
+    @keyframes pulse-glow {
+        0%, 100% { 
+            box-shadow: 
+                0 10px 25px rgba(0, 102, 204, 0.4),
+                0 5px 15px rgba(0, 168, 255, 0.3),
+                0 0 30px rgba(0, 102, 204, 0.2);
+        }
+        50% { 
+            box-shadow: 
+                0 10px 30px rgba(0, 102, 204, 0.6),
+                0 8px 25px rgba(0, 168, 255, 0.5),
+                0 0 40px rgba(0, 102, 204, 0.3);
+        }
+    }
+    
+    .stButton > button:hover {
+        animation: pulse-glow 2s ease-in-out infinite;
     }
     
     /* Filtros interactivos */
@@ -299,49 +330,6 @@ st.markdown("""
     .card-glass:hover {
         animation: float 6s ease-in-out infinite;
     }
-    
-    @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.8; }
-    }
-    
-    .btn-glass:hover {
-        animation: pulse 2s ease-in-out infinite;
-    }
-    
-    /* ESTILOS PARA BOTONES STREAMLIT NATIVOS - PARA QUE SE VEAN IGUAL */
-    .stButton > button {
-        background: transparent !important;
-        color: #0066cc !important;
-        border: 2px solid #0066cc !important;
-        padding: 0.8rem 1.5rem !important;
-        border-radius: 12px !important;
-        font-weight: 600 !important;
-        font-size: 0.9rem !important;
-        cursor: pointer !important;
-        transition: all 0.3s ease !important;
-        width: 100% !important;
-        position: relative !important;
-        overflow: hidden !important;
-        font-family: "Inter", sans-serif !important;
-    }
-    
-    .stButton > button:hover {
-        background: #0066cc !important;
-        color: white !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 
-            0 8px 25px rgba(0, 102, 204, 0.3),
-            0 0 20px rgba(0, 102, 204, 0.2) !important;
-        border-color: #0066cc !important;
-    }
-    
-    .stButton > button:active {
-        transform: translateY(0) !important;
-        box-shadow: 
-            0 4px 15px rgba(0, 102, 204, 0.3),
-            inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -373,7 +361,7 @@ areas_data = [
         "description": "SAVIA & COOSALUD: Conversores JSON, Renombradores RIPS/CUV. SALUD TOTAL: Procesador OCR + Renombrado",
         "status": "Activo",
         "users": "8 usuarios",
-        "page": "pages/1_Cuentas_Medicas.py"  # ✅ RUTA ACTUALIZADA
+        "page": "pages/1_Cuentas_Medicas.py"
     },
     {
         "name": "Cartera", 
@@ -381,7 +369,7 @@ areas_data = [
         "description": "Gestión automatizada de estados de cuenta y reportes financieros con análisis inteligente y predicciones",
         "status": "Activo", 
         "users": "6 usuarios",
-        "page": "pages/2_Cartera.py"  # ✅ RUTA ACTUALIZADA
+        "page": "pages/2_Cartera.py"
     },
     {
         "name": "Tesorería",
@@ -389,7 +377,7 @@ areas_data = [
         "description": "Control automatizado de estados bancarios, flujo financiero y conciliaciones con máxima seguridad",
         "status": "En desarrollo",
         "users": "4 usuarios", 
-        "page": "pages/3_Tesoreria.py"  # ✅ RUTA ACTUALIZADA
+        "page": "pages/3_Tesoreria.py"
     },
     {
         "name": "Métricas",
@@ -397,7 +385,7 @@ areas_data = [
         "description": "Dashboard ejecutivo con análisis de impacto, ROI y métricas de todas las automatizaciones implementadas", 
         "status": "Activo",
         "users": "5 usuarios",
-        "page": "pages/4_Metricas_y_Contacto.py"  # ✅ RUTA ACTUALIZADA
+        "page": "pages/4_Metricas_y_Contacto.py"
     }
 ]
 
