@@ -538,9 +538,9 @@ st.markdown("""
 <script>
 function navigateTo(area) {
     const routes = {
-        'cuentas_médicas': '/Cuentas_Medicas',
-        'cartera': '/Cartera', 
-        'tesorería': '/Tesoreria',
+        'cuentas_médicas': '/1_Cuentas_Medicas',   
+        'cartera': '/2_Cartera',                   
+        'tesorería': '/3_Tesoreria',
         'metricas': '/Metricas_y_Contacto'
     };
     if (routes[area]) {
