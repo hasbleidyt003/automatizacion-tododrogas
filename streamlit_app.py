@@ -556,7 +556,7 @@ st.markdown("""
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 '>
     <h4 style='color: #1a1a1a; margin-bottom: 1rem; font-size: 1.2rem; font-weight: 600;'>
-        TodoDrogas - Plataforma Inteligente
+        Tododrogas - Plataforma Inteligente
     </h4>
     <p style='color: #666; margin-bottom: 0.5rem; font-size: 0.9rem;'>
         Tecnología que impulsa tu operación al siguiente nivel • V1.0
