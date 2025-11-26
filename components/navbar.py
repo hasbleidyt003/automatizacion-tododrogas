@@ -1,6 +1,8 @@
 import streamlit as st
 
 def modern_navbar():
+    """Barra de navegación moderna con botón de inicio y sidebar"""
+    
     # Barra lateral simplificada para navegación
     with st.sidebar:
         st.markdown("### 🧭 Navegación Rápida")
@@ -34,7 +36,7 @@ def modern_navbar():
             st.success("Sesión cerrada exitosamente")
             # Aquí iría la lógica real de cierre de sesión
 
-    # Navbar principal
+    # Navbar principal con estilos mejorados
     st.markdown("""
     <style>
     .modern-navbar {
@@ -98,6 +100,24 @@ def modern_navbar():
         border-right: 1px solid rgba(0, 102, 204, 0.1);
     }
     
+    /* Botones del navbar principal */
+    .stButton > button {
+        background: linear-gradient(135deg, #0066cc, #00a8ff) !important;
+        color: white !important;
+        border: none !important;
+        padding: 0.5rem 1rem !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        font-size: 0.8rem !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .stButton > button:hover {
+        background: linear-gradient(135deg, #0052a3, #0088cc) !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3) !important;
+    }
+    
     @media (max-width: 768px) {
         .nav-content {
             flex-direction: column;
@@ -123,3 +143,25 @@ def modern_navbar():
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    # Navbar principal con botones funcionales
+    col1, col2, col3 = st.columns([3, 1, 1])
+    
+    with col1:
+        # El título ya está en el HTML, aquí podemos poner contenido adicional si es necesario
+        pass
+    
+    with col2:
+        if st.button("🏠 **Inicio**", use_container_width=True, key="nav_inicio"):
+            st.switch_page("1_Cuentas_Medicas.py")
+    
+    with col3:
+        if st.button("📊 **Dashboard**", use_container_width=True, key="nav_dashboard"):
+            st.switch_page("1_Cuentas_Medicas.py")
+    
+    st.markdown("---")
+    
+    # Título principal debajo del navbar
+    st.markdown("# Plataforma Inteligente Tododrogas")
+    st.markdown("Tecnología que impulsa tu operación al siguiente nivel")
+    st.markdown("---")
