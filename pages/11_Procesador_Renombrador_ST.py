@@ -345,12 +345,6 @@ def main():
            - 🆔 Cédula del paciente del contenido del PDF
         4. **Descarga un ZIP** con los PDFs renombrados en formato:  
            `CRC_830500960_NE6_CC123456789.pdf`
-        
-        **✅ Ventajas:**
-        - 🌐 100% compatible con cloud
-        - 🔒 No necesita Tesseract/Poppler
-        - ⚡ Procesamiento rápido en memoria
-        - 🎯 Múltiples estrategias de extracción
         """)
     
     # PROCESAMIENTO
