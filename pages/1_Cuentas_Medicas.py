@@ -37,7 +37,7 @@ with tab1:
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### 🔄 Conversores JSON")
+        st.markdown("### 🔄 Conversor MANTIS")
         if st.button("🔧 Conversor Mantis", use_container_width=True, key="coosalud_mantis"):
             st.switch_page("pages/5_Conversor_Mantis_Coosalud.py")
         
@@ -46,7 +46,7 @@ with tab1:
     
     with col2:
         st.markdown("### 🏷️ Renombradores")
-        if st.button("📋 Renombrador RIPS", use_container_width=True, key="coosalud_rips"):
+        if st.button("🔢 Renombrador RIPS", use_container_width=True, key="coosalud_rips"):
             st.switch_page("pages/8_Renombradores_rips_Coosalud.py")
         
         if st.button("🔢 Renombrador CUV", use_container_width=True, key="coosalud_cuv"):
