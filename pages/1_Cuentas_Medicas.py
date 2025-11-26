@@ -170,58 +170,117 @@ class MetricasCuentasMedicas:
 metricas = MetricasCuentasMedicas()
 
 # =============================================
-# INTERFAZ PRINCIPAL
+# ESTILOS FUTURISTAS PARA BOTONES
+# =============================================
+
+st.markdown("""
+<style>
+    /* BOTONES FUTURISTAS - TEXTO NEGRO Y EFECTO AZUL */
+    .stButton > button {
+        background: transparent !important;
+        color: #000000 !important;
+        border: 2px solid #0066cc !important;
+        padding: 0.8rem 1.5rem !important;
+        border-radius: 12px !important;
+        font-weight: 600 !important;
+        font-size: 0.9rem !important;
+        cursor: pointer !important;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+        width: 100% !important;
+        position: relative !important;
+        overflow: hidden !important;
+        font-family: "Inter", sans-serif !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
+    }
+    
+    .stButton > button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(0, 102, 204, 0.2), 
+            rgba(0, 168, 255, 0.4),
+            rgba(0, 102, 204, 0.2),
+            transparent);
+        transition: left 0.6s ease-in-out;
+    }
+    
+    .stButton > button:hover {
+        background: linear-gradient(135deg, #0066cc, #00a8ff) !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        transform: translateY(-3px) scale(1.02) !important;
+        box-shadow: 
+            0 10px 25px rgba(0, 102, 204, 0.4),
+            0 5px 15px rgba(0, 168, 255, 0.3),
+            0 0 30px rgba(0, 102, 204, 0.2) !important;
+        border-color: #00a8ff !important;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
+    }
+    
+    .stButton > button:hover::before {
+        left: 100%;
+    }
+    
+    .stButton > button:active {
+        transform: translateY(-1px) scale(1.01) !important;
+        box-shadow: 
+            0 5px 15px rgba(0, 102, 204, 0.4),
+            0 2px 8px rgba(0, 168, 255, 0.3),
+            inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* EFECTO DE PULSO EN HOVER */
+    @keyframes pulse-glow {
+        0%, 100% { 
+            box-shadow: 
+                0 10px 25px rgba(0, 102, 204, 0.4),
+                0 5px 15px rgba(0, 168, 255, 0.3),
+                0 0 30px rgba(0, 102, 204, 0.2);
+        }
+        50% { 
+            box-shadow: 
+                0 10px 30px rgba(0, 102, 204, 0.6),
+                0 8px 25px rgba(0, 168, 255, 0.5),
+                0 0 40px rgba(0, 102, 204, 0.3);
+        }
+    }
+    
+    .stButton > button:hover {
+        animation: pulse-glow 2s ease-in-out infinite;
+    }
+    
+    /* TARJETAS DE EPS MEJORADAS */
+    .eps-card {
+        background: white;
+        border: 1px solid rgba(0, 102, 204, 0.1);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+    
+    .eps-card:hover {
+        box-shadow: 0 8px 25px rgba(0, 102, 204, 0.15);
+        border-color: rgba(0, 102, 204, 0.2);
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# =============================================
+# INTERFAZ PRINCIPAL - BOTONES ARRIBA
 # =============================================
 
 # Título de la página
 st.title("📋 Cuentas Médicas")
 st.markdown("Automatización de procesos para cuentas médicas por EPS")
 
-# Obtener estadísticas en tiempo real
-estadisticas = metricas.obtener_estadisticas()
-historial_reciente = metricas.obtener_historial(5)
-tiempo_promedio = metricas.obtener_tiempo_promedio()
-
-# SECCIÓN DE MÉTRICAS EN TIEMPO REAL
-st.header("📊 Métricas en Tiempo Real")
-
-# Métricas principales
-col1, col2, col3, col4 = st.columns(4)
-
-with col1:
-    total_hoy = estadisticas["archivos_hoy"]
-    delta_hoy = "+5" if total_hoy > 0 else "0"
-    st.metric(
-        label="📁 Archivos Hoy",
-        value=total_hoy,
-        delta=delta_hoy
-    )
-
-with col2:
-    tasa_exito = estadisticas["tasa_exito"]
-    delta_tasa = "+2.5%" if tasa_exito > 95 else "0%"
-    st.metric(
-        label="🎯 Tasa de Éxito",
-        value=f"{tasa_exito}%",
-        delta=delta_tasa
-    )
-
-with col3:
-    st.metric(
-        label="⏱️ Tiempo Promedio",
-        value=tiempo_promedio,
-        delta="-8s"
-    )
-
-with col4:
-    total_general = estadisticas["total_archivos"]
-    st.metric(
-        label="📊 Total Procesado",
-        value=total_general,
-        delta="+12 esta semana"
-    )
-
-# SECCIÓN DE EPS - ORGANIZADA POR EMPRESA
+# SECCIÓN DE EPS - ORGANIZADA POR EMPRESA (ARRIBA)
 st.header("🏥 Selecciona la EPS para Procesar Archivos")
 
 # Crear pestañas para cada EPS
@@ -229,19 +288,6 @@ tab1, tab2, tab3 = st.tabs(["🏥 COOSALUD", "💊 SAVIA SALUD", "🩺 SALUD TOT
 
 with tab1:
     st.subheader("COOSALUD - Procesamiento de Archivos")
-    
-    # Mostrar estadísticas específicas de Coosalud
-    eps_stats = estadisticas["eps_stats"]["COOSALUD"]
-    col_stats1, col_stats2, col_stats3 = st.columns(3)
-    
-    with col_stats1:
-        st.metric("Total Coosalud", eps_stats["total"])
-    with col_stats2:
-        st.metric("Hoy", eps_stats["hoy"])
-    with col_stats3:
-        tasa_eps = round((eps_stats["exitosos"] / eps_stats["total"] * 100), 1) if eps_stats["total"] > 0 else 0
-        st.metric("Éxito Coosalud", f"{tasa_eps}%")
-    
     st.info("Herramientas especializadas para Coosalud")
     
     col1, col2 = st.columns(2)
@@ -289,19 +335,6 @@ with tab1:
 
 with tab2:
     st.subheader("SAVIA SALUD - Procesamiento de Archivos")
-    
-    # Mostrar estadísticas específicas de Savia
-    eps_stats = estadisticas["eps_stats"]["SAVIA SALUD"]
-    col_stats1, col_stats2, col_stats3 = st.columns(3)
-    
-    with col_stats1:
-        st.metric("Total Savia", eps_stats["total"])
-    with col_stats2:
-        st.metric("Hoy", eps_stats["hoy"])
-    with col_stats3:
-        tasa_eps = round((eps_stats["exitosos"] / eps_stats["total"] * 100), 1) if eps_stats["total"] > 0 else 0
-        st.metric("Éxito Savia", f"{tasa_eps}%")
-    
     st.info("Herramientas especializadas para Savia Salud")
     
     col1, col2 = st.columns(2)
@@ -330,19 +363,6 @@ with tab2:
 
 with tab3:
     st.subheader("SALUD TOTAL - Procesamiento de Archivos")
-    
-    # Mostrar estadísticas específicas de Salud Total
-    eps_stats = estadisticas["eps_stats"]["SALUD TOTAL"]
-    col_stats1, col_stats2, col_stats3 = st.columns(3)
-    
-    with col_stats1:
-        st.metric("Total Salud Total", eps_stats["total"])
-    with col_stats2:
-        st.metric("Hoy", eps_stats["hoy"])
-    with col_stats3:
-        tasa_eps = round((eps_stats["exitosos"] / eps_stats["total"] * 100), 1) if eps_stats["total"] > 0 else 0
-        st.metric("Éxito Salud Total", f"{tasa_eps}%")
-    
     st.info("Herramientas especializadas para Salud Total")
     
     col1, col2 = st.columns(2)
@@ -362,8 +382,82 @@ with tab3:
         st.markdown("### ⚡ Procesamiento Avanzado")
         st.info("OCR inteligente con renombrado automático")
 
+# =============================================
+# SECCIÓN DE MÉTRICAS (ABAJO)
+# =============================================
+
+# Obtener estadísticas en tiempo real
+estadisticas = metricas.obtener_estadisticas()
+historial_reciente = metricas.obtener_historial(5)
+tiempo_promedio = metricas.obtener_tiempo_promedio()
+
+st.markdown("---")
+st.header("📊 Métricas en Tiempo Real")
+
+# Métricas principales
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    total_hoy = estadisticas["archivos_hoy"]
+    delta_hoy = "+5" if total_hoy > 0 else "0"
+    st.metric(
+        label="📁 Archivos Hoy",
+        value=total_hoy,
+        delta=delta_hoy
+    )
+
+with col2:
+    tasa_exito = estadisticas["tasa_exito"]
+    delta_tasa = "+2.5%" if tasa_exito > 95 else "0%"
+    st.metric(
+        label="🎯 Tasa de Éxito",
+        value=f"{tasa_exito}%",
+        delta=delta_tasa
+    )
+
+with col3:
+    st.metric(
+        label="⏱️ Tiempo Promedio",
+        value=tiempo_promedio,
+        delta="-8s"
+    )
+
+with col4:
+    total_general = estadisticas["total_archivos"]
+    st.metric(
+        label="📊 Total Procesado",
+        value=total_general,
+        delta="+12 esta semana"
+    )
+
+# Métricas por EPS
+st.subheader("🏥 Estadísticas por EPS")
+
+eps_col1, eps_col2, eps_col3 = st.columns(3)
+
+with eps_col1:
+    coosalud_stats = estadisticas["eps_stats"]["COOSALUD"]
+    st.metric("COOSALUD - Total", coosalud_stats["total"])
+    st.metric("COOSALUD - Hoy", coosalud_stats["hoy"])
+    tasa_coosalud = round((coosalud_stats["exitosos"] / coosalud_stats["total"] * 100), 1) if coosalud_stats["total"] > 0 else 0
+    st.metric("COOSALUD - Éxito", f"{tasa_coosalud}%")
+
+with eps_col2:
+    savia_stats = estadisticas["eps_stats"]["SAVIA SALUD"]
+    st.metric("SAVIA SALUD - Total", savia_stats["total"])
+    st.metric("SAVIA SALUD - Hoy", savia_stats["hoy"])
+    tasa_savia = round((savia_stats["exitosos"] / savia_stats["total"] * 100), 1) if savia_stats["total"] > 0 else 0
+    st.metric("SAVIA SALUD - Éxito", f"{tasa_savia}%")
+
+with eps_col3:
+    salud_total_stats = estadisticas["eps_stats"]["SALUD TOTAL"]
+    st.metric("SALUD TOTAL - Total", salud_total_stats["total"])
+    st.metric("SALUD TOTAL - Hoy", salud_total_stats["hoy"])
+    tasa_salud_total = round((salud_total_stats["exitosos"] / salud_total_stats["total"] * 100), 1) if salud_total_stats["total"] > 0 else 0
+    st.metric("SALUD TOTAL - Éxito", f"{tasa_salud_total}%")
+
 # GRÁFICO DE ACTIVIDAD EN TIEMPO REAL
-st.header("📈 Actividad por EPS - Tiempo Real")
+st.subheader("📈 Actividad por EPS - Tiempo Real")
 
 # Crear gráfico con datos reales
 try:
@@ -405,7 +499,7 @@ except Exception as e:
     st.error(f"Error generando gráfico: {e}")
 
 # HISTORIAL EN TIEMPO REAL
-st.header("🕒 Historial Reciente de Procesos")
+st.subheader("🕒 Historial Reciente de Procesos")
 
 if historial_reciente:
     # Convertir a DataFrame para mejor visualización
