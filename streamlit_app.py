@@ -310,8 +310,44 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+<style>
+    /* ESTILOS PARA BOTONES STREAMLIT NATIVOS - PARA QUE SE VEAN IGUAL */
+    .stButton > button {
+        background: transparent !important;
+        color: #0066cc !important;
+        border: 2px solid #0066cc !important;
+        padding: 0.8rem 1.5rem !important;
+        border-radius: 12px !important;
+        font-weight: 600 !important;
+        font-size: 0.9rem !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        width: 100% !important;
+        position: relative !important;
+        overflow: hidden !important;
+        font-family: "Inter", sans-serif !important;
+    }
+    
+    .stButton > button:hover {
+        background: #0066cc !important;
+        color: white !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 
+            0 8px 25px rgba(0, 102, 204, 0.3),
+            0 0 20px rgba(0, 102, 204, 0.2) !important;
+        border-color: #0066cc !important;
+    }
+    
+    .stButton > button:active {
+        transform: translateY(0) !important;
+        box-shadow: 
+            0 4px 15px rgba(0, 102, 204, 0.3),
+            inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    }
+</style>
+""", unsafe_allow_html=True)
 
-# HERO SECTION MEJORADA
+# HERO SECTION MEJORADA (esto ya estaba en tu código)
 st.markdown("""
 <div class="hero-glass">
     <h1 class="hero-title">Plataforma Inteligente Tododrogas</h1>
