@@ -373,7 +373,7 @@ areas_data = [
         "description": "SAVIA & COOSALUD: Conversores JSON, Renombradores RIPS/CUV. SALUD TOTAL: Procesador OCR + Renombrado",
         "status": "Activo",
         "users": "8 usuarios",
-        "page": "./1_Cuentas_Medicas"  # ✅ RUTA CORREGIDA
+        "page": "pages/1_Cuentas_Medicas.py"  # ✅ RUTA ACTUALIZADA
     },
     {
         "name": "Cartera", 
@@ -381,7 +381,7 @@ areas_data = [
         "description": "Gestión automatizada de estados de cuenta y reportes financieros con análisis inteligente y predicciones",
         "status": "Activo", 
         "users": "6 usuarios",
-        "page": "./2_Cartera"  # ✅ RUTA CORREGIDA
+        "page": "pages/2_Cartera.py"  # ✅ RUTA ACTUALIZADA
     },
     {
         "name": "Tesorería",
@@ -389,7 +389,7 @@ areas_data = [
         "description": "Control automatizado de estados bancarios, flujo financiero y conciliaciones con máxima seguridad",
         "status": "En desarrollo",
         "users": "4 usuarios", 
-        "page": "./3_Tesoreria"  # ✅ RUTA CORREGIDA
+        "page": "pages/3_Tesoreria.py"  # ✅ RUTA ACTUALIZADA
     },
     {
         "name": "Métricas",
@@ -397,7 +397,7 @@ areas_data = [
         "description": "Dashboard ejecutivo con análisis de impacto, ROI y métricas de todas las automatizaciones implementadas", 
         "status": "Activo",
         "users": "5 usuarios",
-        "page": "./Metricas_y_Contacto"  # ✅ RUTA CORREGIDA
+        "page": "pages/4_Metricas_y_Contacto.py"  # ✅ RUTA ACTUALIZADA
     }
 ]
 
