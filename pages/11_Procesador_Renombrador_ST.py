@@ -7,12 +7,22 @@ from datetime import datetime
 import PyPDF2
 from typing import Dict, List, Tuple, Optional
 
+# Importar componentes
+from components.navbar import modern_navbar
+from config.theme import configure_modern_theme
+
+# Configurar tema y navbar
+configure_modern_theme()
+
 # Configurar página
 st.set_page_config(
     page_title="Procesador Salud Total - Cloud",
     page_icon="🏥",
     layout="wide"
 )
+
+# LLAMAR EL NAVBAR COMPLETO (CON SIDEBAR)
+modern_navbar()
 
 class CloudPDFProcessor:
     """Procesador 100% cloud-compatible para Salud Total"""
@@ -281,26 +291,16 @@ class CloudPDFProcessor:
             return None
 
 def main():
+    # El navbar ya se llamó arriba, ahora solo el contenido principal
+    
+    # CONTENIDO PRINCIPAL
     st.title("🏥 Procesador Salud Total - Cloud")
     st.markdown("Procesamiento 100% automático de facturas **sin dependencias externas**")
     
     # Inicializar procesador
     processor = CloudPDFProcessor()
     
-    with st.sidebar:
-        st.header("⚙️ Configuración")
-        st.info("""
-        **Requisitos:**
-        - 📄 Archivo TXT con número de factura en el nombre
-        - 📁 PDFs escaneados de Salud Total
-        - 🌐 Conexión a internet
-        """)
-        
-        st.header("📊 Estadísticas")
-        if 'processed_files' in st.session_state:
-            st.metric("Archivos Procesados", st.session_state.processed_files)
-    
-    # SECCIÓN DE CARGA DE ARCHIVOS
+    # SECCIÓN DE CARGA DE ARCHIVOS - EN ÁREA PRINCIPAL
     col1, col2 = st.columns([1, 1])
     
     with col1:
@@ -330,6 +330,28 @@ def main():
         
         if uploaded_pdfs:
             st.success(f"**{len(uploaded_pdfs)} PDFs** listos para procesar")
+    
+    # INFORMACIÓN ADICIONAL EN EL ÁREA PRINCIPAL
+    st.markdown("---")
+    
+    with st.expander("📋 Información del Proceso", expanded=True):
+        st.markdown("""
+        **🔍 ¿Cómo funciona?**
+        
+        1. **Sube un archivo TXT** cuyo nombre contenga el número de factura (ej: `NE6.txt`)
+        2. **Sube los PDFs** escaneados de Salud Total
+        3. **El sistema automáticamente** extraerá:
+           - 📄 Número de factura del nombre del TXT
+           - 🆔 Cédula del paciente del contenido del PDF
+        4. **Descarga un ZIP** con los PDFs renombrados en formato:  
+           `CRC_830500960_NE6_CC123456789.pdf`
+        
+        **✅ Ventajas:**
+        - 🌐 100% compatible con cloud
+        - 🔒 No necesita Tesseract/Poppler
+        - ⚡ Procesamiento rápido en memoria
+        - 🎯 Múltiples estrategias de extracción
+        """)
     
     # PROCESAMIENTO
     if uploaded_txt and uploaded_pdfs and 'invoice_number' in st.session_state:
