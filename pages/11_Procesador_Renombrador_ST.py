@@ -1,521 +1,453 @@
 import streamlit as st
 import re
-import os
-import tempfile
-import shutil
-from pathlib import Path
-import threading
-from datetime import datetime
-import traceback
 import pandas as pd
-import time
+import zipfile
+import io
+from datetime import datetime
+import PyPDF2
+from typing import Dict, List, Tuple, Optional
 
 # Configurar página
 st.set_page_config(
-    page_title="Procesador OCR - Salud Total",
-    page_icon="🔍",
+    page_title="Procesador Salud Total - Cloud",
+    page_icon="🏥",
     layout="wide"
 )
 
-# Verificar e importar dependencias
-try:
-    import PyPDF2
-    PDF2_AVAILABLE = True
-except ImportError:
-    PDF2_AVAILABLE = False
-    st.warning("⚠️ PyPDF2 no está instalado. Ejecute: `pip install PyPDF2`")
-
-try:
-    from pdf2image import convert_from_path
-    PDF2IMAGE_AVAILABLE = True
-except ImportError:
-    PDF2IMAGE_AVAILABLE = False
-    st.warning("⚠️ pdf2image no está instalado. El OCR no funcionará.")
-
-try:
-    import pytesseract
-    TESSERACT_AVAILABLE = True
-except ImportError:
-    TESSERACT_AVAILABLE = False
-    st.warning("⚠️ pytesseract no está instalado. El OCR no funcionará.")
-
-try:
-    from PIL import Image, ImageEnhance, ImageFilter
-    PIL_AVAILABLE = True
-except ImportError:
-    PIL_AVAILABLE = False
-    st.warning("⚠️ Pillow no está instalado. El OCR no funcionará.")
-
-class PDFProcessorST:
-    def __init__(self):
-        self.processing = False
-        self.processed_files = 0
-        self.renamed_files = 0
-        self.error_files = 0
-        
-    def check_dependencies(self):
-        """Verificar dependencias disponibles"""
-        deps_status = {
-            "PyPDF2": PDF2_AVAILABLE,
-            "pdf2image": PDF2IMAGE_AVAILABLE,
-            "pytesseract": TESSERACT_AVAILABLE,
-            "Pillow": PIL_AVAILABLE
-        }
-        return deps_status
+class CloudPDFProcessor:
+    """Procesador 100% cloud-compatible para Salud Total"""
     
-    def extract_code_from_text(self, texto):
-        """Extraer código D0 del texto"""
-        if not texto:
+    def __init__(self):
+        self.invoice_cache = {}
+        
+    def extract_invoice_from_txt_name(self, txt_filename: str) -> Optional[str]:
+        """Extraer número de factura del nombre del archivo TXT"""
+        try:
+            # Patrones flexibles para nombres de archivo
+            patterns = [
+                r'(NE\d+)',                      # NE123
+                r'(\d{6,10})',                   # 123456
+                r'([A-Z]{2,4}\d{3,8})',          # AB12345
+                r'(FACTURA[_-]?\d+)',            # FACTURA123
+            ]
+            
+            filename = txt_filename.upper().replace('.TXT', '')
+            
+            for pattern in patterns:
+                match = re.search(pattern, filename)
+                if match:
+                    invoice = match.group(1)
+                    st.success(f"✅ Factura detectada: {invoice}")
+                    return invoice
+            
             return None
             
-        texto_limpio = texto.replace(" ", "").replace("\n", "").replace("\t", "")
+        except Exception as e:
+            st.error(f"❌ Error extrayendo factura: {e}")
+            return None
+    
+    def extract_patient_data_advanced(self, pdf_content: bytes) -> Dict[str, str]:
+        """Extracción avanzada de datos del paciente usando múltiples estrategias"""
         
-        # Códigos específicos de Salud Total
-        codigos_especificos = [
-            "D07250606369", "D07250721912", "D07250723288", 
-            "D07250725472", "D07250711286", "D07250712248",
-            "D07250703567", "D07250723001", "D07250723086",
-            "D07250722866", "D07250725611"
-        ]
-        
-        for codigo in codigos_especificos:
-            if codigo in texto_limpio:
-                st.session_state.log_messages.append(f"🔍 Código específico encontrado: {codigo}")
-                return codigo
-        
-        # Patrones mejorados para Salud Total
-        patrones_mejorados = [
-            r"\*(D0\d{10})\*", r"\*(D0\d{9,11})\*",
-            r"Acta de Entrega\s*\*(D0\d{9,11})\*",
-            r"Acta de Entrega[^\d]*(D0\d{10})",
-            r"\b(D0\d{10})\b", r"\b(D0\d{9,11})\b",
-            r"NRO\s+ENTREGA.*?(D0\d{10})",
-        ]
-        
-        for i, patron in enumerate(patrones_mejorados):
+        def safe_pdf_extraction(content: bytes) -> str:
+            """Extracción segura de texto PDF"""
             try:
-                busqueda = re.search(patron, texto, re.IGNORECASE | re.DOTALL)
-                if busqueda:
-                    codigo = busqueda.group(1).strip()
-                    codigo = re.sub(r'[^\dD]', '', codigo.upper())
-                    if re.match(r'^D0\d{10}$', codigo):
-                        st.session_state.log_messages.append(f"✅ Código encontrado (patrón {i+1}): {codigo}")
-                        return codigo
+                pdf_file = io.BytesIO(content)
+                pdf_reader = PyPDF2.PdfReader(pdf_file)
+                text = ""
+                
+                for page in pdf_reader.pages:
+                    page_text = page.extract_text() or ""
+                    text += page_text + "\n"
+                
+                return text
             except Exception as e:
-                st.session_state.log_messages.append(f"⚠ Error con patrón {i+1}: {e}")
+                st.warning(f"⚠ Error lectura PDF: {e}")
+                return ""
+        
+        # Extraer texto del PDF
+        pdf_text = safe_pdf_extraction(pdf_content)
+        
+        if not pdf_text or len(pdf_text.strip()) < 50:
+            return {"error": "Texto insuficiente en PDF"}
+        
+        # NORMALIZAR TEXTO
+        normalized_text = self.normalize_text(pdf_text)
+        
+        # ESTRATEGIAS DE EXTRACCIÓN EN CASCADA
+        extraction_results = {
+            "document_number": None,
+            "patient_name": None,
+            "confidence": 0
+        }
+        
+        # ESTRATEGIA 1: PATRONES ESTRUCTURADOS (Alta confianza)
+        structured_doc = self.extract_with_structured_patterns(normalized_text)
+        if structured_doc:
+            extraction_results["document_number"] = structured_doc
+            extraction_results["confidence"] += 80
+        
+        # ESTRATEGIA 2: ANÁLISIS POR CONTEXTO (Media confianza)
+        if not extraction_results["document_number"]:
+            context_doc = self.extract_with_context_analysis(normalized_text)
+            if context_doc:
+                extraction_results["document_number"] = context_doc
+                extraction_results["confidence"] += 60
+        
+        # ESTRATEGIA 3: BÚSQUEDA INTELIGENTE (Baja confianza)
+        if not extraction_results["document_number"]:
+            smart_doc = self.extract_with_smart_search(normalized_text)
+            if smart_doc:
+                extraction_results["document_number"] = smart_doc
+                extraction_results["confidence"] += 40
+        
+        # Extraer nombre del paciente si es posible
+        extraction_results["patient_name"] = self.extract_patient_name(normalized_text)
+        
+        return extraction_results
+    
+    def normalize_text(self, text: str) -> str:
+        """Normalizar texto para mejor procesamiento"""
+        # Unificar espacios y saltos de línea
+        text = re.sub(r'\s+', ' ', text)
+        
+        # Normalizar caracteres especiales
+        replacements = {
+            'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u',
+            'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U',
+            'ñ': 'n', 'Ñ': 'N'
+        }
+        
+        for old, new in replacements.items():
+            text = text.replace(old, new)
+        
+        return text.upper()
+    
+    def extract_with_structured_patterns(self, text: str) -> Optional[str]:
+        """Extracción con patrones estructurados de alta confianza"""
+        
+        structured_patterns = [
+            # Formato: CC-NUMERO-
+            r'CC[-\s]*(\d{8,12})(?=\s|$|-)',
+            
+            # Formato: DOCUMENTO: NUMERO
+            r'DOCUMENTO[:\s]*(\d{8,12})(?=\s|$)',
+            
+            # Formato: N° DOCUMENTO: NUMERO
+            r'N[°\s]*DOCUMENTO[:\s]*(\d{8,12})(?=\s|$)',
+            
+            # Formato: CEDULA: NUMERO
+            r'CEDULA[:\s]*(\d{8,12})(?=\s|$)',
+            
+            # Formato: IDENTIFICACION: NUMERO
+            r'IDENTIFICACION[:\s]*(\d{8,12})(?=\s|$)',
+            
+            # Formato en línea de paciente: PACIENTE: ... CC-NUMERO
+            r'PACIENTE[^:]*CC[-\s]*(\d{8,12})',
+        ]
+        
+        for pattern in structured_patterns:
+            matches = re.findall(pattern, text, re.IGNORECASE)
+            for match in matches:
+                if self.validate_document_number(match):
+                    st.info(f"📄 Documento encontrado (estructurado): {match}")
+                    return match
         
         return None
     
-    def extract_text_with_pdfminer(self, pdf_path):
-        """Extraer texto usando pdftotext"""
-        try:
-            poppler_path = st.session_state.poppler_path
-            if poppler_path and Path(poppler_path).exists():
-                pdftotext_path = Path(poppler_path) / "pdftotext.exe"
-                
-                if pdftotext_path.exists():
-                    with tempfile.NamedTemporaryFile(suffix='.txt', delete=False) as temp_file:
-                        temp_text_path = temp_file.name
-                    
-                    import subprocess
-                    cmd = [str(pdftotext_path), "-layout", "-nopgbrk", str(pdf_path), temp_text_path]
-                    result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
-                    
-                    if result.returncode == 0:
-                        with open(temp_text_path, 'r', encoding='utf-8', errors='ignore') as f:
-                            texto = f.read()
-                        os.unlink(temp_text_path)
-                        return texto
-                    
-                    if os.path.exists(temp_text_path):
-                        os.unlink(temp_text_path)
-                        
-        except Exception as e:
-            st.session_state.log_messages.append(f"⚠ Error con pdftotext: {e}")
+    def extract_with_context_analysis(self, text: str) -> Optional[str]:
+        """Extracción mediante análisis contextual"""
+        
+        # Buscar secciones que contengan datos del paciente
+        context_keywords = ['PACIENTE', 'DOCUMENTO', 'IDENTIFICACION', 'CEDULA', 'DATOS PERSONALES']
+        
+        lines = text.split('\n')
+        candidate_lines = []
+        
+        for i, line in enumerate(lines):
+            if any(keyword in line for keyword in context_keywords):
+                # Agregar línea actual y contexto alrededor
+                start = max(0, i - 2)
+                end = min(len(lines), i + 3)
+                context = ' '.join(lines[start:end])
+                candidate_lines.append(context)
+        
+        # Buscar números en contexto relevante
+        for context in candidate_lines:
+            numbers = re.findall(r'\b\d{8,12}\b', context)
+            for number in numbers:
+                if self.validate_document_number(number):
+                    st.info(f"📄 Documento encontrado (contextual): {number}")
+                    return number
         
         return None
     
-    def process_single_file(self, archivo_pdf):
-        """Procesar un solo archivo PDF"""
-        st.session_state.log_messages.append(f"🔍 Analizando: {archivo_pdf.name}")
-        texto = ""
+    def extract_with_smart_search(self, text: str) -> Optional[str]:
+        """Búsqueda inteligente con validación múltiple"""
         
-        # Intentar con pdftotext primero
-        texto_pdftotext = self.extract_text_with_pdfminer(archivo_pdf)
-        if texto_pdftotext:
-            codigo = self.extract_code_from_text(texto_pdftotext)
-            if codigo:
-                st.session_state.log_messages.append(f"✅ Código encontrado con pdftotext: {codigo}")
-                return codigo, texto_pdftotext
-            texto = texto_pdftotext
+        # Encontrar todos los números candidatos
+        all_numbers = re.findall(r'\b\d{7,13}\b', text)
+        candidates = []
         
-        # Intentar con PyPDF2
-        try:
-            with open(archivo_pdf, "rb") as f:
-                lector = PyPDF2.PdfReader(f)
-                for pagina in lector.pages:
-                    contenido = pagina.extract_text()
-                    if contenido:
-                        texto += contenido + "\n"
-                
-                codigo = self.extract_code_from_text(texto)
-                if codigo:
-                    return codigo, texto
-                
-                # Intentar con extracción de layout
-                texto_layout = ""
-                for pagina in lector.pages:
-                    try:
-                        contenido = pagina.extract_text(0)
-                        if contenido:
-                            texto_layout += contenido + "\n"
-                    except:
-                        pass
-                
-                if texto_layout != texto:
-                    codigo = self.extract_code_from_text(texto_layout)
-                    if codigo:
-                        return codigo, texto_layout
-        except Exception as e:
-            st.session_state.log_messages.append(f"⚠ Falló la extracción de texto directo: {e}")
+        for number in all_numbers:
+            if self.validate_document_number(number):
+                # Calcular puntuación basada en contexto
+                score = self.calculate_document_confidence(number, text)
+                candidates.append((number, score))
         
-        # Usar OCR como último recurso
-        if (PDF2IMAGE_AVAILABLE and TESSERACT_AVAILABLE and PIL_AVAILABLE and 
-            st.session_state.use_ocr):
-            try:
-                st.session_state.log_messages.append(f"🔍 Usando OCR para: {archivo_pdf.name}")
-                
-                # Configurar Tesseract
-                if st.session_state.tesseract_path and Path(st.session_state.tesseract_path).exists():
-                    pytesseract.pytesseract.tesseract_cmd = st.session_state.tesseract_path
-                
-                paginas = convert_from_path(
-                    archivo_pdf,
-                    dpi=300,
-                    poppler_path=st.session_state.poppler_path,
-                    first_page=1,
-                    last_page=3,  # Limitar a las primeras 3 páginas por rendimiento
-                    grayscale=True
-                )
-                
-                for page_num, img in enumerate(paginas):
-                    # Preprocesamiento de imagen
-                    img = img.convert('L')
-                    img = ImageEnhance.Brightness(img).enhance(st.session_state.brightness)
-                    img = ImageEnhance.Contrast(img).enhance(st.session_state.contrast)
-                    img = ImageEnhance.Sharpness(img).enhance(st.session_state.sharpness)
-                    img = img.filter(ImageFilter.SHARPEN)
-                    
-                    configuraciones = [
-                        '--psm 6 -c tessedit_char_whitelist=0123456789D*',
-                        '--psm 3 -c tessedit_char_whitelist=0123456789D*',
-                        '--psm 11 -c tessedit_char_whitelist=0123456789D*',
-                    ]
-                    
-                    for config in configuraciones:
-                        texto_ocr = pytesseract.image_to_string(img, lang="spa", config=config)
-                        codigo = self.extract_code_from_text(texto_ocr)
-                        if codigo:
-                            st.session_state.log_messages.append(f"✅ Código encontrado via OCR (página {page_num+1}): {codigo}")
-                            return codigo, texto_ocr
-            except Exception as e:
-                st.session_state.log_messages.append(f"⚠ Error en OCR: {e}")
+        # Ordenar por confianza y tomar el mejor
+        if candidates:
+            best_candidate = max(candidates, key=lambda x: x[1])
+            if best_candidate[1] > 50:  # Umbral mínimo de confianza
+                st.info(f"📄 Documento encontrado (búsqueda inteligente): {best_candidate[0]} (confianza: {best_candidate[1]}%)")
+                return best_candidate[0]
         
-        if not codigo:
-            st.session_state.log_messages.append("❌ No se pudo encontrar el código")
-        
-        return None, texto
+        return None
     
-    def process_files(self, input_folder, output_folder):
-        """Procesar todos los archivos PDF"""
-        self.processing = True
-        self.processed_files = 0
-        self.renamed_files = 0
-        self.error_files = 0
+    def validate_document_number(self, number: str) -> bool:
+        """Validación avanzada de número de documento"""
+        if not number or not number.isdigit():
+            return False
         
-        pdf_files = list(Path(input_folder).glob("*.pdf"))
-        total_files = len(pdf_files)
+        length = len(number)
         
-        if total_files == 0:
-            st.session_state.log_messages.append("❌ No hay archivos PDF para procesar")
-            self.processing = False
-            return
+        # Longitudes típicas de documentos colombianos
+        if length not in [8, 10, 11, 12]:
+            return False
         
-        st.session_state.progress_total = total_files
-        st.session_state.progress_current = 0
+        # Excluir números que probablemente no sean documentos
+        invalid_patterns = [
+            r'^12345678',      # Secuencias obvias
+            r'^11111111',      # Números repetidos
+            r'^20\d{6}',       # Posibles años
+            r'^19\d{6}',       # Posibles años
+            r'^300\d{7}',      # Posibles teléfonos
+        ]
         
-        resultados = []
+        for pattern in invalid_patterns:
+            if re.match(pattern, number):
+                return False
         
-        for i, archivo_pdf in enumerate(pdf_files):
-            if not self.processing:
-                break
-                
-            try:
-                self.processed_files += 1
-                st.session_state.progress_current = i + 1
-                
-                codigo, texto = self.process_single_file(archivo_pdf)
-                
-                resultado = {
-                    'archivo': archivo_pdf.name,
-                    'codigo_encontrado': codigo if codigo else "NO_ENCONTRADO",
-                    'estado': '✅ ÉXITO' if codigo else '❌ ERROR',
-                    'nuevo_nombre': '',
-                    'ruta_original': str(archivo_pdf)
-                }
-                
-                if codigo:
-                    nuevo_nombre = f"{codigo}.pdf"
-                    nueva_ruta = Path(output_folder) / nuevo_nombre
-                    
-                    # Manejar duplicados
-                    counter = 1
-                    while nueva_ruta.exists():
-                        nuevo_nombre = f"{codigo}_{counter}.pdf"
-                        nueva_ruta = Path(output_folder) / nuevo_nombre
-                        counter += 1
-                    
-                    # Crear carpeta de salida si no existe
-                    Path(output_folder).mkdir(parents=True, exist_ok=True)
-                    
-                    if output_folder != input_folder:
-                        shutil.copy2(archivo_pdf, nueva_ruta)
-                        st.session_state.log_messages.append(f"✓ COPIADO: {archivo_pdf.name} -> {nuevo_nombre}")
-                    else:
-                        archivo_pdf.rename(nueva_ruta)
-                        st.session_state.log_messages.append(f"✓ RENOMBRADO: {archivo_pdf.name} -> {nuevo_nombre}")
-                    
-                    resultado['nuevo_nombre'] = nuevo_nombre
-                    resultado['ruta_destino'] = str(nueva_ruta)
-                    self.renamed_files += 1
-                    
-                else:
-                    st.session_state.log_messages.append(f"✗ No se encontró código en: {archivo_pdf.name}")
-                    self.error_files += 1
-                
-                resultados.append(resultado)
-                
-            except Exception as e:
-                st.session_state.log_messages.append(f"✗ Error procesando {archivo_pdf.name}: {str(e)}")
-                self.error_files += 1
-                resultados.append({
-                    'archivo': archivo_pdf.name,
-                    'codigo_encontrado': 'ERROR',
-                    'estado': '❌ ERROR',
-                    'nuevo_nombre': '',
-                    'ruta_original': str(archivo_pdf),
-                    'error': str(e)
-                })
+        return True
+    
+    def calculate_document_confidence(self, number: str, context: str) -> int:
+        """Calcular confianza del documento basado en contexto"""
+        confidence = 0
         
-        self.processing = False
-        st.session_state.resultados = resultados
+        # Bonus por palabras clave cercanas
+        keywords = ['PACIENTE', 'DOCUMENTO', 'CC', 'CEDULA', 'IDENTIFICACION']
+        for keyword in keywords:
+            if keyword in context:
+                # Calcular proximidad
+                keyword_pos = context.find(keyword)
+                number_pos = context.find(number)
+                if abs(keyword_pos - number_pos) < 200:
+                    confidence += 25
         
-        # Resumen final
-        st.session_state.log_messages.append("\n" + "=" * 60)
-        st.session_state.log_messages.append(" RESUMEN DEL PROCESAMIENTO ")
-        st.session_state.log_messages.append("=" * 60)
-        st.session_state.log_messages.append(f"Archivos procesados: {self.processed_files}")
-        st.session_state.log_messages.append(f"Archivos renombrados: {self.renamed_files}")
-        st.session_state.log_messages.append(f"Archivos con errores: {self.error_files}")
-        st.session_state.log_messages.append("=" * 60)
-
-def initialize_session_state():
-    """Inicializar estado de la sesión"""
-    if 'log_messages' not in st.session_state:
-        st.session_state.log_messages = []
-    if 'processing' not in st.session_state:
-        st.session_state.processing = False
-    if 'progress_current' not in st.session_state:
-        st.session_state.progress_current = 0
-    if 'progress_total' not in st.session_state:
-        st.session_state.progress_total = 0
-    if 'resultados' not in st.session_state:
-        st.session_state.resultados = []
-    if 'tesseract_path' not in st.session_state:
-        st.session_state.tesseract_path = ""
-    if 'poppler_path' not in st.session_state:
-        st.session_state.poppler_path = ""
-    if 'use_ocr' not in st.session_state:
-        st.session_state.use_ocr = True
-    if 'brightness' not in st.session_state:
-        st.session_state.brightness = 1.3
-    if 'contrast' not in st.session_state:
-        st.session_state.contrast = 2.5
-    if 'sharpness' not in st.session_state:
-        st.session_state.sharpness = 2.0
+        # Bonus por formato específico
+        if f"CC-{number}" in context or f"CC {number}" in context:
+            confidence += 30
+        
+        # Bonus por estar en líneas con formato de datos personales
+        if re.search(r'PACIENTE.*CC.*\d', context) or re.search(r'DOCUMENTO.*\d', context):
+            confidence += 20
+        
+        # Penalizar por contexto de contacto
+        if any(word in context for word in ['TELEFONO', 'CELULAR', 'EMAIL', '@']):
+            confidence -= 15
+        
+        return min(100, max(0, confidence))
+    
+    def extract_patient_name(self, text: str) -> Optional[str]:
+        """Extraer nombre del paciente si es posible"""
+        try:
+            # Buscar patrones de nombre después de "PACIENTE:"
+            name_patterns = [
+                r'PACIENTE[:\s]+([A-Z\s]{10,50}?)(?=\s|CC|DOCUMENTO|$)',
+                r'NOMBRE[:\s]+([A-Z\s]{10,50}?)(?=\s|$)',
+            ]
+            
+            for pattern in name_patterns:
+                match = re.search(pattern, text)
+                if match:
+                    name = match.group(1).strip()
+                    # Validar que parece un nombre (múltiples palabras)
+                    if len(name.split()) >= 2:
+                        return name
+            
+            return None
+            
+        except Exception:
+            return None
 
 def main():
-    # Inicializar estado
-    initialize_session_state()
+    st.title("🏥 Procesador Salud Total - Cloud")
+    st.markdown("Procesamiento 100% automático de facturas **sin dependencias externas**")
     
-    # Título principal
-    st.title("🔍 Procesador OCR - Salud Total")
-    st.markdown("Procesador inteligente de actas PDF con reconocimiento de códigos D0")
+    # Inicializar procesador
+    processor = CloudPDFProcessor()
     
-    # Crear instancia del procesador
-    processor = PDFProcessorST()
-    
-    # Sidebar para configuración
     with st.sidebar:
         st.header("⚙️ Configuración")
+        st.info("""
+        **Requisitos:**
+        - 📄 Archivo TXT con número de factura en el nombre
+        - 📁 PDFs escaneados de Salud Total
+        - 🌐 Conexión a internet
+        """)
         
-        # Rutas de herramientas
-        st.subheader("Rutas de Herramientas")
-        st.session_state.tesseract_path = st.text_input(
-            "Ruta de Tesseract OCR",
-            value=st.session_state.tesseract_path,
-            help="Ruta al ejecutable tesseract.exe"
-        )
-        
-        st.session_state.poppler_path = st.text_input(
-            "Ruta de Poppler",
-            value=st.session_state.poppler_path,
-            help="Ruta a la carpeta bin de Poppler"
-        )
-        
-        # Configuración de OCR
-        st.subheader("Configuración OCR")
-        st.session_state.use_ocr = st.checkbox(
-            "Usar OCR cuando sea necesario", 
-            value=st.session_state.use_ocr
-        )
-        
-        st.session_state.brightness = st.slider(
-            "Brillo", 0.5, 2.0, st.session_state.brightness, 0.1
-        )
-        st.session_state.contrast = st.slider(
-            "Contraste", 0.5, 4.0, st.session_state.contrast, 0.1
-        )
-        st.session_state.sharpness = st.slider(
-            "Nitidez", 0.5, 3.0, st.session_state.sharpness, 0.1
-        )
-        
-        # Estado de dependencias
-        st.subheader("🔧 Estado de Dependencias")
-        deps_status = processor.check_dependencies()
-        for dep, status in deps_status.items():
-            icon = "✅" if status else "❌"
-            st.write(f"{icon} {dep}")
+        st.header("📊 Estadísticas")
+        if 'processed_files' in st.session_state:
+            st.metric("Archivos Procesados", st.session_state.processed_files)
     
-    # Contenido principal
-    col1, col2 = st.columns([2, 1])
+    # SECCIÓN DE CARGA DE ARCHIVOS
+    col1, col2 = st.columns([1, 1])
     
     with col1:
-        st.header("📁 Procesamiento de Archivos")
-        
-        # Selección de carpetas
-        input_folder = st.text_input(
-            "Carpeta de entrada con PDFs",
-            placeholder="Ruta a la carpeta con archivos PDF..."
+        st.subheader("📄 Archivo TXT")
+        uploaded_txt = st.file_uploader(
+            "Subir archivo TXT (el nombre contiene la factura)",
+            type=['txt'],
+            key="txt_uploader"
         )
         
-        output_folder = st.text_input(
-            "Carpeta de salida (opcional)",
-            placeholder="Ruta para archivos renombrados (dejar vacío para misma carpeta)..."
-        )
-        
-        # Botones de control
-        col_btn1, col_btn2 = st.columns(2)
-        
-        with col_btn1:
-            if st.button("🚀 Iniciar Procesamiento", type="primary", use_container_width=True):
-                if not input_folder or not Path(input_folder).exists():
-                    st.error("❌ La carpeta de entrada no existe")
-                else:
-                    st.session_state.processing = True
-                    st.session_state.log_messages = []
-                    
-                    # Ejecutar en thread separado
-                    import threading
-                    thread = threading.Thread(
-                        target=processor.process_files,
-                        args=(input_folder, output_folder or input_folder)
-                    )
-                    thread.start()
-        
-        with col_btn2:
-            if st.button("⏹️ Detener Procesamiento", type="secondary", use_container_width=True):
-                st.session_state.processing = False
-                processor.processing = False
-                st.session_state.log_messages.append("⏹️ Procesamiento detenido por el usuario")
-        
-        # Barra de progreso
-        if st.session_state.processing:
-            progress = st.session_state.progress_current / max(st.session_state.progress_total, 1)
-            st.progress(progress)
-            st.write(f"Procesando: {st.session_state.progress_current} / {st.session_state.progress_total}")
-        
-        # Área de logs
-        st.subheader("📋 Registro de Actividad")
-        log_container = st.container(height=300)
-        with log_container:
-            for message in st.session_state.log_messages[-50:]:  # Mostrar últimos 50 mensajes
-                st.text(message)
+        if uploaded_txt:
+            invoice_number = processor.extract_invoice_from_txt_name(uploaded_txt.name)
+            if invoice_number:
+                st.session_state.invoice_number = invoice_number
+                st.success(f"**Factura detectada:** `{invoice_number}`")
+            else:
+                st.error("No se pudo detectar el número de factura del nombre del archivo")
     
     with col2:
-        st.header("📊 Estadísticas")
-        
-        # Métricas en tiempo real
-        if st.session_state.resultados:
-            total = len(st.session_state.resultados)
-            exitosos = len([r for r in st.session_state.resultados if r['estado'] == '✅ ÉXITO'])
-            errores = total - exitosos
-            
-            st.metric("Archivos Procesados", total)
-            st.metric("Renombrados Exitosos", exitosos)
-            st.metric("Errores", errores)
-            
-            # Gráfico simple
-            chart_data = pd.DataFrame({
-                'Categoría': ['Éxitos', 'Errores'],
-                'Cantidad': [exitosos, errores]
-            })
-            st.bar_chart(chart_data.set_index('Categoría'))
-        
-        # Botón para exportar resultados
-        if st.session_state.resultados:
-            st.download_button(
-                label="📥 Descargar Resultados",
-                data=pd.DataFrame(st.session_state.resultados).to_csv(index=False),
-                file_name=f"resultados_procesamiento_{datetime.now().strftime('%Y%m%d_%H%M')}.csv",
-                mime="text/csv"
-            )
-    
-    # Sección de resultados detallados
-    if st.session_state.resultados:
-        st.header("📋 Resultados Detallados")
-        
-        df_resultados = pd.DataFrame(st.session_state.resultados)
-        
-        # Filtros
-        col_filt1, col_filt2 = st.columns(2)
-        with col_filt1:
-            filtro_estado = st.selectbox(
-                "Filtrar por estado",
-                ["Todos", "✅ ÉXITO", "❌ ERROR"]
-            )
-        
-        with col_filt2:
-            buscar_archivo = st.text_input("Buscar archivo...")
-        
-        # Aplicar filtros
-        if filtro_estado != "Todos":
-            df_resultados = df_resultados[df_resultados['estado'] == filtro_estado]
-        
-        if buscar_archivo:
-            df_resultados = df_resultados[df_resultados['archivo'].str.contains(buscar_archivo, case=False)]
-        
-        # Mostrar tabla
-        st.dataframe(
-            df_resultados,
-            use_container_width=True,
-            column_config={
-                "archivo": "Archivo Original",
-                "codigo_encontrado": "Código Encontrado",
-                "estado": "Estado",
-                "nuevo_nombre": "Nuevo Nombre"
-            }
+        st.subheader("📁 Archivos PDF")
+        uploaded_pdfs = st.file_uploader(
+            "Subir PDFs escaneados",
+            type=['pdf'],
+            accept_multiple_files=True,
+            key="pdf_uploader"
         )
+        
+        if uploaded_pdfs:
+            st.success(f"**{len(uploaded_pdfs)} PDFs** listos para procesar")
+    
+    # PROCESAMIENTO
+    if uploaded_txt and uploaded_pdfs and 'invoice_number' in st.session_state:
+        st.markdown("---")
+        st.subheader("🚀 Procesamiento")
+        
+        if st.button("Iniciar Procesamiento", type="primary", use_container_width=True):
+            progress_bar = st.progress(0)
+            results = []
+            processed_count = 0
+            
+            with st.spinner("Procesando archivos..."):
+                for i, pdf_file in enumerate(uploaded_pdfs):
+                    try:
+                        # Actualizar progreso
+                        progress = (i + 1) / len(uploaded_pdfs)
+                        progress_bar.progress(progress)
+                        
+                        # Procesar PDF
+                        pdf_content = pdf_file.getvalue()
+                        patient_data = processor.extract_patient_data_advanced(pdf_content)
+                        
+                        # Preparar resultado
+                        result = {
+                            'archivo_original': pdf_file.name,
+                            'numero_factura': st.session_state.invoice_number,
+                            'documento_paciente': patient_data.get('document_number', 'NO_ENCONTRADO'),
+                            'nombre_paciente': patient_data.get('patient_name', 'NO_ENCONTRADO'),
+                            'confianza': patient_data.get('confidence', 0),
+                            'estado': '✅ ÉXITO' if patient_data.get('document_number') else '❌ ERROR'
+                        }
+                        
+                        results.append(result)
+                        processed_count += 1
+                        
+                        # Mostrar resultado individual
+                        with st.expander(f"📄 {pdf_file.name}", expanded=False):
+                            if result['documento_paciente'] != 'NO_ENCONTRADO':
+                                st.success(f"**Documento:** {result['documento_paciente']}")
+                                st.info(f"**Confianza:** {result['confianza']}%")
+                                if result['nombre_paciente']:
+                                    st.info(f"**Paciente:** {result['nombre_paciente']}")
+                            else:
+                                st.error("No se pudo extraer el documento del paciente")
+                        
+                    except Exception as e:
+                        st.error(f"Error procesando {pdf_file.name}: {str(e)}")
+                        results.append({
+                            'archivo_original': pdf_file.name,
+                            'numero_factura': st.session_state.invoice_number,
+                            'documento_paciente': 'ERROR',
+                            'nombre_paciente': 'ERROR',
+                            'confianza': 0,
+                            'estado': '❌ ERROR'
+                        })
+            
+            # ACTUALIZAR ESTADO
+            st.session_state.processed_files = processed_count
+            st.session_state.results = results
+            
+            # MOSTRAR RESUMEN
+            st.markdown("---")
+            st.subheader("📊 Resumen del Procesamiento")
+            
+            successful = len([r for r in results if r['estado'] == '✅ ÉXITO'])
+            failed = len([r for r in results if r['estado'] == '❌ ERROR'])
+            
+            col1, col2, col3 = st.columns(3)
+            col1.metric("✅ Exitosos", successful)
+            col2.metric("❌ Fallidos", failed)
+            col3.metric("📄 Total", len(results))
+            
+            # GENERAR Y DESCARGAR RESULTADOS
+            if successful > 0:
+                st.markdown("---")
+                st.subheader("📦 Descargar Resultados")
+                
+                # Crear DataFrame
+                df_results = pd.DataFrame(results)
+                
+                # Crear ZIP con PDFs renombrados
+                zip_buffer = io.BytesIO()
+                with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
+                    # Agregar PDFs renombrados exitosos
+                    for i, (result, pdf_file) in enumerate(zip(results, uploaded_pdfs)):
+                        if result['estado'] == '✅ ÉXITO':
+                            new_filename = f"CRC_830500960_{result['numero_factura']}_CC{result['documento_paciente']}.pdf"
+                            zip_file.writestr(new_filename, pdf_file.getvalue())
+                    
+                    # Agregar CSV con resultados
+                    csv_data = df_results.to_csv(index=False)
+                    zip_file.writestr("resultados_detallados.csv", csv_data)
+                
+                zip_buffer.seek(0)
+                
+                # Botón de descarga
+                st.download_button(
+                    label="📥 Descargar ZIP con PDFs Renombrados",
+                    data=zip_buffer.getvalue(),
+                    file_name=f"salud_total_{st.session_state.invoice_number}_{datetime.now().strftime('%Y%m%d_%H%M')}.zip",
+                    mime="application/zip",
+                    use_container_width=True
+                )
+                
+                # Mostrar tabla de resultados
+                st.subheader("📋 Resultados Detallados")
+                st.dataframe(
+                    df_results,
+                    use_container_width=True,
+                    column_config={
+                        "archivo_original": "Archivo Original",
+                        "numero_factura": "N° Factura",
+                        "documento_paciente": "Documento Paciente",
+                        "nombre_paciente": "Nombre Paciente",
+                        "confianza": "Confianza (%)",
+                        "estado": "Estado"
+                    }
+                )
 
 if __name__ == "__main__":
     main()
