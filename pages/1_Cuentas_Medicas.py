@@ -374,7 +374,7 @@ with tab2:
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("**🏷️ Renombradores**")
+        st.markdown("**🏷️ Renombradores CUV**")
         if st.button("🔢 Renombrador CUV Savia", use_container_width=True, key="savia_cuv"):
             metricas.registrar_proceso(
                 "SAVIA SALUD", 
@@ -394,6 +394,16 @@ with tab2:
                 "🔄 Iniciado"
             )
             st.switch_page("pages/10_Renombrador_rips_Savia.py")
+        
+        # NUEVO BOTÓN AGREGADO - NAVEGADOR RIPS SAVIA
+        if st.button("🌐 Navegador RIPS Savia", use_container_width=True, key="savia_navegador_rips"):
+            metricas.registrar_proceso(
+                "SAVIA SALUD", 
+                "Nuevo proceso Navegador RIPS", 
+                "Navegador RIPS", 
+                "🔄 Iniciado"
+            )
+            st.switch_page("pages/13_Navegador_RIPS_Savia.py")
 
 with tab3:
     st.markdown("**SALUD TOTAL - Procesamiento de Archivos**")
