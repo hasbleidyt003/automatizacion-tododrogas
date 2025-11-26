@@ -17,13 +17,13 @@ def modern_navbar():
         col3, col4 = st.columns(2)
         with col3:
             if st.button("📋 Médicas", use_container_width=True):
-                st.switch_page("pages/Cuentas_Medicas.py")
+                st.switch_page("pages/1_Cuentas_Medicas.py")
         with col4:
             if st.button("💰 Cartera", use_container_width=True):
-                st.switch_page("pages/Cartera.py")
+                st.switch_page("pages/2_Cartera.py")
         
         if st.button("🏦 Tesorería", use_container_width=True):
-            st.switch_page("pages/Tesoreria.py")
+            st.switch_page("pages/3_Tesoreria.py")
         
         st.markdown("---")
         st.markdown("### 🔐 Sesión")
