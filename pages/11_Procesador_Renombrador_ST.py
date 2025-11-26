@@ -9,7 +9,7 @@ from typing import Dict, List, Tuple, Optional
 
 # Configurar página PRIMERO
 st.set_page_config(
-    page_title="Procesador Salud Total - Cloud",
+    page_title="Procesador Salud Total ",
     page_icon="🏥",
     layout="wide"
 )
@@ -288,7 +288,7 @@ class CloudPDFProcessor:
 
 def main():
     # CONTENIDO PRINCIPAL
-    st.title("🏥 Procesador Salud Total - Cloud")
+    st.title("🏥 Procesador Salud Total ")
     st.markdown("Procesamiento 100% automático de facturas **sin dependencias externas**")
     
     # Inicializar procesador
