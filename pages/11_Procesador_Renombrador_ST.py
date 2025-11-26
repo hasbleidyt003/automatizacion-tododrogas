@@ -294,7 +294,7 @@ def main():
     # El navbar ya se llamó arriba, ahora solo el contenido principal
     
     # CONTENIDO PRINCIPAL
-    st.title("🏥 Procesador Salud Total - Cloud")
+    st.title("🏥 Procesador Salud Total ")
     st.markdown("Procesamiento 100% automático de facturas **sin dependencias externas**")
     
     # Inicializar procesador
