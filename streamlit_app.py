@@ -559,10 +559,10 @@ st.markdown("""
         TodoDrogas - Plataforma Inteligente
     </h4>
     <p style='color: #666; margin-bottom: 0.5rem; font-size: 0.9rem;'>
-        Tecnología que impulsa tu operación al siguiente nivel • v3.0
+        Tecnología que impulsa tu operación al siguiente nivel • V1.0
     </p>
     <p style='color: #999; font-size: 0.8rem;'>
-        Última actualización: """ + datetime.now().strftime("%d/%m/%Y %H:%M") + """ • © 2024 Todos los derechos reservados
+        Última actualización: """ + datetime.now().strftime("%d/%m/%Y %H:%M") + """ • © Todos los derechos reservados
     </p>
 </div>
 """, unsafe_allow_html=True)
