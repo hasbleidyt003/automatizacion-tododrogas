@@ -1,1 +1,1 @@
-clear.py
+delete.py
