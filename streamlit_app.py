@@ -310,6 +310,7 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+st.markdown("""
 <style>
     /* ESTILOS PARA BOTONES STREAMLIT NATIVOS - PARA QUE SE VEAN IGUAL */
     .stButton > button {
