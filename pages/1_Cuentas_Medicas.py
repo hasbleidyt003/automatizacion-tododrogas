@@ -269,6 +269,30 @@ st.markdown("""
         box-shadow: 0 8px 25px rgba(0, 102, 204, 0.15);
         border-color: rgba(0, 102, 204, 0.2);
     }
+    
+    /* ESTILOS PARA PESTAÑAS MÁS PROMINENTES */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background-color: #f8f9fa;
+        padding: 8px;
+        border-radius: 12px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        height: 60px;
+        white-space: pre-wrap;
+        background-color: white;
+        border-radius: 8px 8px 0px 0px;
+        gap: 8px;
+        padding: 12px 20px;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: #0066cc;
+        color: white;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -277,23 +301,23 @@ st.markdown("""
 # =============================================
 
 # Título de la página
-st.title("🏥 Sistema de Procesamiento por EPS")
-st.markdown("Selecciona la EPS y el tipo de proceso a ejecutar")
+st.title("📋 Cuentas Médicas")
+st.markdown("Automatización de procesos para cuentas médicas por EPS")
 
 # SECCIÓN DE EPS - ORGANIZADA POR EMPRESA (ARRIBA)
-st.header("📋 Procesos Disponibles por EPS")
+st.markdown("### 🏥 Selecciona la EPS para Procesar Archivos")
 
 # Crear pestañas para cada EPS
 tab1, tab2, tab3 = st.tabs(["🏥 COOSALUD", "💊 SAVIA SALUD", "🩺 SALUD TOTAL"])
 
 with tab1:
-    st.subheader("Procesos COOSALUD")
-    st.info("Herramientas especializadas para el procesamiento de archivos de Coosalud")
+    st.markdown("**COOSALUD - Procesamiento de Archivos**")
+    st.info("Herramientas especializadas para Coosalud")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### 🔄 Procesos de Conversión")
+        st.markdown("**🔄 Conversores JSON**")
         if st.button("🔧 Conversor Mantis", use_container_width=True, key="coosalud_mantis"):
             # Registrar en métricas
             metricas.registrar_proceso(
@@ -314,7 +338,7 @@ with tab1:
             st.switch_page("pages/6_Conversor_SISPRO_Coosalud.py")
     
     with col2:
-        st.markdown("### 🏷️ Procesos de Renombrado")
+        st.markdown("**🏷️ Renombradores**")
         if st.button("📋 Renombrador RIPS", use_container_width=True, key="coosalud_rips"):
             metricas.registrar_proceso(
                 "COOSALUD", 
@@ -344,13 +368,13 @@ with tab1:
             st.switch_page("pages/12_Renombrador_cuv_sispro_Coosalud.py")
 
 with tab2:
-    st.subheader("Procesos SAVIA SALUD")
-    st.info("Herramientas especializadas para el procesamiento de archivos de Savia Salud")
+    st.markdown("**SAVIA SALUD - Procesamiento de Archivos**")
+    st.info("Herramientas especializadas para Savia Salud")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### 🏷️ Procesos de Renombrado")
+        st.markdown("**🏷️ Renombradores**")
         if st.button("🔢 Renombrador CUV Savia", use_container_width=True, key="savia_cuv"):
             metricas.registrar_proceso(
                 "SAVIA SALUD", 
@@ -361,7 +385,7 @@ with tab2:
             st.switch_page("pages/9_Renombrador_cuv_Savia.py")
     
     with col2:
-        st.markdown("### 📋 Procesos RIPS")
+        st.markdown("**📋 Procesadores RIPS**")
         if st.button("📋 Renombrador RIPS Savia", use_container_width=True, key="savia_rips"):
             metricas.registrar_proceso(
                 "SAVIA SALUD", 
@@ -372,13 +396,13 @@ with tab2:
             st.switch_page("pages/10_Renombrador_rips_Savia.py")
 
 with tab3:
-    st.subheader("Procesos SALUD TOTAL")
-    st.info("Herramientas especializadas para el procesamiento de archivos de Salud Total")
+    st.markdown("**SALUD TOTAL - Procesamiento de Archivos**")
+    st.info("Herramientas especializadas para Salud Total")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### 🔍 Procesos OCR")
+        st.markdown("**🔍 Procesador OCR**")
         if st.button("🔍 Procesador + Renombrador", use_container_width=True, key="salud_total_ocr"):
             metricas.registrar_proceso(
                 "SALUD TOTAL", 
@@ -389,20 +413,20 @@ with tab3:
             st.switch_page("pages/11_Processador_Renombrador_ST.py")
     
     with col2:
-        st.markdown("### ⚡ Procesamiento Avanzado")
+        st.markdown("**⚡ Procesamiento Avanzado**")
         st.info("OCR inteligente con renombrado automático")
 
 # =============================================
 # SECCIÓN DE MÉTRICAS (ABAJO)
 # =============================================
 
-st.markdown("---")
-st.header("📊 Métricas y Estadísticas en Tiempo Real")
-
 # Obtener estadísticas en tiempo real
 estadisticas = metricas.obtener_estadisticas()
 historial_reciente = metricas.obtener_historial(5)
 tiempo_promedio = metricas.obtener_tiempo_promedio()
+
+st.markdown("---")
+st.markdown("### 📊 Métricas en Tiempo Real")
 
 # Métricas principales
 col1, col2, col3, col4 = st.columns(4)
@@ -441,7 +465,7 @@ with col4:
     )
 
 # Métricas por EPS
-st.subheader("🏥 Estadísticas por EPS")
+st.markdown("### 🏥 Estadísticas por EPS")
 
 eps_col1, eps_col2, eps_col3 = st.columns(3)
 
@@ -467,7 +491,7 @@ with eps_col3:
     st.metric("SALUD TOTAL - Éxito", f"{tasa_salud_total}%")
 
 # GRÁFICO DE ACTIVIDAD EN TIEMPO REAL
-st.subheader("📈 Actividad por EPS - Tiempo Real")
+st.markdown("### 📈 Actividad por EPS - Tiempo Real")
 
 # Crear gráfico con datos reales
 try:
@@ -509,7 +533,7 @@ except Exception as e:
     st.error(f"Error generando gráfico: {e}")
 
 # HISTORIAL EN TIEMPO REAL
-st.subheader("🕒 Historial Reciente de Procesos")
+st.markdown("### 🕒 Historial Reciente de Procesos")
 
 if historial_reciente:
     # Convertir a DataFrame para mejor visualización
