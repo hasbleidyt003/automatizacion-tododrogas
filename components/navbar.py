@@ -1,5 +1,55 @@
 import streamlit as st
+import streamlit as st
 
+def modern_navbar():
+    # CSS PARA OCULTAR ELEMENTOS NO DESEADOS
+    st.markdown("""
+    <style>
+    /* OCULTAR HEADER DE STREAMLIT POR DEFECTO */
+    #MainMenu {visibility: hidden;}
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+    
+    /* OCULTAR BOTONES DE COMPARTIR Y GITHUB */
+    .stAppDeployButton {display: none;}
+    .stAppViewContainerMain [data-testid="stToolbar"] {display: none;}
+    
+    /* OCULTAR BOTÓN DE HAMBURGUESA (MENÚ) */
+    .stAppViewContainerMain [data-testid="stSidebarNav"] {display: none;}
+    
+    /* OCULTAR ELEMENTOS DEL HEADER SUPERIOR */
+    .stAppViewContainerMain [data-testid="stHeader"] {display: none;}
+    
+    /* OCULTAR BOTÓN DE GITHUB */
+    .stAppViewContainerMain [data-testid="stGitHubButton"] {display: none;}
+    
+    /* OCULTAR BOTÓN DE COMPARTIR */
+    .stAppViewContainerMain [data-testid="stShareButton"] {display: none;}
+    
+    /* OCULTAR BOTÓN DE ESTRELLA (FAVORITO) */
+    .stAppViewContainerMain [data-testid="stAppMarkdownContainer"] > div:first-child {display: none;}
+    
+    /* ELIMINAR ESPACIO EXTRA DEL HEADER */
+    .stApp > header {
+        display: none !important;
+    }
+    
+    /* OCULTAR TODO EL TOOLBAR SUPERIOR */
+    .stAppViewContainerMain [data-testid="stToolbar"] {
+        display: none !important;
+    }
+    
+    /* ELIMINAR PADDING SUPERIOR */
+    .stApp {
+        margin-top: -50px;
+    }
+    
+    /* MANTENER TU SIDEBAR VISIBLE */
+    .css-1d391kg {
+        visibility: visible !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 def modern_navbar():
     # Barra lateral simplificada para navegación
     with st.sidebar:
