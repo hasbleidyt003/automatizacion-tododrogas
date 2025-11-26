@@ -7,21 +7,17 @@ from datetime import datetime
 import PyPDF2
 from typing import Dict, List, Tuple, Optional
 
-# Importar componentes
-from components.navbar import modern_navbar
-from config.theme import configure_modern_theme
-
-# Configurar tema y navbar
-configure_modern_theme()
-
-# Configurar página
+# Configurar página PRIMERO
 st.set_page_config(
-    page_title="Procesador - Salud Total",
+    page_title="Procesador Salud Total - Cloud",
     page_icon="🏥",
     layout="wide"
 )
 
-# LLAMAR EL NAVBAR COMPLETO (CON SIDEBAR)
+# Importar componentes DESPUÉS de st.set_page_config
+from components.navbar import modern_navbar
+
+# LLAMAR EL NAVBAR
 modern_navbar()
 
 class CloudPDFProcessor:
@@ -291,16 +287,14 @@ class CloudPDFProcessor:
             return None
 
 def main():
-    # El navbar ya se llamó arriba, ahora solo el contenido principal
-    
     # CONTENIDO PRINCIPAL
-    st.title("🏥 Procesador Salud Total ")
+    st.title("🏥 Procesador Salud Total - Cloud")
     st.markdown("Procesamiento 100% automático de facturas **sin dependencias externas**")
     
     # Inicializar procesador
     processor = CloudPDFProcessor()
     
-    # SECCIÓN DE CARGA DE ARCHIVOS - EN ÁREA PRINCIPAL
+    # SECCIÓN DE CARGA DE ARCHIVOS
     col1, col2 = st.columns([1, 1])
     
     with col1:
@@ -331,7 +325,7 @@ def main():
         if uploaded_pdfs:
             st.success(f"**{len(uploaded_pdfs)} PDFs** listos para procesar")
     
-    # INFORMACIÓN ADICIONAL EN EL ÁREA PRINCIPAL
+    # INFORMACIÓN ADICIONAL
     st.markdown("---")
     
     with st.expander("📋 Información del Proceso", expanded=True):
@@ -345,6 +339,12 @@ def main():
            - 🆔 Cédula del paciente del contenido del PDF
         4. **Descarga un ZIP** con los PDFs renombrados en formato:  
            `CRC_830500960_NE6_CC123456789.pdf`
+        
+        **✅ Ventajas:**
+        - 🌐 100% compatible con cloud
+        - 🔒 No necesita Tesseract/Poppler
+        - ⚡ Procesamiento rápido en memoria
+        - 🎯 Múltiples estrategias de extracción
         """)
     
     # PROCESAMIENTO
