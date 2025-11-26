@@ -4,8 +4,6 @@ import numpy as np
 from datetime import datetime, timedelta
 import plotly.express as px
 import plotly.graph_objects as go
-
-# IMPORTAR EL NAVBAR - ESTO FALTABA
 from components.navbar import modern_navbar
 from config.theme import configure_modern_theme
 
@@ -19,177 +17,71 @@ st.set_page_config(
     layout="wide"
 )
 
-# LLAMAR EL NAVBAR - ESTO FALTABA
+# LLAMAR EL NAVBAR
 modern_navbar()
 
 # Título de la página
 st.title("📋 Cuentas Médicas")
-st.markdown("Automatización de procesos para cuentas médicas")
+st.markdown("Automatización de procesos para cuentas médicas por EPS")
 
-# SECCIÓN DE PROCESAMIENTO DE ARCHIVOS
-st.header("🔄 Procesamiento de Archivos")
+# SECCIÓN DE EPS - ORGANIZADA POR EMPRESA
+st.header("🏥 Selecciona la EPS para Procesar Archivos")
 
-# Pestañas para diferentes procesos
-tab1, tab2, tab3 = st.tabs([
-    "SAVIA & COOSALUD - Conversores JSON", 
-    "SAVIA & COOSALUD - Renombradores", 
-    "SALUD TOTAL - Procesador OCR y Renombrador"
-])
+# Crear pestañas para cada EPS
+tab1, tab2, tab3 = st.tabs(["🏥 COOSALUD", "💊 SAVIA SALUD", "🩺 SALUD TOTAL"])
 
 with tab1:
-    st.subheader("Conversores JSON - SAVIA & COOSALUD")
-    st.info("Procesa archivos JSON para conversión de formatos")
+    st.subheader("COOSALUD - Procesamiento de Archivos")
+    st.info("Herramientas especializadas para Coosalud")
     
-    uploaded_file = st.file_uploader(
-        "Sube archivo JSON para procesar", 
-        type=['json'],
-        key="conversor_json"
-    )
+    col1, col2 = st.columns(2)
     
-    if uploaded_file:
-        st.success(f"✅ Archivo {uploaded_file.name} cargado correctamente")
+    with col1:
+        st.markdown("### 🔄 Conversores JSON")
+        if st.button("🔧 Conversor Mantis", use_container_width=True, key="coosalud_mantis"):
+            st.switch_page("pages/5_Conversor_Mantis_Coosalud.py")
         
-        col1, col2 = st.columns(2)
+        if st.button("🔄 Conversor SISPRO", use_container_width=True, key="coosalud_sispro"):
+            st.switch_page("pages/6_Conversor_SISPRO_Coosalud.py")
+    
+    with col2:
+        st.markdown("### 🏷️ Renombradores")
+        if st.button("📋 Renombrador RIPS", use_container_width=True, key="coosalud_rips"):
+            st.switch_page("pages/8_Renombradores_rips_Coosalud.py")
         
-        with col1:
-            proceso_type = st.selectbox(
-                "Tipo de procesamiento",
-                ["Validación de estructura", "Conversión de formatos", "Extracción de datos"],
-                key="proceso_json"
-            )
-        
-        with col2:
-            if st.button("🔄 Procesar JSON", use_container_width=True):
-                with st.spinner("Procesando archivo JSON..."):
-                    # Simulación de procesamiento
-                    import time
-                    time.sleep(2)
-                    st.success("✅ Procesamiento JSON completado exitosamente!")
-                    
-                    # Simular archivo de descarga
-                    st.download_button(
-                        label="📥 Descargar Archivo Procesado",
-                        data="contenido simulado del archivo procesado",
-                        file_name=f"procesado_{uploaded_file.name}",
-                        mime="application/json"
-                    )
+        if st.button("🔢 Renombrador CUV", use_container_width=True, key="coosalud_cuv"):
+            st.switch_page("pages/7_Renombradores_cuv_Coosalud.py")
 
 with tab2:
-    st.subheader("Renombradores RIPS y CUV - SAVIA & COOSALUD")
-    st.info("Renombra archivos según estándares RIPS y CUV")
+    st.subheader("SAVIA SALUD - Procesamiento de Archivos")
+    st.info("Herramientas especializadas para Savia Salud")
     
-    uploaded_files = st.file_uploader(
-        "Sube archivos para renombrar", 
-        type=['xlsx', 'xls', 'csv', 'txt', 'json'],
-        accept_multiple_files=True,
-        key="renombrador"
-    )
+    col1, col2 = st.columns(2)
     
-    if uploaded_files:
-        st.write(f"📁 Archivos seleccionados: {len(uploaded_files)}")
-        
-        naming_convention = st.selectbox(
-            "Estándar de renombrado",
-            ["RIPS - Facturación", "CUV - Codificación", "Ambos estándares"],
-            key="naming_convention"
-        )
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            if st.button("🔄 Aplicar RIPS", use_container_width=True):
-                progress_bar = st.progress(0)
-                status_text = st.empty()
-                
-                for i, file in enumerate(uploaded_files):
-                    progress = (i + 1) / len(uploaded_files)
-                    progress_bar.progress(progress)
-                    status_text.text(f"Aplicando RIPS a {file.name}...")
-                    # Simular procesamiento
-                    import time
-                    time.sleep(0.5)
-                
-                st.success("✅ Estándar RIPS aplicado exitosamente!")
-        
-        with col2:
-            if st.button("🔄 Aplicar CUV", use_container_width=True):
-                progress_bar = st.progress(0)
-                status_text = st.empty()
-                
-                for i, file in enumerate(uploaded_files):
-                    progress = (i + 1) / len(uploaded_files)
-                    progress_bar.progress(progress)
-                    status_text.text(f"Aplicando CUV a {file.name}...")
-                    # Simular procesamiento
-                    import time
-                    time.sleep(0.5)
-                
-                st.success("✅ Estándar CUV aplicado exitosamente!")
+    with col1:
+        st.markdown("### 🏷️ Renombradores")
+        if st.button("🔢 Renombrador CUV Savia", use_container_width=True, key="savia_cuv"):
+            st.switch_page("pages/9_Renombrador_cuv_Savia.py")
+    
+    with col2:
+        st.markdown("### 📋 Procesadores RIPS")
+        if st.button("📋 Renombrador RIPS Savia", use_container_width=True, key="savia_rips"):
+            st.switch_page("pages/10_Renombrador_rips_Savia.py")
 
 with tab3:
-    st.subheader("Procesador OCR y Renombrador - SALUD TOTAL")
-    st.info("Procesa documentos escaneados (PDF/Imágenes) con OCR y renombra archivos automáticamente")
+    st.subheader("SALUD TOTAL - Procesamiento de Archivos")
+    st.info("Herramientas especializadas para Salud Total")
     
-    # Subida de archivos escaneados para OCR
-    ocr_files = st.file_uploader(
-        "Sube documentos escaneados (PDF o imágenes)", 
-        type=['pdf', 'jpg', 'jpeg', 'png'],
-        accept_multiple_files=True,
-        key="ocr_salud_total"
-    )
+    col1, col2 = st.columns(2)
     
-    if ocr_files:
-        st.write(f"📄 Documentos escaneados cargados: {len(ocr_files)}")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            # Configuración OCR
-            st.subheader("Configuración OCR")
-            ocr_language = st.selectbox(
-                "Idioma para OCR",
-                ["Español", "Inglés", "Español/Inglés"],
-                key="ocr_language_salud"
-            )
-            
-            extraction_type = st.selectbox(
-                "Tipo de extracción",
-                ["Datos estructurados", "Texto completo", "Campos específicos"],
-                key="extraction_type"
-            )
-        
-        with col2:
-            # Configuración renombrado
-            st.subheader("Configuración Renombrado")
-            auto_rename = st.checkbox("Renombrado automático", value=True)
-            
-            if auto_rename:
-                rename_pattern = st.selectbox(
-                    "Patrón de renombrado",
-                    ["Nombre original + fecha", "Secuencial + contenido", "Personalizado"],
-                    key="rename_pattern"
-                )
-        
-        # Botón de procesamiento único para OCR y renombrado
-        if st.button("🔍 Procesar OCR y Renombrar", use_container_width=True):
-            with st.spinner("Procesando documentos escaneados con OCR y aplicando renombrado..."):
-                progress_bar = st.progress(0)
-                status_text = st.empty()
-                
-                for i, file in enumerate(ocr_files):
-                    progress = (i + 1) / len(ocr_files)
-                    progress_bar.progress(progress)
-                    status_text.text(f"Procesando {file.name}...")
-                    # Simular procesamiento combinado
-                    import time
-                    time.sleep(1)
-                
-                st.success("✅ Procesamiento OCR y renombrado completado!")
-                
-                # Mostrar resultados combinados
-                st.subheader("Resultados del Procesamiento:")
-                for i, file in enumerate(ocr_files):
-                    st.write(f"• **{file.name}** → OCR procesado + renombrado correctamente")
+    with col1:
+        st.markdown("### 🔍 Procesador OCR")
+        if st.button("🔍 Procesador + Renombrador", use_container_width=True, key="salud_total_ocr"):
+            st.switch_page("pages/11_Processador_Renombrador_ST.py")
+    
+    with col2:
+        st.markdown("### ⚡ Procesamiento Avanzado")
+        st.info("OCR inteligente con renombrado automático")
 
 # SECCIÓN DE ESTADÍSTICAS Y MÉTRICAS
 st.header("📊 Métricas y Estadísticas")
@@ -218,29 +110,29 @@ with col3:
     )
 
 # GRÁFICO DE ACTIVIDAD (SIMULADO)
-st.subheader("Actividad Reciente")
+st.subheader("Actividad Reciente por EPS")
 
-# Crear datos de ejemplo para el gráfico
+# Crear datos de ejemplo para el gráfico por EPS
 try:
-    dates = pd.date_range(start='2024-01-01', end='2024-01-30', freq='D')
-    activity_data = pd.DataFrame({
-        'Fecha': dates,
-        'Archivos': np.random.randint(10, 100, len(dates)),
-        'Errores': np.random.randint(0, 5, len(dates))
+    eps_data = pd.DataFrame({
+        'EPS': ['COOSALUD', 'SAVIA SALUD', 'SALUD TOTAL'],
+        'Archivos_Procesados': [45, 32, 28],
+        'Tasa_Éxito': [98.5, 97.8, 96.2]
     })
     
-    fig = px.line(
-        activity_data, 
-        x='Fecha', 
-        y='Archivos',
-        title='Archivos Procesados por Día',
-        color_discrete_sequence=['#0066cc']
+    fig = px.bar(
+        eps_data, 
+        x='EPS', 
+        y='Archivos_Procesados',
+        title='Archivos Procesados por EPS (Última Semana)',
+        color='Tasa_Éxito',
+        color_continuous_scale='Blues'
     )
     
     fig.update_layout(
         plot_bgcolor='white',
         paper_bgcolor='white',
-        height=300
+        height=400
     )
     
     st.plotly_chart(fig, use_container_width=True)
@@ -248,51 +140,64 @@ try:
 except Exception as e:
     st.error(f"Error al generar gráfico: {e}")
 
-# SECCIÓN DE HISTORIAL
-st.header("📋 Historial de Procesos")
+# SECCIÓN DE HISTORIAL POR EPS
+st.header("📋 Historial de Procesos por EPS")
 
-# Datos de ejemplo para el historial
+# Datos de ejemplo para el historial organizado por EPS
 historial_data = {
-    'Fecha': ['2024-01-15 10:30', '2024-01-15 11:15', '2024-01-14 16:45'],
-    'Archivo': ['datos_savia.json', 'facturas_rips.csv', 'historias_salud.pdf'],
-    'Proceso': ['Procesamiento JSON', 'Renombrado RIPS', 'OCR + Renombrado'],
-    'Estado': ['✅ Completado', '✅ Completado', '⚠️ Advertencias'],
-    'Usuario': ['admin', 'operador1', 'operador2']
+    'Fecha': ['2024-01-15 10:30', '2024-01-15 11:15', '2024-01-14 16:45', '2024-01-14 14:20'],
+    'EPS': ['COOSALUD', 'COOSALUD', 'SAVIA SALUD', 'SALUD TOTAL'],
+    'Archivo': ['datos_mantis.json', 'facturas_sispro.csv', 'historias_savia.pdf', 'documentos_st.pdf'],
+    'Proceso': ['Conversor Mantis', 'Conversor SISPRO', 'Renombrado RIPS', 'Procesador OCR'],
+    'Estado': ['✅ Completado', '✅ Completado', '✅ Completado', '⚠️ Advertencias'],
+    'Usuario': ['admin', 'operador1', 'operador2', 'operador3']
 }
 
 historial_df = pd.DataFrame(historial_data)
 st.dataframe(historial_df, use_container_width=True)
 
-# INSTRUCCIONES DE USO ACTUALIZADAS
-with st.expander("📖 Instrucciones de Uso - Actualizadas"):
+# INFORMACIÓN ADICIONAL ORGANIZADA POR EPS
+with st.expander("ℹ️ Información de Módulos por EPS"):
     st.markdown("""
-    ### Guía Rápida Actualizada:
+    ### 🏥 COOSALUD:
+    **🔧 Conversor Mantis:** 
+    - Procesa archivos JSON de Mantis
+    - Convierte a formato estándar Coosalud
+    - Corrige formatos de fecha y estructura
     
-    **SAVIA & COOSALUD - Conversores JSON:**
-    - Sube archivos en formato JSON
-    - Selecciona el tipo de procesamiento (validación, conversión, extracción)
-    - Descarga el archivo procesado
+    **🔄 Conversor SISPRO:**
+    - Transforma archivos JSON de SISPRO  
+    - Adapta al formato requerido por Coosalud
+    - Valida y estandariza datos
     
-    **SAVIA & COOSALUD - Renombradores:**
-    - Selecciona múltiples archivos
-    - Aplica estándares RIPS (facturación) o CUV (codificación)
-    - Los archivos se renombrán según el estándar seleccionado
+    **🏷️ Renombradores:**
+    - **RIPS:** Aplica estándar de facturación RIPS
+    - **CUV:** Renombra por código único de validación
     
-    **SALUD TOTAL - Procesador OCR y Renombrador:**
-    - Sube documentos escaneados (PDF o imágenes)
-    - Configura el idioma y tipo de extracción OCR
-    - El sistema procesa OCR y aplica renombrado automáticamente
-    - **Nota:** Esta automatización combina OCR y renombrado en un solo proceso
+    ---
     
-    ### Formatos de Archivo:
-    - **JSON:** Para procesamiento de datos estructurados (SAVIA & COOSALUD)
-    - **PDF/Imágenes:** Para procesamiento OCR en Salud Total
-    - **Excel/CSV:** Para renombrado en SAVIA & COOSALUD
+    ### 💊 SAVIA SALUD:
+    **🏷️ Renombrador CUV:**
+    - Renombra archivos por código único
+    - Mantiene estructura requerida por Savia
+    
+    **📋 Renombrador RIPS:**
+    - Aplica estándar RIPS de facturación
+    - Automatiza proceso masivo
+    
+    ---
+    
+    ### 🩺 SALUD TOTAL:
+    **🔍 Procesador OCR + Renombrador:**
+    - Procesa documentos escaneados (PDF/Imágenes)
+    - Aplica OCR inteligente para extracción de texto
+    - Renombrado automático basado en contenido
+    - Proceso combinado en un solo paso
     """)
 
 # FOOTER
 st.markdown("---")
 st.markdown(
     "**Cuentas Médicas** • Sistema de Automatización TodoDrogas • "
-    "Para soporte técnico contacte al administrador del sistema."
+    "Organizado por EPS: COOSALUD, SAVIA SALUD, SALUD TOTAL"
 )
