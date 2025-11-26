@@ -59,7 +59,7 @@ with tab2:
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### 📋 Renombradores")
+        st.markdown("### 📋 Renombrador CUV")
         if st.button("🔢 Renombrador CUV Savia", use_container_width=True, key="savia_cuv"):
             st.switch_page("pages/9_Renombrador_cuv_Savia.py")
     
