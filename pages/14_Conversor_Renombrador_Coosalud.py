@@ -37,7 +37,7 @@ def renombrar_archivo_sin_fecha(ruta_archivo, nombre_original):
     except Exception as e:
         return nombre_original, False
 
-# Función de procesamiento JSON - EXTRACCIÓN EXACTA COMO SOLICITASTE
+# Función de procesamiento JSON - EXTRACCIÓN CORRECTA
 def procesar_archivos_json(directorio):
     archivos_procesados = []
     errores = []
@@ -51,7 +51,7 @@ def procesar_archivos_json(directorio):
                 with open(ruta_archivo, 'r', encoding='utf-8') as file:
                     datos_originales = json.load(file)
                 
-                # ✅ EXTRACCIÓN EXACTA DE DATOS DEL ORIGINAL (como solicitaste)
+                # ✅ EXTRACCIÓN DE TODOS LOS CAMPOS DEL ORIGINAL (excepto los 2 que son automáticos)
                 result_state = datos_originales.get('resultState')
                 proceso_id = datos_originales.get('procesoId')
                 num_factura = datos_originales.get('numFactura')
@@ -68,7 +68,7 @@ def procesar_archivos_json(directorio):
                         # Actualizar ruta después del renombrado
                         ruta_archivo = os.path.join(directorio, nombre_archivo)
                 
-                # ❌ CAMPOS QUE SIEMPRE SERÁN AUTOMÁTICOS
+                # ❌ CAMPOS QUE SIEMPRE SERÁN AUTOMÁTICOS (NO se extraen del original)
                 ruta_archivos = None  # SIEMPRE null
                 resultados_validacion = []  # SIEMPRE array vacío
                 
@@ -79,8 +79,8 @@ def procesar_archivos_json(directorio):
                     "numFactura": num_factura,                      # ✅ Del original
                     "codigoUnicoValidacion": codigo_unico_validacion, # ✅ Del original
                     "fechaRadicacion": fecha_radicacion,            # ✅ Del original
-                    "rutaArchivos": ruta_archivos,                  # ❌ SIEMPRE null
-                    "resultadosValidacion": resultados_validacion   # ❌ SIEMPRE array vacío
+                    "rutaArchivos": ruta_archivos,                  # ❌ SIEMPRE null (automático)
+                    "resultadosValidacion": resultados_validacion   # ❌ SIEMPRE array vacío (automático)
                 }
                 
                 # Guardar archivo procesado
@@ -214,8 +214,8 @@ st.info("""
 **🔄 Funcionalidad Combinada - Coosalud:**
 
 **Para archivos JSON:**
-- ✅ **EXTRAE**: resultState, procesoId, numFactura, codigoUnicoValidacion, fechaRadicacion (DEL ORIGINAL)
-- ✅ **GENERA**: rutaArchivos: null y resultadosValidacion:[] (SIEMPRE)
+- ✅ **EXTRAE DEL ORIGINAL**: resultState, procesoId, numFactura, codigoUnicoValidacion, fechaRadicacion
+- ✅ **GENERA AUTOMÁTICAMENTE**: rutaArchivos: null y resultadosValidacion:[] (SIEMPRE)
 - ✅ **RENOMBRA**: Archivos sin fechaRadicacion → agrega "_sin_fecha"
 
 **Para archivos con patrón NE######:**
@@ -357,8 +357,8 @@ with st.expander("📖 Instrucciones de Uso"):
       "numFactura": "NE1315",                 // ← Del original
       "codigoUnicoValidacion": "1043ee6f9...", // ← Del original
       "fechaRadicacion": "2025-08-21T20:42...", // ← Del original
-      "rutaArchivos": null,                   // ← SIEMPRE null
-      "resultadosValidacion": []              // ← SIEMPRE array vacío
+      "rutaArchivos": null,                   // ← SIEMPRE null (automático)
+      "resultadosValidacion": []              // ← SIEMPRE array vacío (automático)
     }
     ```
     
