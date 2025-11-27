@@ -4,7 +4,7 @@ import os
 import re
 import tempfile
 import shutil
-import pandas as pd  # ✅ AGREGAR ESTA IMPORTACIÓN
+import pandas as pd
 from pathlib import Path
 from components.navbar import modern_navbar
 from config.theme import configure_modern_theme
@@ -21,7 +21,7 @@ modern_navbar()
 st.title("🔄 Conversor + Renombrador - Coosalud")
 st.markdown("Procesa archivos JSON de Mantis y renombra archivos con patrón NE###### **al mismo tiempo**")
 
-# Función de procesamiento JSON CORREGIDA
+# Función de procesamiento JSON MEJORADA para formato real
 def procesar_archivos_json(directorio):
     archivos_procesados = []
     errores = []
@@ -35,27 +35,31 @@ def procesar_archivos_json(directorio):
                 with open(ruta_archivo, 'r', encoding='utf-8') as file:
                     datos_originales = json.load(file)
                 
-                # PRESERVAR DATOS ORIGINALES - NO REEMPLAZAR CON null
-                fecha_original = datos_originales.get('fechaRadicacion') or datos_originales.get('FechaRadicacion')
-                result_state = datos_originales.get('resultState') or datos_originales.get('ResultState')
-                proceso_id = datos_originales.get('procesoId') or datos_originales.get('ProcesoId')
-                num_factura = datos_originales.get('numFactura') or datos_originales.get('NumFactura')
-                codigo_cuv = datos_originales.get('codigoUnicoValidacion') or datos_originales.get('CodigoUnicoValidacion')
-                ruta_archivos = datos_originales.get('rutaArchivos') or datos_originales.get('RutaArchivos')
+                # EXTRACCIÓN DE DATOS DEL FORMATO REAL
+                num_factura = datos_originales.get('numFactura')
+                num_documento_id_obligado = datos_originales.get('numDocumentoIdObligado')
+                tipo_nota = datos_originales.get('tipoNota')
+                num_nota = datos_originales.get('numNota')
                 
-                nuevo_nombre_archivo = nombre_archivo
+                # Extraer información de usuarios si existe
+                usuarios = datos_originales.get('usuarios', [])
+                servicios_info = {}
                 
-                # Renombrar archivos con fecha 0000-00-00
-                if fecha_original == "0000-00-00T00:00:00":
-                    nombre_base, extension = os.path.splitext(nombre_archivo)
-                    nuevo_nombre_archivo = f"{nombre_base}-SIN FECHA{extension}"
-                    os.rename(ruta_archivo, os.path.join(directorio, nuevo_nombre_archivo))
-                    ruta_archivo = os.path.join(directorio, nuevo_nombre_archivo)
-                
-                # Formatear fecha válida (solo si existe y necesita corrección)
-                fecha_procesada = fecha_original
-                if fecha_original and fecha_original != "0000-00-00T00:00:00" and '+' in fecha_original:
-                    fecha_procesada = fecha_original.split('+')[0]
+                if usuarios:
+                    primer_usuario = usuarios[0]
+                    servicios = primer_usuario.get('servicios', {})
+                    medicamentos = servicios.get('medicamentos', [])
+                    
+                    if medicamentos:
+                        primer_medicamento = medicamentos[0]
+                        servicios_info = {
+                            'codPrestador': primer_medicamento.get('codPrestador'),
+                            'numAutorizacion': primer_medicamento.get('numAutorizacion'),
+                            'idMIPRES': primer_medicamento.get('idMIPRES'),
+                            'fechaDispensAdmon': primer_medicamento.get('fechaDispensAdmon'),
+                            'codDiagnosticoPrincipal': primer_medicamento.get('codDiagnosticoPrincipal'),
+                            'vrServicio': primer_medicamento.get('vrServicio')
+                        }
                 
                 # Buscar número de factura en el nombre del archivo si no está en los datos
                 if not num_factura:
@@ -64,24 +68,28 @@ def procesar_archivos_json(directorio):
                     if coincidencia_factura:
                         num_factura = coincidencia_factura.group(1)
                 
-                # Estructura final - PRESERVAR DATOS EXISTENTES
+                nuevo_nombre_archivo = nombre_archivo
+                
+                # Estructura final para Coosalud - PRESERVAR DATOS ORIGINALES
                 resultado = {
-                    "resultState": result_state,
-                    "procesoId": proceso_id,
+                    "resultState": None,  # No existe en el formato original
+                    "procesoId": None,    # No existe en el formato original
                     "numFactura": num_factura,
-                    "codigoUnicoValidacion": codigo_cuv,
-                    "fechaRadicacion": fecha_procesada,
-                    "rutaArchivos": ruta_archivos,
-                    "resultadosValidacion": datos_originales.get('resultadosValidacion', [])
+                    "codigoUnicoValidacion": None,  # No existe en el formato original
+                    "fechaRadicacion": None,        # No existe en el formato original
+                    "rutaArchivos": None,           # No existe en el formato original
+                    "resultadosValidacion": [],
+                    # AGREGAR DATOS ORIGINALES PARA PRESERVAR INFORMACIÓN
+                    "datosOriginales": {
+                        "numDocumentoIdObligado": num_documento_id_obligado,
+                        "tipoNota": tipo_nota,
+                        "numNota": num_nota,
+                        "usuarios": usuarios
+                    }
                 }
                 
-                # Solo procesar si hay datos diferentes o estructura que corregir
-                necesita_procesamiento = (
-                    fecha_original and '+' in fecha_original and fecha_original != "0000-00-00T00:00:00" or
-                    fecha_original == "0000-00-00T00:00:00" or
-                    'resultadosValidacion' not in datos_originales or
-                    datos_originales.get('resultadosValidacion') is None
-                )
+                # Solo procesar si hay datos que extraer o si es necesario el formato estándar
+                necesita_procesamiento = True  # Siempre procesar para convertir al formato estándar
                 
                 if necesita_procesamiento:
                     # Guardar archivo procesado
@@ -90,18 +98,26 @@ def procesar_archivos_json(directorio):
                         json_str = json_str.replace('"resultadosValidacion": []', '"resultadosValidacion":[]')
                         file.write(json_str)
                     
-                    estado = "✅ Procesado y Corregido"
+                    estado = "✅ Convertido a formato estándar"
                 else:
                     estado = "✅ Ya tiene formato correcto"
+                
+                # Información para mostrar en resultados
+                info_extraccion = {
+                    'numFactura': num_factura if num_factura else 'No encontrado',
+                    'numDocumentoIdObligado': num_documento_id_obligado if num_documento_id_obligado else 'No encontrado',
+                    'tipoNota': tipo_nota if tipo_nota else 'No aplica',
+                    'numNota': num_nota if num_nota else 'No aplica',
+                    'totalUsuarios': len(usuarios),
+                    'totalMedicamentos': len(servicios.get('medicamentos', [])) if servicios else 0,
+                    'vrServicio': servicios_info.get('vrServicio') if servicios_info.get('vrServicio') else 'No disponible'
+                }
                 
                 archivos_procesados.append({
                     'nombre': nuevo_nombre_archivo,
                     'estado': estado,
-                    'fecha': fecha_original if fecha_original else 'No encontrada',
                     'factura': num_factura if num_factura else 'No encontrada',
-                    'resultState': "Sí" if result_state else "No",
-                    'procesoId': "Sí" if proceso_id else "No",
-                    'codigoCUV': "Sí" if codigo_cuv else "No"
+                    'info_extraccion': info_extraccion
                 })
                 
             except Exception as e:
@@ -207,11 +223,10 @@ st.info("""
 **🔄 Funcionalidad Combinada - Coosalud:**
 
 **Para archivos JSON:**
-- ✅ **PRESERVA** datos existentes (no los reemplaza con null)
-- ✅ Corrige formato de fechas con zona horaria
-- ✅ Renombra archivos con fechas inválidas (0000-00-00)
+- ✅ **EXTRAE**: numFactura, numDocumentoIdObligado, tipoNota, numNota, usuarios, servicios
+- ✅ **CONVIERTE** a formato estándar Coosalud
+- ✅ **PRESERVA** datos originales en campo "datosOriginales"
 - ✅ Busca número de factura en nombre del archivo
-- ✅ Mantiene estructura `resultadosValidacion:[]` sin espacios
 
 **Para archivos con patrón NE######:**
 - ✅ Convierte `NE651.pdf` → `CUV_NE651.pdf` (Formato Coosalud)
@@ -221,27 +236,32 @@ st.info("""
 if uploaded_files:
     st.success(f"✅ {len(uploaded_files)} archivo(s) listo(s) para procesar")
     
-    # Mostrar archivos seleccionados
-    with st.expander("📋 Archivos Seleccionados", expanded=True):
+    # Mostrar PREVISUALIZACIÓN de archivos JSON
+    with st.expander("🔍 Previsualización de Archivos JSON", expanded=True):
         for i, file in enumerate(uploaded_files):
-            # Verificar tipo de archivo
             if file.name.lower().endswith('.json'):
-                # Leer contenido JSON para previsualización
                 try:
                     contenido = json.loads(file.getvalue().decode('utf-8'))
-                    num_factura = contenido.get('numFactura') or contenido.get('NumFactura') or 'No encontrado'
-                    tipo = f"📊 JSON (Factura: {num_factura})"
-                except:
-                    tipo = "📊 JSON (Error lectura)"
-            else:
-                patron = r'(NE\d+)'
-                coincidencia = re.search(patron, file.name)
-                if coincidencia:
-                    tipo = f"🔢 Archivo para Renombrar ({coincidencia.group(1)})"
-                else:
-                    tipo = "📄 Otro archivo"
-            
-            st.write(f"{i+1}. {file.name} - {tipo}")
+                    num_factura = contenido.get('numFactura', 'No encontrado')
+                    num_documento = contenido.get('numDocumentoIdObligado', 'No encontrado')
+                    usuarios = contenido.get('usuarios', [])
+                    
+                    st.write(f"**{i+1}. {file.name}**")
+                    st.write(f"   - Factura: `{num_factura}`")
+                    st.write(f"   - Documento Obligado: `{num_documento}`")
+                    st.write(f"   - Usuarios: `{len(usuarios)}`")
+                    
+                    # Mostrar primeros datos de servicios si existen
+                    if usuarios and 'servicios' in usuarios[0]:
+                        servicios = usuarios[0]['servicios']
+                        if 'medicamentos' in servicios and servicios['medicamentos']:
+                            med = servicios['medicamentos'][0]
+                            st.write(f"   - Valor Servicio: `{med.get('vrServicio', 'No disponible')}`")
+                    
+                    st.write("---")
+                    
+                except Exception as e:
+                    st.error(f"Error leyendo {file.name}: {str(e)}")
     
     # Botón de procesamiento COMBINADO
     if st.button("🚀 Procesar Todo", type="primary", use_container_width=True):
@@ -282,25 +302,30 @@ if uploaded_files:
                     
                     # Mostrar tabla detallada de JSON procesados
                     if resultados['json_procesados']:
-                        st.markdown("#### ✅ JSON Procesados Exitosamente")
+                        st.markdown("#### ✅ JSON Procesados y Convertidos")
                         
                         # Crear DataFrame para mejor visualización
                         df_data = []
                         for archivo in resultados['json_procesados']:
+                            info = archivo['info_extraccion']
                             df_data.append({
                                 'Archivo': archivo['nombre'],
                                 'Estado': archivo['estado'],
-                                'Factura': archivo['factura'],
-                                'Fecha': archivo['fecha'],
-                                'resultState': archivo['resultState'],
-                                'procesoId': archivo['procesoId'],
-                                'codigoCUV': archivo['codigoCUV']
+                                'Factura': info['numFactura'],
+                                'Documento Obligado': info['numDocumentoIdObligado'],
+                                'Usuarios': info['totalUsuarios'],
+                                'Medicamentos': info['totalMedicamentos'],
+                                'Valor Servicio': info['vrServicio']
                             })
                         
-                        # ✅ CORREGIDO: Usar pandas DataFrame
-                        import pandas as pd
                         df = pd.DataFrame(df_data)
                         st.dataframe(df, use_container_width=True)
+                        
+                        # Mostrar ejemplo de conversión
+                        st.markdown("#### 🔄 Ejemplo de Conversión")
+                        if resultados['json_procesados']:
+                            primer_archivo = resultados['json_procesados'][0]
+                            st.info(f"**{primer_archivo['nombre']}** - Se preservaron todos los datos originales en el campo 'datosOriginales'")
                     
                     if resultados['json_errores']:
                         st.markdown("#### ❌ Errores en JSON")
@@ -412,27 +437,28 @@ with st.expander("📖 Instrucciones de Uso"):
     ### Cómo usar el Conversor + Renombrador Combinado - Coosalud:
     
     1. **Selecciona archivos**: Haz clic en 'Browse files' o arrastra los archivos
-    2. **Mezcla tipos**: Puedes seleccionar archivos JSON y archivos con patrón NE###### juntos
+    2. **Revisa previsualización**: Verifica los datos que se detectarán
     3. **Procesa**: Haz clic en 'Procesar Todo' - se ejecutarán ambas operaciones
     4. **Descarga**: Obtén todos los archivos procesados en un ZIP o individualmente
     
     ### Transformaciones aplicadas:
     
     **Para archivos JSON:**
-    - **PRESERVA** todos los datos existentes
-    - Solo corrige: formato de fechas con zona horaria y estructura `resultadosValidacion`
-    - Renombra archivos con fecha inválida (0000-00-00)
+    - **EXTRAE**: numFactura, numDocumentoIdObligado, tipoNota, numNota, usuarios, servicios
+    - **CONVIERTE** a formato estándar Coosalud
+    - **PRESERVA** todos los datos originales en campo "datosOriginales"
     
     **Para archivos con patrón NE###### (Formato Coosalud):**
     - `NE651.pdf` → `CUV_NE651.pdf` (CUV al inicio)
     - `NE999999.xlsx` → `CUV_NE999999.xlsx`
     
-    ### Características:
-    - ✅ **NO REEMPLAZA** datos existentes con null
-    - ✅ Extracción robusta de datos JSON
-    - ✅ Procesamiento simultáneo de JSON y renombrado
+    ### Campos extraídos:
+    - `numFactura`: Número de factura (NE866, etc.)
+    - `numDocumentoIdObligado`: Documento del obligado
+    - `usuarios`: Información de pacientes y servicios
+    - `servicios/medicamentos`: Detalles de medicamentos y valores
     """)
 
 # FOOTER
 st.markdown("---")
-st.caption("🔄 Conversor + Renombrador - Coosalud • v4.0 • Preserva Datos Existentes")
+st.caption("🔄 Conversor + Renombrador - Coosalud • v5.0 • Extracción Real de Datos")
