@@ -18,7 +18,7 @@ st.set_page_config(
 modern_navbar()
 
 st.title("🔄 Conversor + Renombrador - Coosalud")
-st.markdown("Procesa archivos JSON de Mantis y renombra archivos con patrón NE###### **al mismo tiempo**")
+st.markdown("Procesa archivos y renombra archivos tipo JSON **al mismo tiempo**")
 
 # Función de procesamiento JSON (Conversor Mantis)
 def procesar_archivos_json(directorio):
@@ -167,10 +167,10 @@ st.header("📤 Subida de Archivos")
 
 # Subida de archivos múltiples (todos los tipos)
 uploaded_files = st.file_uploader(
-    "Selecciona archivos para procesar (JSON de Mantis y archivos con patrón NE######)",
+    "Selecciona archivos para procesar (JSON de Mantis y archivos con patrón NE#)",
     accept_multiple_files=True,
     help="Puedes seleccionar archivos JSON y otros archivos con formato NE651.pdf, NE999999.xlsx, etc.",
-    type=['json', 'pdf', 'xlsx', 'xls', 'txt', 'doc', 'docx', 'jpg', 'png', 'jpeg']
+    type=['json']
 )
 
 # Información adicional
@@ -182,9 +182,9 @@ st.info("""
 - ✅ Renombra archivos con fechas inválidas
 - ✅ Estructura JSON según estándar Coosalud
 
-**Para archivos con patrón NE######:**
+**Para archivos con patrón NE#:**
 - ✅ Convierte `NE651.pdf` → `CUV_NE651.pdf`
-- ✅ Detecta automáticamente patrones NE######
+- ✅ Detecta automáticamente patrones NE#
 - ✅ Procesamiento masivo simultáneo
 """)
 
@@ -195,7 +195,7 @@ with st.expander("🔍 Ejemplos de Archivos Aceptados"):
     - `radicacion_12345.json` → Procesa y corrige estructura JSON
     - `factura_NE651.json` → Corrige fechas y estructura
     
-    **Archivos para Renombrar (Patrón NE######):**
+    **Archivos para Renombrar (Patrón NE#):**
     - `NE651.pdf` → `CUV_NE651.pdf`
     - `NE999999.xlsx` → `CUV_NE999999.xlsx`
     - `documento_NE8888.txt` → `CUV_NE8888.txt`
