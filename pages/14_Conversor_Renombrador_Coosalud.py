@@ -167,7 +167,7 @@ st.header("📤 Subida de Archivos")
 
 # Subida de archivos múltiples (todos los tipos)
 uploaded_files = st.file_uploader(
-    "Selecciona archivos para procesar (JSON de Mantis y archivos con patrón NE#)",
+    "Selecciona archivos para procesar ( Tipo JSON, con patrón NE#)",
     accept_multiple_files=True,
     help="Puedes seleccionar archivos JSON y otros archivos con formato NE651.pdf, NE999999.xlsx, etc.",
     type=['json']
