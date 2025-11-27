@@ -336,6 +336,16 @@ with tab1:
                 "🔄 Iniciado"
             )
             st.switch_page("pages/6_Conversor_SISPRO_Coosalud.py")
+        
+        # NUEVO BOTÓN AGREGADO - CONVERSOR + RENOMBRADOR UNIFICADO
+        if st.button("🔄 Conversor + Renombrador", use_container_width=True, key="coosalud_unificado"):
+            metricas.registrar_proceso(
+                "COOSALUD", 
+                "Nuevo proceso Unificado", 
+                "Conversor + Renombrador", 
+                "🔄 Iniciado"
+            )
+            st.switch_page("pages/14_Conversor_Renombrador_Coosalud.py")
     
     with col2:
         st.markdown("**🏷️ Renombradores**")
