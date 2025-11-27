@@ -20,7 +20,7 @@ modern_navbar()
 st.title("🔄 Conversor + Renombrador - Coosalud")
 st.markdown("Procesa archivos JSON de Mantis y renombra archivos con patrón NE###### **al mismo tiempo**")
 
-# Función de procesamiento JSON MEJORADA (Conversor Mantis)
+# Función de procesamiento JSON CORREGIDA
 def procesar_archivos_json(directorio):
     archivos_procesados = []
     errores = []
@@ -32,15 +32,15 @@ def procesar_archivos_json(directorio):
             try:
                 ruta_archivo = os.path.join(directorio, nombre_archivo)
                 with open(ruta_archivo, 'r', encoding='utf-8') as file:
-                    datos = json.load(file)
+                    datos_originales = json.load(file)
                 
-                # EXTRACCIÓN MEJORADA DE DATOS
-                fecha_original = datos.get('fechaRadicacion') or datos.get('FechaRadicacion') or datos.get('fecharadicacion')
-                result_state = datos.get('resultState') or datos.get('ResultState') or datos.get('resultstate')
-                proceso_id = datos.get('procesoId') or datos.get('ProcesoId') or datos.get('procesoid')
-                num_factura = datos.get('numFactura') or datos.get('NumFactura') or datos.get('numfactura')
-                codigo_cuv = datos.get('codigoUnicoValidacion') or datos.get('CodigoUnicoValidacion') or datos.get('codigounicovalidacion')
-                ruta_archivos = datos.get('rutaArchivos') or datos.get('RutaArchivos') or datos.get('rutaarchivos')
+                # PRESERVAR DATOS ORIGINALES - NO REEMPLAZAR CON null
+                fecha_original = datos_originales.get('fechaRadicacion') or datos_originales.get('FechaRadicacion')
+                result_state = datos_originales.get('resultState') or datos_originales.get('ResultState')
+                proceso_id = datos_originales.get('procesoId') or datos_originales.get('ProcesoId')
+                num_factura = datos_originales.get('numFactura') or datos_originales.get('NumFactura')
+                codigo_cuv = datos_originales.get('codigoUnicoValidacion') or datos_originales.get('CodigoUnicoValidacion')
+                ruta_archivos = datos_originales.get('rutaArchivos') or datos_originales.get('RutaArchivos')
                 
                 nuevo_nombre_archivo = nombre_archivo
                 
@@ -51,7 +51,7 @@ def procesar_archivos_json(directorio):
                     os.rename(ruta_archivo, os.path.join(directorio, nuevo_nombre_archivo))
                     ruta_archivo = os.path.join(directorio, nuevo_nombre_archivo)
                 
-                # Formatear fecha válida
+                # Formatear fecha válida (solo si existe y necesita corrección)
                 fecha_procesada = fecha_original
                 if fecha_original and fecha_original != "0000-00-00T00:00:00" and '+' in fecha_original:
                     fecha_procesada = fecha_original.split('+')[0]
@@ -63,7 +63,7 @@ def procesar_archivos_json(directorio):
                     if coincidencia_factura:
                         num_factura = coincidencia_factura.group(1)
                 
-                # Estructura final MEJORADA
+                # Estructura final - PRESERVAR DATOS EXISTENTES
                 resultado = {
                     "resultState": result_state,
                     "procesoId": proceso_id,
@@ -71,20 +71,36 @@ def procesar_archivos_json(directorio):
                     "codigoUnicoValidacion": codigo_cuv,
                     "fechaRadicacion": fecha_procesada,
                     "rutaArchivos": ruta_archivos,
-                    "resultadosValidacion":[]
+                    "resultadosValidacion": datos_originales.get('resultadosValidacion', [])
                 }
                 
-                # Guardar archivo procesado
-                with open(ruta_archivo, 'w', encoding='utf-8') as file:
-                    json_str = json.dumps(resultado, indent=2, ensure_ascii=False)
-                    json_str = json_str.replace('"resultadosValidacion": []', '"resultadosValidacion":[]')
-                    file.write(json_str)
+                # Solo procesar si hay datos diferentes o estructura que corregir
+                necesita_procesamiento = (
+                    fecha_original and '+' in fecha_original and fecha_original != "0000-00-00T00:00:00" or
+                    fecha_original == "0000-00-00T00:00:00" or
+                    'resultadosValidacion' not in datos_originales or
+                    datos_originales.get('resultadosValidacion') is None
+                )
+                
+                if necesita_procesamiento:
+                    # Guardar archivo procesado
+                    with open(ruta_archivo, 'w', encoding='utf-8') as file:
+                        json_str = json.dumps(resultado, indent=2, ensure_ascii=False)
+                        json_str = json_str.replace('"resultadosValidacion": []', '"resultadosValidacion":[]')
+                        file.write(json_str)
+                    
+                    estado = "✅ Procesado y Corregido"
+                else:
+                    estado = "✅ Ya tiene formato correcto"
                 
                 archivos_procesados.append({
                     'nombre': nuevo_nombre_archivo,
-                    'estado': '✅ Procesado',
+                    'estado': estado,
                     'fecha': fecha_original if fecha_original else 'No encontrada',
-                    'factura': num_factura if num_factura else 'No encontrada'
+                    'factura': num_factura if num_factura else 'No encontrada',
+                    'resultState': "Sí" if result_state else "No",
+                    'procesoId': "Sí" if proceso_id else "No",
+                    'codigoCUV': "Sí" if codigo_cuv else "No"
                 })
                 
             except Exception as e:
@@ -190,15 +206,15 @@ st.info("""
 **🔄 Funcionalidad Combinada - Coosalud:**
 
 **Para archivos JSON:**
-- ✅ Extrae: resultState, procesoId, numFactura, codigoUnicoValidacion, fechaRadicacion, rutaArchivos
-- ✅ Corrige formato de fechas
-- ✅ Renombra archivos con fechas inválidas
-- ✅ Busca número de factura en nombre del archivo si no está en los datos
+- ✅ **PRESERVA** datos existentes (no los reemplaza con null)
+- ✅ Corrige formato de fechas con zona horaria
+- ✅ Renombra archivos con fechas inválidas (0000-00-00)
+- ✅ Busca número de factura en nombre del archivo
+- ✅ Mantiene estructura `resultadosValidacion:[]` sin espacios
 
 **Para archivos con patrón NE######:**
 - ✅ Convierte `NE651.pdf` → `CUV_NE651.pdf` (Formato Coosalud)
 - ✅ Detecta automáticamente patrones NE######
-- ✅ Procesamiento masivo simultáneo
 """)
 
 if uploaded_files:
@@ -209,12 +225,18 @@ if uploaded_files:
         for i, file in enumerate(uploaded_files):
             # Verificar tipo de archivo
             if file.name.lower().endswith('.json'):
-                tipo = "📊 JSON (Conversor Mantis)"
+                # Leer contenido JSON para previsualización
+                try:
+                    contenido = json.loads(file.getvalue().decode('utf-8'))
+                    num_factura = contenido.get('numFactura') or contenido.get('NumFactura') or 'No encontrado'
+                    tipo = f"📊 JSON (Factura: {num_factura})"
+                except:
+                    tipo = "📊 JSON (Error lectura)"
             else:
                 patron = r'(NE\d+)'
                 coincidencia = re.search(patron, file.name)
                 if coincidencia:
-                    tipo = "🔢 Archivo para Renombrar"
+                    tipo = f"🔢 Archivo para Renombrar ({coincidencia.group(1)})"
                 else:
                     tipo = "📄 Otro archivo"
             
@@ -257,24 +279,30 @@ if uploaded_files:
                 if resultados['json_procesados'] or resultados['json_errores']:
                     st.subheader("📊 Resultados Conversor JSON")
                     
-                    col_json1, col_json2 = st.columns(2)
-                    
-                    with col_json1:
+                    # Mostrar tabla detallada de JSON procesados
+                    if resultados['json_procesados']:
                         st.markdown("#### ✅ JSON Procesados Exitosamente")
-                        if resultados['json_procesados']:
-                            for archivo in resultados['json_procesados']:
-                                st.success(f"**{archivo['nombre']}**")
-                                st.caption(f"Factura: {archivo['factura']} | Fecha: {archivo['fecha']}")
-                        else:
-                            st.info("No se procesaron archivos JSON")
+                        
+                        # Crear DataFrame para mejor visualización
+                        df_data = []
+                        for archivo in resultados['json_procesados']:
+                            df_data.append({
+                                'Archivo': archivo['nombre'],
+                                'Estado': archivo['estado'],
+                                'Factura': archivo['factura'],
+                                'Fecha': archivo['fecha'],
+                                'resultState': archivo['resultState'],
+                                'procesoId': archivo['procesoId'],
+                                'codigoCUV': archivo['codigoCUV']
+                            })
+                        
+                        df = pd.DataFrame(df_data)
+                        st.dataframe(df, use_container_width=True)
                     
-                    with col_json2:
+                    if resultados['json_errores']:
                         st.markdown("#### ❌ Errores en JSON")
-                        if resultados['json_errores']:
-                            for error in resultados['json_errores']:
-                                st.error(f"**{error['nombre']}**: {error['error']}")
-                        else:
-                            st.success("No hubo errores en JSON")
+                        for error in resultados['json_errores']:
+                            st.error(f"**{error['nombre']}**: {error['error']}")
                 
                 # RESULTADOS DETALLADOS - RENOMBRADO
                 if resultados['archivos_renombrados']:
@@ -388,22 +416,20 @@ with st.expander("📖 Instrucciones de Uso"):
     ### Transformaciones aplicadas:
     
     **Para archivos JSON:**
-    - Extrae: resultState, procesoId, numFactura, codigoUnicoValidacion, fechaRadicacion, rutaArchivos
-    - Busca número de factura en el nombre del archivo si no está en los datos
-    - Corrige formato de fechas
-    - Renombra archivos con fecha inválida
+    - **PRESERVA** todos los datos existentes
+    - Solo corrige: formato de fechas con zona horaria y estructura `resultadosValidacion`
+    - Renombra archivos con fecha inválida (0000-00-00)
     
     **Para archivos con patrón NE###### (Formato Coosalud):**
     - `NE651.pdf` → `CUV_NE651.pdf` (CUV al inicio)
     - `NE999999.xlsx` → `CUV_NE999999.xlsx`
     
     ### Características:
-    - ✅ Extracción robusta de datos JSON (múltiples formatos de claves)
+    - ✅ **NO REEMPLAZA** datos existentes con null
+    - ✅ Extracción robusta de datos JSON
     - ✅ Procesamiento simultáneo de JSON y renombrado
-    - ✅ Formato Coosalud específico para renombrado
-    - ✅ Detección automática de tipos de archivo
     """)
 
 # FOOTER
 st.markdown("---")
-st.caption("🔄 Conversor + Renombrador - Coosalud • v3.0 • Extracción Mejorada")
+st.caption("🔄 Conversor + Renombrador - Coosalud • v4.0 • Preserva Datos Existentes")
