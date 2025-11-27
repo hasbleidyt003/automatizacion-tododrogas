@@ -18,7 +18,7 @@ st.set_page_config(
 modern_navbar()
 
 st.title("🔄 Conversor + Renombrador - Savia Salud")
-st.markdown("Procesa archivos JSON de Mantis y renombra archivos con patrón NE###### **al mismo tiempo**")
+st.markdown("Procesa archivos JSON y renombra archivos con patrón NE# **al mismo tiempo**")
 
 # Función de procesamiento JSON (Conversor Mantis) - MISM0 QUE COOSALUD
 def procesar_archivos_json(directorio):
@@ -170,7 +170,7 @@ uploaded_files = st.file_uploader(
     "Selecciona archivos para procesar (JSON de Mantis y archivos con patrón NE######)",
     accept_multiple_files=True,
     help="Puedes seleccionar archivos JSON y otros archivos con formato NE651.pdf, NE999999.xlsx, etc.",
-    type=['json', 'pdf', 'xlsx', 'xls', 'txt', 'doc', 'docx', 'jpg', 'png', 'jpeg']
+    type=['json']
 )
 
 # Información adicional
@@ -182,9 +182,9 @@ st.info("""
 - ✅ Renombra archivos con fechas inválidas
 - ✅ Estructura JSON según estándar
 
-**Para archivos con patrón NE######:**
+**Para archivos con patrón NE#:**
 - ✅ Convierte `NE651.pdf` → `NE651_CUV.pdf` (Formato Savia)
-- ✅ Detecta automáticamente patrones NE######
+- ✅ Detecta automáticamente patrones NE#
 - ✅ Procesamiento masivo simultáneo
 """)
 
