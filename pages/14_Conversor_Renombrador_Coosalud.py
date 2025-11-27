@@ -11,14 +11,14 @@ from config.theme import configure_modern_theme
 # Configurar tema y navbar
 configure_modern_theme()
 st.set_page_config(
-    page_title="Herramientas Coosalud - Renombrador y Conversor", 
+    page_title="Conversor + Renombrador - Coosalud", 
     page_icon="🔄", 
     layout="wide"
 )
 modern_navbar()
 
-st.title("🔄 Herramientas Coosalud - Renombrador y Conversor")
-st.markdown("Procesa archivos JSON de Mantis y renombra archivos con patrón NE######")
+st.title("🔄 Conversor + Renombrador - Coosalud")
+st.markdown("Procesa archivos JSON de Mantis y renombra archivos con patrón NE###### **al mismo tiempo**")
 
 # Función de procesamiento JSON (Conversor Mantis)
 def procesar_archivos_json(directorio):
@@ -26,22 +26,22 @@ def procesar_archivos_json(directorio):
     errores = []
     
     try:
-        os.chdir(directorio)
-        archivos_json = [archivo for archivo in os.listdir() if archivo.lower().endswith('.json')]
+        archivos_json = [archivo for archivo in os.listdir(directorio) if archivo.lower().endswith('.json')]
         
         for nombre_archivo in archivos_json:
             try:
-                with open(nombre_archivo, 'r', encoding='utf-8') as file:
+                ruta_archivo = os.path.join(directorio, nombre_archivo)
+                with open(ruta_archivo, 'r', encoding='utf-8') as file:
                     datos = json.load(file)
                 
                 fecha_original = datos.get('fechaRadicacion') or datos.get('FechaRadicacion')
+                nuevo_nombre_archivo = nombre_archivo
                 
                 # Renombrar archivos con fecha 0000-00-00
                 if fecha_original == "0000-00-00T00:00:00":
                     nombre_base, extension = os.path.splitext(nombre_archivo)
-                    nuevo_nombre = f"{nombre_base}-SIN FECHA{extension}"
-                    os.rename(nombre_archivo, nuevo_nombre)
-                    nombre_archivo = nuevo_nombre
+                    nuevo_nombre_archivo = f"{nombre_base}-SIN FECHA{extension}"
+                    os.rename(ruta_archivo, os.path.join(directorio, nuevo_nombre_archivo))
                 
                 # Formatear fecha válida
                 if fecha_original and fecha_original != "0000-00-00T00:00:00" and '+' in fecha_original:
@@ -62,14 +62,15 @@ def procesar_archivos_json(directorio):
                     "resultadosValidacion":[]
                 }
                 
-                # Guardar CON sangría pero SIN espacio en resultadosValidacion
-                with open(nombre_archivo, 'w', encoding='utf-8') as file:
+                # Guardar archivo procesado
+                ruta_final = os.path.join(directorio, nuevo_nombre_archivo)
+                with open(ruta_final, 'w', encoding='utf-8') as file:
                     json_str = json.dumps(resultado, indent=2, ensure_ascii=False)
                     json_str = json_str.replace('"resultadosValidacion": []', '"resultadosValidacion":[]')
                     file.write(json_str)
                 
                 archivos_procesados.append({
-                    'nombre': nombre_archivo,
+                    'nombre': nuevo_nombre_archivo,
                     'estado': '✅ Procesado',
                     'fecha': fecha_original if fecha_original else 'No encontrada'
                 })
@@ -95,16 +96,14 @@ def renombrar_archivos_cuv(directorio):
         for archivo in os.listdir(directorio):
             ruta_completa = os.path.join(directorio, archivo)
             
-            # Verificar si es un archivo (no carpeta)
-            if os.path.isfile(ruta_completa):
+            # Verificar si es un archivo (no carpeta) y no es JSON (para evitar conflictos)
+            if os.path.isfile(ruta_completa) and not archivo.lower().endswith('.json'):
                 # Buscar el patrón NE seguido de números en el nombre del archivo
                 patron = r'(NE\d+)'
                 coincidencia = re.search(patron, archivo)
                 
                 if coincidencia:
-                    numero_factura = coincidencia.group(1)  # Extraer el NE651, NE99999999, etc.
-                    
-                    # Obtener la extensión del archivo
+                    numero_factura = coincidencia.group(1)
                     nombre_base, extension = os.path.splitext(archivo)
                     
                     # Crear el nuevo nombre: CUV_NE651.ext
@@ -131,13 +130,15 @@ def renombrar_archivos_cuv(directorio):
                             'numero_factura': numero_factura
                         })
                 else:
-                    resultados.append({
-                        'original': archivo,
-                        'nuevo': archivo,
-                        'estado': 'ℹ No coincide con patrón NE######',
-                        'tipo': 'info',
-                        'numero_factura': 'N/A'
-                    })
+                    # Solo mostrar info si no es un archivo JSON (para evitar duplicados)
+                    if not archivo.lower().endswith('.json'):
+                        resultados.append({
+                            'original': archivo,
+                            'nuevo': archivo,
+                            'estado': 'ℹ No coincide con patrón NE######',
+                            'tipo': 'info',
+                            'numero_factura': 'N/A'
+                        })
         
         return resultados, contador
         
@@ -145,89 +146,146 @@ def renombrar_archivos_cuv(directorio):
         st.error(f"Error general: {str(e)}")
         return [], 0
 
-# INTERFAZ PRINCIPAL
-st.header("🛠️ Selecciona la Herramienta")
+# Función principal que procesa TODO
+def procesar_todo(directorio):
+    """Procesa tanto archivos JSON como archivos para renombrar"""
+    # Procesar archivos JSON
+    json_procesados, json_errores = procesar_archivos_json(directorio)
+    
+    # Procesar archivos para renombrar
+    renombrados, contador_renombrados = renombrar_archivos_cuv(directorio)
+    
+    return {
+        'json_procesados': json_procesados,
+        'json_errores': json_errores,
+        'archivos_renombrados': renombrados,
+        'total_renombrados': contador_renombrados
+    }
 
-# Selector de herramienta
-herramienta = st.radio(
-    "Selecciona la funcionalidad que necesitas:",
-    ["🔢 Renombrador CUV", "📊 Conversor Mantis JSON"],
-    horizontal=True
+# INTERFAZ PRINCIPAL
+st.header("📤 Subida de Archivos")
+
+# Subida de archivos múltiples (todos los tipos)
+uploaded_files = st.file_uploader(
+    "Selecciona archivos para procesar (JSON de Mantis y archivos con patrón NE######)",
+    accept_multiple_files=True,
+    help="Puedes seleccionar archivos JSON y otros archivos con formato NE651.pdf, NE999999.xlsx, etc.",
+    type=['json', 'pdf', 'xlsx', 'xls', 'txt', 'doc', 'docx', 'jpg', 'png', 'jpeg']
 )
 
-st.markdown("---")
+# Información adicional
+st.info("""
+**🔄 Funcionalidad Combinada:**
 
-if herramienta == "🔢 Renombrador CUV":
-    st.subheader("🔢 Renombrador CUV - Coosalud")
-    st.markdown("Convierte archivos con patrón NE###### a formato CUV_NE######")
+**Para archivos JSON:**
+- ✅ Corrige formato de fechas
+- ✅ Renombra archivos con fechas inválidas
+- ✅ Estructura JSON según estándar Coosalud
+
+**Para archivos con patrón NE######:**
+- ✅ Convierte `NE651.pdf` → `CUV_NE651.pdf`
+- ✅ Detecta automáticamente patrones NE######
+- ✅ Procesamiento masivo simultáneo
+""")
+
+# Mostrar ejemplos de patrones
+with st.expander("🔍 Ejemplos de Archivos Aceptados"):
+    st.markdown("""
+    **Archivos JSON (Conversor Mantis):**
+    - `radicacion_12345.json` → Procesa y corrige estructura JSON
+    - `factura_NE651.json` → Corrige fechas y estructura
     
-    # Subida de archivos para renombrador
-    uploaded_files = st.file_uploader(
-        "Selecciona archivos para renombrar (patrón NE######)",
-        accept_multiple_files=True,
-        help="Archivos con formato: NE651.pdf, NE999999.xlsx, etc.",
-        key="renombrador"
-    )
+    **Archivos para Renombrar (Patrón NE######):**
+    - `NE651.pdf` → `CUV_NE651.pdf`
+    - `NE999999.xlsx` → `CUV_NE999999.xlsx`
+    - `documento_NE8888.txt` → `CUV_NE8888.txt`
     
-    # Información adicional para renombrador
-    st.info("""
-    **ℹ️ Funcionalidad:**
-    - Convierte archivos con patrón `NE######` a `CUV_NE######`
-    - Ejemplo: `NE651.pdf` → `CUV_NE651.pdf`
-    - Procesa múltiples archivos simultáneamente
-    - No modifica el contenido, solo el nombre
+    **Puedes mezclar ambos tipos en una sola operación**
     """)
+
+if uploaded_files:
+    st.success(f"✅ {len(uploaded_files)} archivo(s) listo(s) para procesar")
     
-    if uploaded_files:
-        st.success(f"✅ {len(uploaded_files)} archivo(s) listo(s) para procesar")
-        
-        # Mostrar archivos seleccionados
-        with st.expander("📋 Archivos Seleccionados", expanded=True):
-            for i, file in enumerate(uploaded_files):
-                # Verificar si coincide con el patrón
+    # Mostrar archivos seleccionados
+    with st.expander("📋 Archivos Seleccionados", expanded=True):
+        for i, file in enumerate(uploaded_files):
+            # Verificar tipo de archivo
+            if file.name.lower().endswith('.json'):
+                tipo = "📊 JSON (Conversor Mantis)"
+            else:
                 patron = r'(NE\d+)'
                 coincidencia = re.search(patron, file.name)
-                estado_patron = "✅ Coincide" if coincidencia else "❌ No coincide"
-                st.write(f"{i+1}. {file.name} - {estado_patron}")
-        
-        # Botón de procesamiento para renombrador
-        if st.button("🚀 Renombrar Archivos", type="primary", use_container_width=True, key="btn_renombrar"):
-            with st.spinner("Procesando archivos..."):
-                # Crear directorio temporal
-                with tempfile.TemporaryDirectory() as temp_dir:
-                    # Guardar archivos subidos en directorio temporal
-                    for uploaded_file in uploaded_files:
-                        temp_path = os.path.join(temp_dir, uploaded_file.name)
-                        with open(temp_path, "wb") as f:
-                            f.write(uploaded_file.getvalue())
+                if coincidencia:
+                    tipo = "🔢 Archivo para Renombrar"
+                else:
+                    tipo = "📄 Otro archivo"
+            
+            st.write(f"{i+1}. {file.name} - {tipo}")
+    
+    # Botón de procesamiento COMBINADO
+    if st.button("🚀 Procesar Todo", type="primary", use_container_width=True):
+        with st.spinner("Procesando archivos JSON y renombrando archivos..."):
+            # Crear directorio temporal
+            with tempfile.TemporaryDirectory() as temp_dir:
+                # Guardar archivos subidos en directorio temporal
+                for uploaded_file in uploaded_files:
+                    temp_path = os.path.join(temp_dir, uploaded_file.name)
+                    with open(temp_path, "wb") as f:
+                        f.write(uploaded_file.getvalue())
+                
+                # Procesar TODO
+                resultados = procesar_todo(temp_dir)
+                
+                # MOSTRAR RESULTADOS COMBINADOS
+                st.markdown("---")
+                st.header("📊 Resultados del Procesamiento Combinado")
+                
+                # Estadísticas generales
+                total_json = len(resultados['json_procesados']) + len(resultados['json_errores'])
+                total_archivos = len(uploaded_files)
+                
+                col1, col2, col3, col4 = st.columns(4)
+                with col1:
+                    st.metric("Total Archivos", total_archivos)
+                with col2:
+                    st.metric("JSON Procesados", len(resultados['json_procesados']))
+                with col3:
+                    st.metric("Archivos Renombrados", resultados['total_renombrados'])
+                with col4:
+                    tasa_exito = ((len(resultados['json_procesados']) + resultados['total_renombrados']) / total_archivos * 100) if total_archivos > 0 else 0
+                    st.metric("Tasa Éxito", f"{tasa_exito:.1f}%")
+                
+                # RESULTADOS DETALLADOS - JSON
+                if resultados['json_procesados'] or resultados['json_errores']:
+                    st.subheader("📊 Resultados Conversor JSON")
                     
-                    # Procesar archivos con renombrador
-                    resultados, contador = renombrar_archivos_cuv(temp_dir)
+                    col_json1, col_json2 = st.columns(2)
                     
-                    # MOSTRAR RESULTADOS
-                    st.markdown("---")
-                    st.header("📊 Resultados del Renombrado")
+                    with col_json1:
+                        st.markdown("#### ✅ JSON Procesados Exitosamente")
+                        if resultados['json_procesados']:
+                            for archivo in resultados['json_procesados']:
+                                st.success(f"**{archivo['nombre']}**")
+                                st.caption(f"Fecha: {archivo['fecha']}")
+                        else:
+                            st.info("No se procesaron archivos JSON")
                     
-                    # Estadísticas rápidas
-                    col1, col2, col3, col4 = st.columns(4)
-                    with col1:
-                        st.metric("Total Archivos", len(uploaded_files))
-                    with col2:
-                        st.metric("Renombrados", contador)
-                    with col3:
-                        no_coinciden = len(uploaded_files) - contador
-                        st.metric("No Coinciden", no_coinciden)
-                    with col4:
-                        tasa_renombre = (contador / len(uploaded_files)) * 100 if uploaded_files else 0
-                        st.metric("Tasa Renombre", f"{tasa_renombre:.1f}%")
-                    
-                    # Resultados detallados
-                    st.subheader("📋 Detalle de Archivos")
+                    with col_json2:
+                        st.markdown("#### ❌ Errores en JSON")
+                        if resultados['json_errores']:
+                            for error in resultados['json_errores']:
+                                st.error(f"**{error['nombre']}**: {error['error']}")
+                        else:
+                            st.success("No hubo errores en JSON")
+                
+                # RESULTADOS DETALLADOS - RENOMBRADO
+                if resultados['archivos_renombrados']:
+                    st.subheader("🔢 Resultados Renombrado CUV")
                     
                     # Separar por tipo de resultado
-                    renombrados = [r for r in resultados if r['tipo'] == 'success']
-                    errores = [r for r in resultados if r['tipo'] == 'error']
-                    info = [r for r in resultados if r['tipo'] == 'info']
+                    renombrados = [r for r in resultados['archivos_renombrados'] if r['tipo'] == 'success']
+                    errores_renombre = [r for r in resultados['archivos_renombrados'] if r['tipo'] == 'error']
+                    info_renombre = [r for r in resultados['archivos_renombrados'] if r['tipo'] == 'info']
                     
                     if renombrados:
                         st.markdown("#### ✅ Archivos Renombrados Exitosamente")
@@ -235,191 +293,119 @@ if herramienta == "🔢 Renombrador CUV":
                             st.success(f"**{resultado['original']}** → **{resultado['nuevo']}**")
                             st.caption(f"Número de factura: {resultado['numero_factura']}")
                     
-                    if errores:
+                    if errores_renombre:
                         st.markdown("#### ❌ Errores en Renombrado")
-                        for resultado in errores:
+                        for resultado in errores_renombre:
                             st.error(f"**{resultado['original']}** → {resultado['estado']}")
                     
-                    if info:
+                    if info_renombre:
                         st.markdown("#### ℹ️ Archivos No Procesados")
-                        for resultado in info:
+                        for resultado in info_renombre:
                             st.info(f"**{resultado['original']}** → {resultado['estado']}")
+                
+                # PREPARAR DESCARGA COMBINADA
+                st.markdown("---")
+                st.subheader("📥 Descargar Todos los Archivos Procesados")
+                
+                archivos_para_descargar = (
+                    len(resultados['json_procesados']) > 0 or 
+                    resultados['total_renombrados'] > 0
+                )
+                
+                if archivos_para_descargar:
+                    # Crear ZIP con todos los archivos procesados
+                    zip_path = os.path.join(temp_dir, "archivos_procesados_completos.zip")
+                    shutil.make_archive(zip_path.replace('.zip', ''), 'zip', temp_dir)
                     
-                    # PREPARAR DESCARGA
-                    st.markdown("---")
-                    st.subheader("📥 Descargar Archivos Renombrados")
+                    # Leer el ZIP para descarga
+                    with open(zip_path, "rb") as f:
+                        zip_data = f.read()
                     
-                    if contador > 0:
-                        # Crear ZIP con archivos renombrados
-                        zip_path = os.path.join(temp_dir, "archivos_cuv_renombrados.zip")
-                        shutil.make_archive(zip_path.replace('.zip', ''), 'zip', temp_dir)
-                        
-                        # Leer el ZIP para descarga
-                        with open(zip_path, "rb") as f:
-                            zip_data = f.read()
-                        
-                        # Botón de descarga ZIP
-                        st.download_button(
-                            label="📦 Descargar Todos los Archivos (ZIP)",
-                            data=zip_data,
-                            file_name="archivos_cuv_coosalud.zip",
-                            mime="application/zip",
-                            use_container_width=True
-                        )
-                        
-                        # Descargas individuales
-                        st.markdown("**Descargas Individuales:**")
-                        cols = st.columns(3)
-                        
-                        for i, archivo in enumerate(renombrados):
-                            with cols[i % 3]:
+                    # Botón de descarga ZIP completo
+                    st.download_button(
+                        label="📦 Descargar TODOS los Archivos Procesados (ZIP)",
+                        data=zip_data,
+                        file_name="archivos_procesados_completos_coosalud.zip",
+                        mime="application/zip",
+                        use_container_width=True
+                    )
+                    
+                    # Descargas individuales por categoría
+                    st.markdown("**Descargas Individuales por Categoría:**")
+                    
+                    # Archivos JSON procesados
+                    if resultados['json_procesados']:
+                        st.markdown("**📊 Archivos JSON Procesados:**")
+                        cols_json = st.columns(3)
+                        for i, archivo in enumerate(resultados['json_procesados']):
+                            with cols_json[i % 3]:
+                                file_path = os.path.join(temp_dir, archivo['nombre'])
+                                if os.path.exists(file_path):
+                                    with open(file_path, "rb") as f:
+                                        file_data = f.read()
+                                    
+                                    st.download_button(
+                                        label=f"📄 {archivo['nombre'][:15]}...",
+                                        data=file_data,
+                                        file_name=archivo['nombre'],
+                                        mime="application/json",
+                                        key=f"json_{i}"
+                                    )
+                    
+                    # Archivos renombrados
+                    renombrados_exitosos = [r for r in resultados['archivos_renombrados'] if r['tipo'] == 'success']
+                    if renombrados_exitosos:
+                        st.markdown("**🔢 Archivos Renombrados:**")
+                        cols_ren = st.columns(3)
+                        for i, archivo in enumerate(renombrados_exitosos):
+                            with cols_ren[i % 3]:
                                 file_path = os.path.join(temp_dir, archivo['nuevo'])
                                 if os.path.exists(file_path):
                                     with open(file_path, "rb") as f:
                                         file_data = f.read()
                                     
                                     st.download_button(
-                                        label=f"📄 {archivo['nuevo'][:20]}...",
+                                        label=f"📄 {archivo['nuevo'][:15]}...",
                                         data=file_data,
                                         file_name=archivo['nuevo'],
                                         mime="application/octet-stream",
-                                        key=f"download_ren_{i}"
+                                        key=f"ren_{i}"
                                     )
-                    else:
-                        st.warning("No hay archivos renombrados para descargar")
+                else:
+                    st.warning("No hay archivos procesados para descargar")
 
-else:  # Conversor Mantis JSON
-    st.subheader("📊 Conversor Mantis JSON - Coosalud")
-    st.markdown("Procesa archivos JSON de Mantis para Coosalud")
-    
-    # Subida de archivos para conversor
-    uploaded_files = st.file_uploader(
-        "Selecciona archivos JSON para procesar",
-        type=['json'],
-        accept_multiple_files=True,
-        help="Puedes seleccionar múltiples archivos JSON",
-        key="conversor"
-    )
-    
-    if uploaded_files:
-        st.success(f"✅ {len(uploaded_files)} archivo(s) listo(s) para procesar")
-        
-        # Mostrar archivos seleccionados
-        with st.expander("📋 Archivos Seleccionados", expanded=True):
-            for i, file in enumerate(uploaded_files):
-                st.write(f"{i+1}. {file.name}")
-        
-        # Botón de procesamiento para conversor
-        if st.button("🚀 Procesar Archivos", type="primary", use_container_width=True, key="btn_procesar"):
-            with st.spinner("Procesando archivos JSON..."):
-                # Crear directorio temporal
-                with tempfile.TemporaryDirectory() as temp_dir:
-                    # Guardar archivos subidos en directorio temporal
-                    for uploaded_file in uploaded_files:
-                        temp_path = os.path.join(temp_dir, uploaded_file.name)
-                        with open(temp_path, "wb") as f:
-                            f.write(uploaded_file.getvalue())
-                    
-                    # Procesar archivos con conversor
-                    archivos_procesados, errores = procesar_archivos_json(temp_dir)
-                    
-                    # MOSTRAR RESULTADOS
-                    col1, col2 = st.columns(2)
-                    
-                    with col1:
-                        st.subheader("✅ Archivos Procesados")
-                        if archivos_procesados:
-                            for archivo in archivos_procesados:
-                                st.success(f"**{archivo['nombre']}**")
-                                st.caption(f"Fecha: {archivo['fecha']}")
-                        else:
-                            st.info("No se procesaron archivos")
-                    
-                    with col2:
-                        st.subheader("❌ Errores")
-                        if errores:
-                            for error in errores:
-                                st.error(f"**{error['nombre']}**: {error['error']}")
-                        else:
-                            st.success("No hubo errores")
-                    
-                    # PREPARAR DESCARGA
-                    st.markdown("---")
-                    st.subheader("📥 Descargar Archivos Procesados")
-                    
-                    if archivos_procesados:
-                        # Crear ZIP con archivos procesados
-                        zip_path = os.path.join(temp_dir, "archivos_procesados.zip")
-                        shutil.make_archive(zip_path.replace('.zip', ''), 'zip', temp_dir)
-                        
-                        # Leer el ZIP para descarga
-                        with open(zip_path, "rb") as f:
-                            zip_data = f.read()
-                        
-                        st.download_button(
-                            label="📦 Descargar Todos los Archivos (ZIP)",
-                            data=zip_data,
-                            file_name="archivos_procesados_coosalud.zip",
-                            mime="application/zip",
-                            use_container_width=True
-                        )
-                        
-                        # Descargas individuales
-                        st.markdown("**Descargas Individuales:**")
-                        cols = st.columns(3)
-                        for i, archivo in enumerate(archivos_procesados):
-                            with cols[i % 3]:
-                                file_path = os.path.join(temp_dir, archivo['nombre'])
-                                with open(file_path, "rb") as f:
-                                    file_data = f.read()
-                                
-                                st.download_button(
-                                    label=f"📄 {archivo['nombre'][:15]}...",
-                                    data=file_data,
-                                    file_name=archivo['nombre'],
-                                    mime="application/json",
-                                    key=f"download_conv_{i}"
-                                )
-                    else:
-                        st.warning("No hay archivos para descargar")
+else:
+    st.info("👆 Por favor, selecciona al menos un archivo para procesar")
 
 # INSTRUCCIONES
 with st.expander("📖 Instrucciones de Uso"):
-    if herramienta == "🔢 Renombrador CUV":
-        st.markdown("""
-        ### Cómo usar el Renombrador CUV:
-        
-        1. **Selecciona archivos**: Haz clic en 'Browse files' o arrastra los archivos
-        2. **Verifica patrones**: Los archivos deben tener formato `NE######`
-        3. **Procesa**: Haz clic en 'Renombrar Archivos'
-        4. **Descarga**: Obtén los archivos renombrados individualmente o en ZIP
-        
-        ### Transformación aplicada:
-        - `NE651.ext` → `CUV_NE651.ext`
-        - `NE999999.ext` → `CUV_NE999999.ext`
-        
-        ### Características:
-        - ✅ Detecta automáticamente patrones NE######
-        - ✅ Convierte a formato estándar CUV_NE######
-        - ✅ Procesamiento masivo simultáneo
-        - ✅ Validación de patrones antes del procesamiento
-        """)
-    else:
-        st.markdown("""
-        ### Cómo usar el Conversor Mantis:
-        
-        1. **Selecciona archivos JSON**: Haz clic en 'Browse files' o arrastra los archivos JSON
-        2. **Revisa los archivos**: Verifica que sean los correctos en la lista
-        3. **Procesa**: Haz clic en 'Procesar Archivos'
-        4. **Descarga**: Obtén los archivos procesados individualmente o en ZIP
-        
-        ### Características del procesamiento:
-        - ✅ Corrige formato de fechas
-        - ✅ Renombra archivos con fechas inválidas
-        - ✅ Estructura JSON según estándar Coosalud
-        - ✅ Mantiene codificación UTF-8
-        """)
+    st.markdown("""
+    ### Cómo usar el Conversor + Renombrador Combinado:
+    
+    1. **Selecciona archivos**: Haz clic en 'Browse files' o arrastra los archivos
+    2. **Mezcla tipos**: Puedes seleccionar archivos JSON y archivos con patrón NE###### juntos
+    3. **Procesa**: Haz clic en 'Procesar Todo' - se ejecutarán ambas operaciones
+    4. **Descarga**: Obtén todos los archivos procesados en un ZIP o individualmente
+    
+    ### Transformaciones aplicadas:
+    
+    **Para archivos JSON:**
+    - Corrige formato de fechas: `"2023-01-01T00:00:00+00:00"` → `"2023-01-01T00:00:00"`
+    - Renombra archivos con fecha inválida: `archivo.json` → `archivo-SIN FECHA.json`
+    - Estructura JSON según estándar Coosalud
+    
+    **Para archivos con patrón NE######:**
+    - `NE651.pdf` → `CUV_NE651.pdf`
+    - `NE999999.xlsx` → `CUV_NE999999.xlsx`
+    - `documento_NE8888.txt` → `CUV_NE8888.txt`
+    
+    ### Características:
+    - ✅ Procesamiento simultáneo de JSON y renombrado
+    - ✅ Detección automática de tipos de archivo
+    - ✅ Validación de patrones antes del procesamiento
+    - ✅ Descarga combinada en ZIP o individual
+    """)
 
 # FOOTER
 st.markdown("---")
-st.caption("🔄 Herramientas Coosalud • v2.0 • Renombrador CUV + Conversor Mantis")
+st.caption("🔄 Conversor + Renombrador - Coosalud • v2.0 • Procesamiento Combinado")
