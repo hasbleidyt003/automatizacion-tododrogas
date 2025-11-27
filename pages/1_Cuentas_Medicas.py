@@ -393,6 +393,16 @@ with tab2:
                 "🔄 Iniciado"
             )
             st.switch_page("pages/9_Renombrador_cuv_Savia.py")
+        
+        # NUEVO BOTÓN AGREGADO - CONVERSOR + RENOMBRADOR SAVIA
+        if st.button("🔄 Conversor + Renombrador", use_container_width=True, key="savia_unificado"):
+            metricas.registrar_proceso(
+                "SAVIA SALUD", 
+                "Nuevo proceso Unificado", 
+                "Conversor + Renombrador", 
+                "🔄 Iniciado"
+            )
+            st.switch_page("pages/15_Conversor_Renombrador_Savia.py")
     
     with col2:
         st.markdown("**📋 Procesadores RIPS**")
