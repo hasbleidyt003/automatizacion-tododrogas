@@ -26,7 +26,7 @@ st.markdown("Procesa archivos JSON de Mantis y renombra archivos con patrón NE#
 
 # Función para renombrar archivos sin fecha
 def renombrar_archivo_sin_fecha(ruta_archivo, nombre_original):
-    """Renombra archivo agregando 'sin fecha' si no tiene fechaRadicacion"""
+    """Renombra archivo agregando 'sin fecha' si no tiene fechaRadicacion válida"""
     nombre_base, extension = os.path.splitext(nombre_original)
     nuevo_nombre = f"{nombre_base}_sin_fecha{extension}"
     nueva_ruta = os.path.join(os.path.dirname(ruta_archivo), nuevo_nombre)
@@ -37,7 +37,7 @@ def renombrar_archivo_sin_fecha(ruta_archivo, nombre_original):
     except Exception as e:
         return nombre_original, False
 
-# Función de procesamiento JSON - EXTRACCIÓN CORRECTA
+# Función de procesamiento JSON - BASADA EN TU CÓDIGO ORIGINAL
 def procesar_archivos_json(directorio):
     archivos_procesados = []
     errores = []
@@ -49,65 +49,65 @@ def procesar_archivos_json(directorio):
             try:
                 ruta_archivo = os.path.join(directorio, nombre_archivo)
                 with open(ruta_archivo, 'r', encoding='utf-8') as file:
-                    datos_originales = json.load(file)
+                    datos = json.load(file)
                 
-                # ✅ EXTRACCIÓN DE TODOS LOS CAMPOS DEL ORIGINAL (excepto los 2 que son automáticos)
-                result_state = datos_originales.get('resultState')
-                proceso_id = datos_originales.get('procesoId')
-                num_factura = datos_originales.get('numFactura')
-                codigo_unico_validacion = datos_originales.get('codigoUnicoValidacion')
-                fecha_radicacion = datos_originales.get('fechaRadicacion')
+                # ✅ EXTRACCIÓN DE CAMPOS CON DIFERENTES NOMBRES (como en tu código original)
+                fecha_original = datos.get('fechaRadicacion') or datos.get('FechaRadicacion')
                 
-                # 🎯 NUEVA REGLA: Si no tiene fechaRadicacion, renombrar archivo
+                # 🎯 REGLA: Renombrar archivo si no tiene fecha válida
                 archivo_renombrado = False
-                if not fecha_radicacion:
+                if fecha_original == "0000-00-00T00:00:00" or not fecha_original:
                     nuevo_nombre, exito = renombrar_archivo_sin_fecha(ruta_archivo, nombre_archivo)
                     if exito:
                         nombre_archivo = nuevo_nombre
                         archivo_renombrado = True
-                        # Actualizar ruta después del renombrado
                         ruta_archivo = os.path.join(directorio, nombre_archivo)
                 
-                # ❌ CAMPOS QUE SIEMPRE SERÁN AUTOMÁTICOS (NO se extraen del original)
-                ruta_archivos = None  # SIEMPRE null
-                resultados_validacion = []  # SIEMPRE array vacío
+                # Formatear fecha válida (como en tu código original)
+                if fecha_original and fecha_original != "0000-00-00T00:00:00" and '+' in fecha_original:
+                    fecha_procesada = fecha_original.split('+')[0]
+                    if 'fechaRadicacion' in datos:
+                        datos['fechaRadicacion'] = fecha_procesada
+                    if 'FechaRadicacion' in datos:
+                        datos['FechaRadicacion'] = fecha_procesada
                 
-                # Estructura final EXACTA como la necesitas
+                # ✅ ESTRUCTURA FINAL - EXTRACCIÓN CON DIFERENTES NOMBRES
                 resultado = {
-                    "resultState": result_state,                    # ✅ Del original
-                    "procesoId": proceso_id,                        # ✅ Del original
-                    "numFactura": num_factura,                      # ✅ Del original
-                    "codigoUnicoValidacion": codigo_unico_validacion, # ✅ Del original
-                    "fechaRadicacion": fecha_radicacion,            # ✅ Del original
-                    "rutaArchivos": ruta_archivos,                  # ❌ SIEMPRE null (automático)
-                    "resultadosValidacion": resultados_validacion   # ❌ SIEMPRE array vacío (automático)
+                    "resultState": datos.get('resultState', datos.get('ResultState')),
+                    "procesoId": datos.get('procesoId', datos.get('ProcesoId')),
+                    "numFactura": datos.get('numFactura', datos.get('NumFactura')),
+                    "codigoUnicoValidacion": datos.get('codigoUnicoValidacion', datos.get('CodigoUnicoValidacion')),
+                    "fechaRadicacion": datos.get('fechaRadicacion', datos.get('FechaRadicacion')),
+                    "rutaArchivos": datos.get('rutaArchivos', datos.get('RutaArchivos')),
+                    "resultadosValidacion": []
                 }
                 
-                # Guardar archivo procesado
+                # Guardar CON sangría pero SIN espacio en resultadosValidacion (como en tu código)
                 with open(ruta_archivo, 'w', encoding='utf-8') as file:
                     json_str = json.dumps(resultado, indent=2, ensure_ascii=False)
+                    json_str = json_str.replace('"resultadosValidacion": []', '"resultadosValidacion":[]')
                     file.write(json_str)
                 
-                # Determinar estado del procesamiento
+                # Determinar estado
                 if archivo_renombrado:
                     estado = "✅ Estructura generada + 📝 Archivo renombrado (sin fecha)"
                 else:
                     estado = "✅ Estructura generada"
                 
-                # Información para mostrar en resultados
+                # Información para mostrar
                 info_generacion = {
-                    'resultState': result_state,
-                    'procesoId': proceso_id,
-                    'numFactura': num_factura,
-                    'codigoCUV': codigo_unico_validacion[:20] + "..." if codigo_unico_validacion else "N/A",
-                    'fechaRadicacion': fecha_radicacion[:19] if fecha_radicacion else "NO TIENE FECHA",
+                    'resultState': resultado["resultState"],
+                    'procesoId': resultado["procesoId"],
+                    'numFactura': resultado["numFactura"],
+                    'codigoCUV': resultado["codigoUnicoValidacion"][:20] + "..." if resultado["codigoUnicoValidacion"] else "N/A",
+                    'fechaRadicacion': resultado["fechaRadicacion"][:19] if resultado["fechaRadicacion"] else "NO TIENE FECHA",
                     'archivoRenombrado': archivo_renombrado
                 }
                 
                 archivos_procesados.append({
                     'nombre': nombre_archivo,
                     'estado': estado,
-                    'factura': num_factura,
+                    'factura': resultado["numFactura"],
                     'info_generacion': info_generacion
                 })
                 
@@ -123,7 +123,7 @@ def procesar_archivos_json(directorio):
         errores.append({'nombre': 'Sistema', 'error': f"Error general: {str(e)}"})
         return [], errores
 
-# Función de renombrado CUV (Renombrador Coosalud) - MANTENIDA
+# Función de renombrado CUV (Renombrador Coosalud)
 def renombrar_archivos_cuv(directorio):
     resultados = []
     contador = 0
@@ -214,9 +214,9 @@ st.info("""
 **🔄 Funcionalidad Combinada - Coosalud:**
 
 **Para archivos JSON:**
-- ✅ **EXTRAE DEL ORIGINAL**: resultState, procesoId, numFactura, codigoUnicoValidacion, fechaRadicacion
-- ✅ **GENERA AUTOMÁTICAMENTE**: rutaArchivos: null y resultadosValidacion:[] (SIEMPRE)
-- ✅ **RENOMBRA**: Archivos sin fechaRadicacion → agrega "_sin_fecha"
+- ✅ **EXTRAE**: resultState, procesoId, numFactura, codigoUnicoValidacion, fechaRadicacion (con diferentes nombres)
+- ✅ **GENERA**: rutaArchivos y resultadosValidacion:[] (formato exacto)
+- ✅ **RENOMBRA**: Archivos sin fecha válida → agrega "_sin_fecha"
 
 **Para archivos con patrón NE######:**
 - ✅ Convierte `NE651.pdf` → `CUV_NE651.pdf` (Formato Coosalud)
@@ -233,11 +233,11 @@ if uploaded_files:
                     contenido = json.loads(file.getvalue().decode('utf-8'))
                     
                     st.write(f"**{i+1}. {file.name}**")
-                    st.write(f"   - resultState: `{contenido.get('resultState', 'No encontrado')}`")
-                    st.write(f"   - procesoId: `{contenido.get('procesoId', 'No encontrado')}`")
-                    st.write(f"   - numFactura: `{contenido.get('numFactura', 'No encontrado')}`")
-                    st.write(f"   - codigoUnicoValidacion: `{contenido.get('codigoUnicoValidacion', 'No encontrado')[:20]}...`" if contenido.get('codigoUnicoValidacion') else "   - codigoUnicoValidacion: `No encontrado`")
-                    st.write(f"   - fechaRadicacion: `{contenido.get('fechaRadicacion', 'NO TIENE FECHA - Se renombrará')}`")
+                    st.write(f"   - resultState: `{contenido.get('resultState', contenido.get('ResultState', 'No encontrado'))}`")
+                    st.write(f"   - procesoId: `{contenido.get('procesoId', contenido.get('ProcesoId', 'No encontrado'))}`")
+                    st.write(f"   - numFactura: `{contenido.get('numFactura', contenido.get('NumFactura', 'No encontrado'))}`")
+                    st.write(f"   - codigoUnicoValidacion: `{contenido.get('codigoUnicoValidacion', contenido.get('CodigoUnicoValidacion', 'No encontrado'))[:20]}...`" if contenido.get('codigoUnicoValidacion') or contenido.get('CodigoUnicoValidacion') else "   - codigoUnicoValidacion: `No encontrado`")
+                    st.write(f"   - fechaRadicacion: `{contenido.get('fechaRadicacion', contenido.get('FechaRadicacion', 'NO TIENE FECHA - Se renombrará'))}`")
                     st.write("---")
                     
                 except Exception as e:
@@ -296,7 +296,7 @@ if uploaded_files:
                                 "resultState": info['resultState'],
                                 "procesoId": info['procesoId'],
                                 "numFactura": info['numFactura'],
-                                "codigoUnicoValidacion": info['codigoCUV'] + "...",  # Mostrar completo
+                                "codigoUnicoValidacion": info['codigoCUV'] + "...",
                                 "fechaRadicacion": info['fechaRadicacion'],
                                 "rutaArchivos": None,
                                 "resultadosValidacion": []
@@ -357,26 +357,26 @@ with st.expander("📖 Instrucciones de Uso"):
       "numFactura": "NE1315",                 // ← Del original
       "codigoUnicoValidacion": "1043ee6f9...", // ← Del original
       "fechaRadicacion": "2025-08-21T20:42...", // ← Del original
-      "rutaArchivos": null,                   // ← SIEMPRE null (automático)
-      "resultadosValidacion": []              // ← SIEMPRE array vacío (automático)
+      "rutaArchivos": null,                   // ← Del original
+      "resultadosValidacion": []              // ← SIEMPRE array vacío
     }
     ```
     
     **Qué se extrae del original:**
-    - ✅ `resultState` 
-    - ✅ `procesoId`
-    - ✅ `numFactura`
-    - ✅ `codigoUnicoValidacion`
-    - ✅ `fechaRadicacion`
+    - ✅ `resultState` (o `ResultState`)
+    - ✅ `procesoId` (o `ProcesoId`) 
+    - ✅ `numFactura` (o `NumFactura`)
+    - ✅ `codigoUnicoValidacion` (o `CodigoUnicoValidacion`)
+    - ✅ `fechaRadicacion` (o `FechaRadicacion`)
+    - ✅ `rutaArchivos` (o `RutaArchivos`)
     
     **Qué se genera automáticamente:**
-    - `rutaArchivos`: null (SIEMPRE)
-    - `resultadosValidacion`: [] (SIEMPRE)
+    - `resultadosValidacion`: [] (SIEMPRE array vacío)
     
     **Nueva regla especial:**
-    - Si el archivo NO tiene `fechaRadicacion` → Se renombra agregando "_sin_fecha"
+    - Si el archivo NO tiene `fechaRadicacion` válida → Se renombra agregando "_sin_fecha"
     """)
 
 # FOOTER
 st.markdown("---")
-st.caption("🔄 Conversor + Renombrador - Coosalud • v8.0 • Extracción exacta + Renombrado sin fecha")
+st.caption("🔄 Conversor + Renombrador - Coosalud • v8.0 • Extracción con diferentes nombres de campos")
