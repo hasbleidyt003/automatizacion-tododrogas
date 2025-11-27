@@ -4,6 +4,7 @@ import os
 import re
 import tempfile
 import shutil
+import pandas as pd  # ✅ AGREGAR ESTA IMPORTACIÓN
 from pathlib import Path
 from components.navbar import modern_navbar
 from config.theme import configure_modern_theme
@@ -296,6 +297,8 @@ if uploaded_files:
                                 'codigoCUV': archivo['codigoCUV']
                             })
                         
+                        # ✅ CORREGIDO: Usar pandas DataFrame
+                        import pandas as pd
                         df = pd.DataFrame(df_data)
                         st.dataframe(df, use_container_width=True)
                     
