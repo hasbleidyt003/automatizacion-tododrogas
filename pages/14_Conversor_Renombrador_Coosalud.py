@@ -18,9 +18,9 @@ st.set_page_config(
 modern_navbar()
 
 st.title("🔄 Conversor + Renombrador - Coosalud")
-st.markdown("Procesa y renombra archivos tipo JSON **al mismo tiempo**")
+st.markdown("Procesa archivos JSON de Mantis y renombra archivos con patrón NE###### **al mismo tiempo**")
 
-# Función de procesamiento JSON (Conversor Mantis)
+# Función de procesamiento JSON MEJORADA (Conversor Mantis)
 def procesar_archivos_json(directorio):
     archivos_procesados = []
     errores = []
@@ -34,7 +34,14 @@ def procesar_archivos_json(directorio):
                 with open(ruta_archivo, 'r', encoding='utf-8') as file:
                     datos = json.load(file)
                 
-                fecha_original = datos.get('fechaRadicacion') or datos.get('FechaRadicacion')
+                # EXTRACCIÓN MEJORADA DE DATOS
+                fecha_original = datos.get('fechaRadicacion') or datos.get('FechaRadicacion') or datos.get('fecharadicacion')
+                result_state = datos.get('resultState') or datos.get('ResultState') or datos.get('resultstate')
+                proceso_id = datos.get('procesoId') or datos.get('ProcesoId') or datos.get('procesoid')
+                num_factura = datos.get('numFactura') or datos.get('NumFactura') or datos.get('numfactura')
+                codigo_cuv = datos.get('codigoUnicoValidacion') or datos.get('CodigoUnicoValidacion') or datos.get('codigounicovalidacion')
+                ruta_archivos = datos.get('rutaArchivos') or datos.get('RutaArchivos') or datos.get('rutaarchivos')
+                
                 nuevo_nombre_archivo = nombre_archivo
                 
                 # Renombrar archivos con fecha 0000-00-00
@@ -42,29 +49,33 @@ def procesar_archivos_json(directorio):
                     nombre_base, extension = os.path.splitext(nombre_archivo)
                     nuevo_nombre_archivo = f"{nombre_base}-SIN FECHA{extension}"
                     os.rename(ruta_archivo, os.path.join(directorio, nuevo_nombre_archivo))
+                    ruta_archivo = os.path.join(directorio, nuevo_nombre_archivo)
                 
                 # Formatear fecha válida
+                fecha_procesada = fecha_original
                 if fecha_original and fecha_original != "0000-00-00T00:00:00" and '+' in fecha_original:
                     fecha_procesada = fecha_original.split('+')[0]
-                    if 'fechaRadicacion' in datos:
-                        datos['fechaRadicacion'] = fecha_procesada
-                    if 'FechaRadicacion' in datos:
-                        datos['FechaRadicacion'] = fecha_procesada
                 
-                # Estructura final
+                # Buscar número de factura en el nombre del archivo si no está en los datos
+                if not num_factura:
+                    patron_factura = r'(NE\d+)'
+                    coincidencia_factura = re.search(patron_factura, nombre_archivo)
+                    if coincidencia_factura:
+                        num_factura = coincidencia_factura.group(1)
+                
+                # Estructura final MEJORADA
                 resultado = {
-                    "resultState": datos.get('resultState', datos.get('ResultState')),
-                    "procesoId": datos.get('procesoId', datos.get('ProcesoId')),
-                    "numFactura": datos.get('numFactura', datos.get('NumFactura')),
-                    "codigoUnicoValidacion": datos.get('codigoUnicoValidacion', datos.get('CodigoUnicoValidacion')),
-                    "fechaRadicacion": datos.get('fechaRadicacion', datos.get('FechaRadicacion')),
-                    "rutaArchivos": datos.get('rutaArchivos', datos.get('RutaArchivos')),
+                    "resultState": result_state,
+                    "procesoId": proceso_id,
+                    "numFactura": num_factura,
+                    "codigoUnicoValidacion": codigo_cuv,
+                    "fechaRadicacion": fecha_procesada,
+                    "rutaArchivos": ruta_archivos,
                     "resultadosValidacion":[]
                 }
                 
                 # Guardar archivo procesado
-                ruta_final = os.path.join(directorio, nuevo_nombre_archivo)
-                with open(ruta_final, 'w', encoding='utf-8') as file:
+                with open(ruta_archivo, 'w', encoding='utf-8') as file:
                     json_str = json.dumps(resultado, indent=2, ensure_ascii=False)
                     json_str = json_str.replace('"resultadosValidacion": []', '"resultadosValidacion":[]')
                     file.write(json_str)
@@ -72,7 +83,8 @@ def procesar_archivos_json(directorio):
                 archivos_procesados.append({
                     'nombre': nuevo_nombre_archivo,
                     'estado': '✅ Procesado',
-                    'fecha': fecha_original if fecha_original else 'No encontrada'
+                    'fecha': fecha_original if fecha_original else 'No encontrada',
+                    'factura': num_factura if num_factura else 'No encontrada'
                 })
                 
             except Exception as e:
@@ -106,7 +118,7 @@ def renombrar_archivos_cuv(directorio):
                     numero_factura = coincidencia.group(1)
                     nombre_base, extension = os.path.splitext(archivo)
                     
-                    # Crear el nuevo nombre: CUV_NE651.ext
+                    # Crear el nuevo nombre: CUV_NE651.ext (FORMATO COOSALUD)
                     nuevo_nombre = f"CUV_{numero_factura}{extension}"
                     nueva_ruta = os.path.join(directorio, nuevo_nombre)
                     
@@ -167,41 +179,27 @@ st.header("📤 Subida de Archivos")
 
 # Subida de archivos múltiples (todos los tipos)
 uploaded_files = st.file_uploader(
-    "Selecciona archivos para procesar ( Tipo JSON, con patrón NE#)",
+    "Selecciona archivos para procesar (JSON de Mantis y archivos con patrón NE######)",
     accept_multiple_files=True,
     help="Puedes seleccionar archivos JSON y otros archivos con formato NE651.pdf, NE999999.xlsx, etc.",
-    type=['json']
+    type=['json', 'pdf', 'xlsx', 'xls', 'txt', 'doc', 'docx', 'jpg', 'png', 'jpeg']
 )
 
 # Información adicional
 st.info("""
-**🔄 Funcionalidad Combinada:**
+**🔄 Funcionalidad Combinada - Coosalud:**
 
 **Para archivos JSON:**
+- ✅ Extrae: resultState, procesoId, numFactura, codigoUnicoValidacion, fechaRadicacion, rutaArchivos
 - ✅ Corrige formato de fechas
 - ✅ Renombra archivos con fechas inválidas
-- ✅ Estructura JSON según estándar Coosalud
+- ✅ Busca número de factura en nombre del archivo si no está en los datos
 
-**Para archivos con patrón NE#:**
-- ✅ Convierte `NE651.pdf` → `CUV_NE651.pdf`
-- ✅ Detecta automáticamente patrones NE#
+**Para archivos con patrón NE######:**
+- ✅ Convierte `NE651.pdf` → `CUV_NE651.pdf` (Formato Coosalud)
+- ✅ Detecta automáticamente patrones NE######
 - ✅ Procesamiento masivo simultáneo
 """)
-
-# Mostrar ejemplos de patrones
-with st.expander("🔍 Ejemplos de Archivos Aceptados"):
-    st.markdown("""
-    **Archivos JSON (Conversor Mantis):**
-    - `radicacion_12345.json` → Procesa y corrige estructura JSON
-    - `factura_NE651.json` → Corrige fechas y estructura
-    
-    **Archivos para Renombrar (Patrón NE#):**
-    - `NE651.pdf` → `CUV_NE651.pdf`
-    - `NE999999.xlsx` → `CUV_NE999999.xlsx`
-    - `documento_NE8888.txt` → `CUV_NE8888.txt`
-    
-    **Puedes mezclar ambos tipos en una sola operación**
-    """)
 
 if uploaded_files:
     st.success(f"✅ {len(uploaded_files)} archivo(s) listo(s) para procesar")
@@ -266,7 +264,7 @@ if uploaded_files:
                         if resultados['json_procesados']:
                             for archivo in resultados['json_procesados']:
                                 st.success(f"**{archivo['nombre']}**")
-                                st.caption(f"Fecha: {archivo['fecha']}")
+                                st.caption(f"Factura: {archivo['factura']} | Fecha: {archivo['fecha']}")
                         else:
                             st.info("No se procesaron archivos JSON")
                     
@@ -280,7 +278,7 @@ if uploaded_files:
                 
                 # RESULTADOS DETALLADOS - RENOMBRADO
                 if resultados['archivos_renombrados']:
-                    st.subheader("🔢 Resultados Renombrado CUV")
+                    st.subheader("🔢 Resultados Renombrado CUV - Coosalud")
                     
                     # Separar por tipo de resultado
                     renombrados = [r for r in resultados['archivos_renombrados'] if r['tipo'] == 'success']
@@ -291,7 +289,7 @@ if uploaded_files:
                         st.markdown("#### ✅ Archivos Renombrados Exitosamente")
                         for resultado in renombrados:
                             st.success(f"**{resultado['original']}** → **{resultado['nuevo']}**")
-                            st.caption(f"Número de factura: {resultado['numero_factura']}")
+                            st.caption(f"Número de factura: {resultado['numero_factura']} - Formato Coosalud")
                     
                     if errores_renombre:
                         st.markdown("#### ❌ Errores en Renombrado")
@@ -314,7 +312,7 @@ if uploaded_files:
                 
                 if archivos_para_descargar:
                     # Crear ZIP con todos los archivos procesados
-                    zip_path = os.path.join(temp_dir, "archivos_procesados_completos.zip")
+                    zip_path = os.path.join(temp_dir, "archivos_procesados_coosalud.zip")
                     shutil.make_archive(zip_path.replace('.zip', ''), 'zip', temp_dir)
                     
                     # Leer el ZIP para descarga
@@ -325,7 +323,7 @@ if uploaded_files:
                     st.download_button(
                         label="📦 Descargar TODOS los Archivos Procesados (ZIP)",
                         data=zip_data,
-                        file_name="archivos_procesados_completos_coosalud.zip",
+                        file_name="archivos_procesados_coosalud.zip",
                         mime="application/zip",
                         use_container_width=True
                     )
@@ -355,7 +353,7 @@ if uploaded_files:
                     # Archivos renombrados
                     renombrados_exitosos = [r for r in resultados['archivos_renombrados'] if r['tipo'] == 'success']
                     if renombrados_exitosos:
-                        st.markdown("**🔢 Archivos Renombrados:**")
+                        st.markdown("**🔢 Archivos Renombrados (Formato Coosalud):**")
                         cols_ren = st.columns(3)
                         for i, archivo in enumerate(renombrados_exitosos):
                             with cols_ren[i % 3]:
@@ -380,7 +378,7 @@ else:
 # INSTRUCCIONES
 with st.expander("📖 Instrucciones de Uso"):
     st.markdown("""
-    ### Cómo usar el Conversor + Renombrador Combinado:
+    ### Cómo usar el Conversor + Renombrador Combinado - Coosalud:
     
     1. **Selecciona archivos**: Haz clic en 'Browse files' o arrastra los archivos
     2. **Mezcla tipos**: Puedes seleccionar archivos JSON y archivos con patrón NE###### juntos
@@ -390,22 +388,22 @@ with st.expander("📖 Instrucciones de Uso"):
     ### Transformaciones aplicadas:
     
     **Para archivos JSON:**
-    - Corrige formato de fechas: `"2023-01-01T00:00:00+00:00"` → `"2023-01-01T00:00:00"`
-    - Renombra archivos con fecha inválida: `archivo.json` → `archivo-SIN FECHA.json`
-    - Estructura JSON según estándar Coosalud
+    - Extrae: resultState, procesoId, numFactura, codigoUnicoValidacion, fechaRadicacion, rutaArchivos
+    - Busca número de factura en el nombre del archivo si no está en los datos
+    - Corrige formato de fechas
+    - Renombra archivos con fecha inválida
     
-    **Para archivos con patrón NE######:**
-    - `NE651.pdf` → `CUV_NE651.pdf`
+    **Para archivos con patrón NE###### (Formato Coosalud):**
+    - `NE651.pdf` → `CUV_NE651.pdf` (CUV al inicio)
     - `NE999999.xlsx` → `CUV_NE999999.xlsx`
-    - `documento_NE8888.txt` → `CUV_NE8888.txt`
     
     ### Características:
+    - ✅ Extracción robusta de datos JSON (múltiples formatos de claves)
     - ✅ Procesamiento simultáneo de JSON y renombrado
+    - ✅ Formato Coosalud específico para renombrado
     - ✅ Detección automática de tipos de archivo
-    - ✅ Validación de patrones antes del procesamiento
-    - ✅ Descarga combinada en ZIP o individual
     """)
 
 # FOOTER
 st.markdown("---")
-st.caption("🔄 Conversor + Renombrador - Coosalud • v2.0 • Procesamiento Combinado")
+st.caption("🔄 Conversor + Renombrador - Coosalud • v3.0 • Extracción Mejorada")
