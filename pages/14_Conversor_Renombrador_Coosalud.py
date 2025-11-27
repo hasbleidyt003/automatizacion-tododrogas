@@ -18,7 +18,7 @@ st.set_page_config(
 modern_navbar()
 
 st.title("🔄 Conversor + Renombrador - Coosalud")
-st.markdown("Procesa archivos y renombra archivos tipo JSON **al mismo tiempo**")
+st.markdown("Procesa y renombra archivos tipo JSON **al mismo tiempo**")
 
 # Función de procesamiento JSON (Conversor Mantis)
 def procesar_archivos_json(directorio):
