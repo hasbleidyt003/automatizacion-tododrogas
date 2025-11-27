@@ -24,25 +24,20 @@ modern_navbar()
 st.title("🔄 Conversor + Renombrador - Coosalud")
 st.markdown("Procesa archivos JSON de Mantis y renombra archivos con patrón NE###### **al mismo tiempo**")
 
-# Función para generar CUV (Código Único de Validación) realista
-def generar_cuv(num_factura):
-    """Genera un CUV realista basado en el número de factura"""
-    base_string = f"{num_factura}{random.randint(1000, 9999)}{datetime.now().timestamp()}"
-    return hashlib.sha512(base_string.encode()).hexdigest()
+# Función para renombrar archivos sin fecha
+def renombrar_archivo_sin_fecha(ruta_archivo, nombre_original):
+    """Renombra archivo agregando 'sin fecha' si no tiene fechaRadicacion"""
+    nombre_base, extension = os.path.splitext(nombre_original)
+    nuevo_nombre = f"{nombre_base}_sin_fecha{extension}"
+    nueva_ruta = os.path.join(os.path.dirname(ruta_archivo), nuevo_nombre)
+    
+    try:
+        os.rename(ruta_archivo, nueva_ruta)
+        return nuevo_nombre, True
+    except Exception as e:
+        return nombre_original, False
 
-# Función para generar procesoId realista
-def generar_proceso_id():
-    """Genera un ID de proceso realista"""
-    return random.randint(700000, 800000)
-
-# Función para generar fecha de radicación realista
-def generar_fecha_radicacion():
-    """Genera una fecha de radicación realista (últimos 30 días)"""
-    dias_aleatorios = random.randint(1, 30)
-    fecha = datetime.now() - timedelta(days=dias_aleatorios)
-    return fecha.strftime("%Y-%m-%dT%H:%M:%S.%f")
-
-# Función de procesamiento JSON MEJORADA con datos reales
+# Función de procesamiento JSON - EXTRACCIÓN EXACTA COMO SOLICITASTE
 def procesar_archivos_json(directorio):
     archivos_procesados = []
     errores = []
@@ -56,80 +51,61 @@ def procesar_archivos_json(directorio):
                 with open(ruta_archivo, 'r', encoding='utf-8') as file:
                     datos_originales = json.load(file)
                 
-                # EXTRACCIÓN DE DATOS DEL FORMATO REAL
-                num_factura_original = datos_originales.get('numFactura')
-                num_documento_id_obligado = datos_originales.get('numDocumentoIdObligado')
-                tipo_nota = datos_originales.get('tipoNota')
-                num_nota = datos_originales.get('numNota')
-                usuarios = datos_originales.get('usuarios', [])
+                # ✅ EXTRACCIÓN EXACTA DE DATOS DEL ORIGINAL (como solicitaste)
+                result_state = datos_originales.get('resultState')
+                proceso_id = datos_originales.get('procesoId')
+                num_factura = datos_originales.get('numFactura')
+                codigo_unico_validacion = datos_originales.get('codigoUnicoValidacion')
+                fecha_radicacion = datos_originales.get('fechaRadicacion')
                 
-                # Buscar número de factura en el nombre del archivo si no está en los datos
-                if not num_factura_original:
-                    patron_factura = r'(NE\d+)'
-                    coincidencia_factura = re.search(patron_factura, nombre_archivo)
-                    if coincidencia_factura:
-                        num_factura_original = coincidencia_factura.group(1)
+                # 🎯 NUEVA REGLA: Si no tiene fechaRadicacion, renombrar archivo
+                archivo_renombrado = False
+                if not fecha_radicacion:
+                    nuevo_nombre, exito = renombrar_archivo_sin_fecha(ruta_archivo, nombre_archivo)
+                    if exito:
+                        nombre_archivo = nuevo_nombre
+                        archivo_renombrado = True
+                        # Actualizar ruta después del renombrado
+                        ruta_archivo = os.path.join(directorio, nombre_archivo)
                 
-                # GENERAR DATOS REALES PARA MANTIS
-                num_factura = num_factura_original
-                result_state = True  # Siempre true para procesos exitosos
-                proceso_id = generar_proceso_id()
-                codigo_unico_validacion = generar_cuv(num_factura)
-                fecha_radicacion = generar_fecha_radicacion()
-                ruta_archivos = None  # Normalmente null en respuestas reales
+                # ❌ CAMPOS QUE SIEMPRE SERÁN AUTOMÁTICOS
+                ruta_archivos = None  # SIEMPRE null
+                resultados_validacion = []  # SIEMPRE array vacío
                 
-                # Calcular valor total si hay servicios
-                valor_total_servicios = 0
-                if usuarios:
-                    for usuario in usuarios:
-                        servicios = usuario.get('servicios', {})
-                        medicamentos = servicios.get('medicamentos', [])
-                        for medicamento in medicamentos:
-                            valor_total_servicios += medicamento.get('vrServicio', 0)
-                
-                nuevo_nombre_archivo = nombre_archivo
-                
-                # Estructura final para Coosalud - CON DATOS REALES
+                # Estructura final EXACTA como la necesitas
                 resultado = {
-                    "resultState": result_state,
-                    "procesoId": proceso_id,
-                    "numFactura": num_factura,
-                    "codigoUnicoValidacion": codigo_unico_validacion,
-                    "fechaRadicacion": fecha_radicacion,
-                    "rutaArchivos": ruta_archivos,
-                    "resultadosValidacion": [],
-                    # AGREGAR DATOS ORIGINALES PARA REFERENCIA
-                    "datosOriginales": {
-                        "numDocumentoIdObligado": num_documento_id_obligado,
-                        "tipoNota": tipo_nota,
-                        "numNota": num_nota,
-                        "totalUsuarios": len(usuarios),
-                        "totalMedicamentos": sum(len(usuario.get('servicios', {}).get('medicamentos', [])) for usuario in usuarios),
-                        "valorTotalServicios": valor_total_servicios
-                    }
+                    "resultState": result_state,                    # ✅ Del original
+                    "procesoId": proceso_id,                        # ✅ Del original
+                    "numFactura": num_factura,                      # ✅ Del original
+                    "codigoUnicoValidacion": codigo_unico_validacion, # ✅ Del original
+                    "fechaRadicacion": fecha_radicacion,            # ✅ Del original
+                    "rutaArchivos": ruta_archivos,                  # ❌ SIEMPRE null
+                    "resultadosValidacion": resultados_validacion   # ❌ SIEMPRE array vacío
                 }
                 
-                # Guardar archivo procesado CON DATOS REALES
+                # Guardar archivo procesado
                 with open(ruta_archivo, 'w', encoding='utf-8') as file:
                     json_str = json.dumps(resultado, indent=2, ensure_ascii=False)
-                    json_str = json_str.replace('"resultadosValidacion": []', '"resultadosValidacion":[]')
                     file.write(json_str)
                 
-                estado = "✅ Generado con datos reales"
+                # Determinar estado del procesamiento
+                if archivo_renombrado:
+                    estado = "✅ Estructura generada + 📝 Archivo renombrado (sin fecha)"
+                else:
+                    estado = "✅ Estructura generada"
                 
                 # Información para mostrar en resultados
                 info_generacion = {
-                    'numFactura': num_factura,
-                    'procesoId': proceso_id,
-                    'codigoCUV': codigo_unico_validacion[:20] + "...",  # Mostrar solo parte del CUV
-                    'fechaRadicacion': fecha_radicacion[:19],  # Formato más legible
                     'resultState': result_state,
-                    'totalUsuarios': len(usuarios),
-                    'valorTotal': valor_total_servicios
+                    'procesoId': proceso_id,
+                    'numFactura': num_factura,
+                    'codigoCUV': codigo_unico_validacion[:20] + "..." if codigo_unico_validacion else "N/A",
+                    'fechaRadicacion': fecha_radicacion[:19] if fecha_radicacion else "NO TIENE FECHA",
+                    'archivoRenombrado': archivo_renombrado
                 }
                 
                 archivos_procesados.append({
-                    'nombre': nuevo_nombre_archivo,
+                    'nombre': nombre_archivo,
                     'estado': estado,
                     'factura': num_factura,
                     'info_generacion': info_generacion
@@ -147,7 +123,7 @@ def procesar_archivos_json(directorio):
         errores.append({'nombre': 'Sistema', 'error': f"Error general: {str(e)}"})
         return [], errores
 
-# Función de renombrado CUV (Renombrador Coosalud)
+# Función de renombrado CUV (Renombrador Coosalud) - MANTENIDA
 def renombrar_archivos_cuv(directorio):
     resultados = []
     contador = 0
@@ -238,14 +214,12 @@ st.info("""
 **🔄 Funcionalidad Combinada - Coosalud:**
 
 **Para archivos JSON:**
-- ✅ **GENERA** datos reales: resultState, procesoId, CUV, fechaRadicacion
-- ✅ **EXTRAE**: numFactura, numDocumentoIdObligado, usuarios, servicios
-- ✅ **CALCULA** valores totales de servicios
-- ✅ **CONSERVA** información original resumida
+- ✅ **EXTRAE**: resultState, procesoId, numFactura, codigoUnicoValidacion, fechaRadicacion (DEL ORIGINAL)
+- ✅ **GENERA**: rutaArchivos: null y resultadosValidacion:[] (SIEMPRE)
+- ✅ **RENOMBRA**: Archivos sin fechaRadicacion → agrega "_sin_fecha"
 
 **Para archivos con patrón NE######:**
 - ✅ Convierte `NE651.pdf` → `CUV_NE651.pdf` (Formato Coosalud)
-- ✅ Detecta automáticamente patrones NE######
 """)
 
 if uploaded_files:
@@ -257,23 +231,13 @@ if uploaded_files:
             if file.name.lower().endswith('.json'):
                 try:
                     contenido = json.loads(file.getvalue().decode('utf-8'))
-                    num_factura = contenido.get('numFactura', 'No encontrado')
-                    num_documento = contenido.get('numDocumentoIdObligado', 'No encontrado')
-                    usuarios = contenido.get('usuarios', [])
                     
                     st.write(f"**{i+1}. {file.name}**")
-                    st.write(f"   - Factura: `{num_factura}`")
-                    st.write(f"   - Documento Obligado: `{num_documento}`")
-                    st.write(f"   - Usuarios: `{len(usuarios)}`")
-                    
-                    # Mostrar primeros datos de servicios si existen
-                    if usuarios and 'servicios' in usuarios[0]:
-                        servicios = usuarios[0]['servicios']
-                        if 'medicamentos' in servicios and servicios['medicamentos']:
-                            med = servicios['medicamentos'][0]
-                            st.write(f"   - Valor Servicio: `{med.get('vrServicio', 'No disponible')}`")
-                            st.write(f"   - Diagnóstico: `{med.get('codDiagnosticoPrincipal', 'No disponible')}`")
-                    
+                    st.write(f"   - resultState: `{contenido.get('resultState', 'No encontrado')}`")
+                    st.write(f"   - procesoId: `{contenido.get('procesoId', 'No encontrado')}`")
+                    st.write(f"   - numFactura: `{contenido.get('numFactura', 'No encontrado')}`")
+                    st.write(f"   - codigoUnicoValidacion: `{contenido.get('codigoUnicoValidacion', 'No encontrado')[:20]}...`" if contenido.get('codigoUnicoValidacion') else "   - codigoUnicoValidacion: `No encontrado`")
+                    st.write(f"   - fechaRadicacion: `{contenido.get('fechaRadicacion', 'NO TIENE FECHA - Se renombrará')}`")
                     st.write("---")
                     
                 except Exception as e:
@@ -281,7 +245,7 @@ if uploaded_files:
     
     # Botón de procesamiento COMBINADO
     if st.button("🚀 Procesar Todo", type="primary", use_container_width=True):
-        with st.spinner("Generando datos reales y renombrando archivos..."):
+        with st.spinner("Extrayendo datos originales y procesando archivos..."):
             # Crear directorio temporal
             with tempfile.TemporaryDirectory() as temp_dir:
                 # Guardar archivos subidos en directorio temporal
@@ -297,28 +261,13 @@ if uploaded_files:
                 st.markdown("---")
                 st.header("📊 Resultados del Procesamiento Combinado")
                 
-                # Estadísticas generales
-                total_json = len(resultados['json_procesados']) + len(resultados['json_errores'])
-                total_archivos = len(uploaded_files)
-                
-                col1, col2, col3, col4 = st.columns(4)
-                with col1:
-                    st.metric("Total Archivos", total_archivos)
-                with col2:
-                    st.metric("JSON Procesados", len(resultados['json_procesados']))
-                with col3:
-                    st.metric("Archivos Renombrados", resultados['total_renombrados'])
-                with col4:
-                    tasa_exito = ((len(resultados['json_procesados']) + resultados['total_renombrados']) / total_archivos * 100) if total_archivos > 0 else 0
-                    st.metric("Tasa Éxito", f"{tasa_exito:.1f}%")
-                
                 # RESULTADOS DETALLADOS - JSON
                 if resultados['json_procesados'] or resultados['json_errores']:
-                    st.subheader("📊 Resultados Generación de Datos Reales")
+                    st.subheader("📊 Resultados Conversor JSON")
                     
                     # Mostrar tabla detallada de JSON procesados
                     if resultados['json_procesados']:
-                        st.markdown("#### ✅ JSON con Datos Reales Generados")
+                        st.markdown("#### ✅ JSON Procesados Exitosamente")
                         
                         # Crear DataFrame para mejor visualización
                         df_data = []
@@ -326,31 +275,35 @@ if uploaded_files:
                             info = archivo['info_generacion']
                             df_data.append({
                                 'Archivo': archivo['nombre'],
-                                'Factura': info['numFactura'],
-                                'Proceso ID': info['procesoId'],
+                                'resultState': info['resultState'],
+                                'procesoId': info['procesoId'],
+                                'numFactura': info['numFactura'],
                                 'CUV': info['codigoCUV'],
                                 'Fecha Radicación': info['fechaRadicacion'],
-                                'Estado': '✅ Exitoso' if info['resultState'] else '❌ Fallido',
-                                'Valor Total': f"${info['valorTotal']:,.0f}" if info['valorTotal'] > 0 else 'N/A'
+                                'Estado': archivo['estado']
                             })
                         
                         df = pd.DataFrame(df_data)
                         st.dataframe(df, use_container_width=True)
                         
-                        # Mostrar ejemplo de datos generados
-                        st.markdown("#### 🔄 Ejemplo de Datos Generados")
+                        # Mostrar ejemplo de estructura generada
+                        st.markdown("#### 🔄 Ejemplo de Estructura Generada")
                         if resultados['json_procesados']:
                             primer_archivo = resultados['json_procesados'][0]
                             info = primer_archivo['info_generacion']
                             
-                            st.success(f"**{primer_archivo['nombre']}** - Datos generados exitosamente:")
-                            st.code(f"""
-resultState: {info['resultState']}
-procesoId: {info['procesoId']}
-numFactura: {info['numFactura']}
-codigoUnicoValidacion: {info['codigoCUV']}...
-fechaRadicacion: {info['fechaRadicacion']}
-                            """, language='json')
+                            ejemplo_estructura = {
+                                "resultState": info['resultState'],
+                                "procesoId": info['procesoId'],
+                                "numFactura": info['numFactura'],
+                                "codigoUnicoValidacion": info['codigoCUV'] + "...",  # Mostrar completo
+                                "fechaRadicacion": info['fechaRadicacion'],
+                                "rutaArchivos": None,
+                                "resultadosValidacion": []
+                            }
+                            
+                            st.success(f"**{primer_archivo['nombre']}** - Estructura generada:")
+                            st.code(json.dumps(ejemplo_estructura, indent=2), language='json')
                     
                     if resultados['json_errores']:
                         st.markdown("#### ❌ Errores en JSON")
@@ -363,35 +316,17 @@ fechaRadicacion: {info['fechaRadicacion']}
                     
                     # Separar por tipo de resultado
                     renombrados = [r for r in resultados['archivos_renombrados'] if r['tipo'] == 'success']
-                    errores_renombre = [r for r in resultados['archivos_renombrados'] if r['tipo'] == 'error']
-                    info_renombre = [r for r in resultados['archivos_renombrados'] if r['tipo'] == 'info']
                     
                     if renombrados:
                         st.markdown("#### ✅ Archivos Renombrados Exitosamente")
                         for resultado in renombrados:
                             st.success(f"**{resultado['original']}** → **{resultado['nuevo']}**")
-                            st.caption(f"Número de factura: {resultado['numero_factura']} - Formato Coosalud")
-                    
-                    if errores_renombre:
-                        st.markdown("#### ❌ Errores en Renombrado")
-                        for resultado in errores_renombre:
-                            st.error(f"**{resultado['original']}** → {resultado['estado']}")
-                    
-                    if info_renombre:
-                        st.markdown("#### ℹ️ Archivos No Procesados")
-                        for resultado in info_renombre:
-                            st.info(f"**{resultado['original']}** → {resultado['estado']}")
                 
                 # PREPARAR DESCARGA COMBINADA
                 st.markdown("---")
-                st.subheader("📥 Descargar Todos los Archivos Procesados")
+                st.subheader("📥 Descargar Archivos Procesados")
                 
-                archivos_para_descargar = (
-                    len(resultados['json_procesados']) > 0 or 
-                    resultados['total_renombrados'] > 0
-                )
-                
-                if archivos_para_descargar:
+                if resultados['json_procesados'] or resultados['archivos_renombrados']:
                     # Crear ZIP con todos los archivos procesados
                     zip_path = os.path.join(temp_dir, "archivos_procesados_coosalud.zip")
                     shutil.make_archive(zip_path.replace('.zip', ''), 'zip', temp_dir)
@@ -400,58 +335,13 @@ fechaRadicacion: {info['fechaRadicacion']}
                     with open(zip_path, "rb") as f:
                         zip_data = f.read()
                     
-                    # Botón de descarga ZIP completo
                     st.download_button(
-                        label="📦 Descargar TODOS los Archivos Procesados (ZIP)",
+                        label="📦 Descargar TODOS los Archivos (ZIP)",
                         data=zip_data,
                         file_name="archivos_procesados_coosalud.zip",
                         mime="application/zip",
                         use_container_width=True
                     )
-                    
-                    # Descargas individuales por categoría
-                    st.markdown("**Descargas Individuales por Categoría:**")
-                    
-                    # Archivos JSON procesados
-                    if resultados['json_procesados']:
-                        st.markdown("**📊 Archivos JSON con Datos Reales:**")
-                        cols_json = st.columns(3)
-                        for i, archivo in enumerate(resultados['json_procesados']):
-                            with cols_json[i % 3]:
-                                file_path = os.path.join(temp_dir, archivo['nombre'])
-                                if os.path.exists(file_path):
-                                    with open(file_path, "rb") as f:
-                                        file_data = f.read()
-                                    
-                                    st.download_button(
-                                        label=f"📄 {archivo['nombre'][:15]}...",
-                                        data=file_data,
-                                        file_name=archivo['nombre'],
-                                        mime="application/json",
-                                        key=f"json_{i}"
-                                    )
-                    
-                    # Archivos renombrados
-                    renombrados_exitosos = [r for r in resultados['archivos_renombrados'] if r['tipo'] == 'success']
-                    if renombrados_exitosos:
-                        st.markdown("**🔢 Archivos Renombrados (Formato Coosalud):**")
-                        cols_ren = st.columns(3)
-                        for i, archivo in enumerate(renombrados_exitosos):
-                            with cols_ren[i % 3]:
-                                file_path = os.path.join(temp_dir, archivo['nuevo'])
-                                if os.path.exists(file_path):
-                                    with open(file_path, "rb") as f:
-                                        file_data = f.read()
-                                    
-                                    st.download_button(
-                                        label=f"📄 {archivo['nuevo'][:15]}...",
-                                        data=file_data,
-                                        file_name=archivo['nuevo'],
-                                        mime="application/octet-stream",
-                                        key=f"ren_{i}"
-                                    )
-                else:
-                    st.warning("No hay archivos procesados para descargar")
 
 else:
     st.info("👆 Por favor, selecciona al menos un archivo para procesar")
@@ -459,29 +349,34 @@ else:
 # INSTRUCCIONES
 with st.expander("📖 Instrucciones de Uso"):
     st.markdown("""
-    ### Cómo usar el Conversor + Renombrador Combinado - Coosalud:
+    ### Estructura generada:
+    ```json
+    {
+      "resultState": true,                    // ← Del original
+      "procesoId": 790938,                    // ← Del original  
+      "numFactura": "NE1315",                 // ← Del original
+      "codigoUnicoValidacion": "1043ee6f9...", // ← Del original
+      "fechaRadicacion": "2025-08-21T20:42...", // ← Del original
+      "rutaArchivos": null,                   // ← SIEMPRE null
+      "resultadosValidacion": []              // ← SIEMPRE array vacío
+    }
+    ```
     
-    1. **Selecciona archivos**: Haz clic en 'Browse files' o arrastra los archivos
-    2. **Revisa previsualización**: Verifica los datos que se detectarán
-    3. **Procesa**: Haz clic en 'Procesar Todo' - generará datos reales
-    4. **Descarga**: Obtén todos los archivos procesados en un ZIP o individualmente
+    **Qué se extrae del original:**
+    - ✅ `resultState` 
+    - ✅ `procesoId`
+    - ✅ `numFactura`
+    - ✅ `codigoUnicoValidacion`
+    - ✅ `fechaRadicacion`
     
-    ### Datos generados automáticamente:
+    **Qué se genera automáticamente:**
+    - `rutaArchivos`: null (SIEMPRE)
+    - `resultadosValidacion`: [] (SIEMPRE)
     
-    **Campos principales:**
-    - `resultState`: **true** (siempre exitoso)
-    - `procesoId`: Número aleatorio entre 700,000-800,000
-    - `numFactura`: Conservado del archivo original
-    - `codigoUnicoValidacion`: Código SHA-512 único generado
-    - `fechaRadicacion`: Fecha aleatoria de los últimos 30 días
-    - `rutaArchivos`: null
-    
-    **Datos originales resumidos:**
-    - Información de factura y documento obligado
-    - Totales de usuarios y medicamentos
-    - Valor total de servicios calculado
+    **Nueva regla especial:**
+    - Si el archivo NO tiene `fechaRadicacion` → Se renombra agregando "_sin_fecha"
     """)
 
 # FOOTER
 st.markdown("---")
-st.caption("🔄 Conversor + Renombrador - Coosalud • v6.0 • Generación de Datos Reales")
+st.caption("🔄 Conversor + Renombrador - Coosalud • v8.0 • Extracción exacta + Renombrado sin fecha")
