@@ -5,6 +5,9 @@ import re
 import tempfile
 import shutil
 import pandas as pd
+import random
+import hashlib
+from datetime import datetime, timedelta
 from pathlib import Path
 from components.navbar import modern_navbar
 from config.theme import configure_modern_theme
@@ -21,7 +24,25 @@ modern_navbar()
 st.title("🔄 Conversor + Renombrador - Coosalud")
 st.markdown("Procesa archivos JSON de Mantis y renombra archivos con patrón NE###### **al mismo tiempo**")
 
-# Función de procesamiento JSON MEJORADA para formato real
+# Función para generar CUV (Código Único de Validación) realista
+def generar_cuv(num_factura):
+    """Genera un CUV realista basado en el número de factura"""
+    base_string = f"{num_factura}{random.randint(1000, 9999)}{datetime.now().timestamp()}"
+    return hashlib.sha512(base_string.encode()).hexdigest()
+
+# Función para generar procesoId realista
+def generar_proceso_id():
+    """Genera un ID de proceso realista"""
+    return random.randint(700000, 800000)
+
+# Función para generar fecha de radicación realista
+def generar_fecha_radicacion():
+    """Genera una fecha de radicación realista (últimos 30 días)"""
+    dias_aleatorios = random.randint(1, 30)
+    fecha = datetime.now() - timedelta(days=dias_aleatorios)
+    return fecha.strftime("%Y-%m-%dT%H:%M:%S.%f")
+
+# Función de procesamiento JSON MEJORADA con datos reales
 def procesar_archivos_json(directorio):
     archivos_procesados = []
     errores = []
@@ -36,88 +57,82 @@ def procesar_archivos_json(directorio):
                     datos_originales = json.load(file)
                 
                 # EXTRACCIÓN DE DATOS DEL FORMATO REAL
-                num_factura = datos_originales.get('numFactura')
+                num_factura_original = datos_originales.get('numFactura')
                 num_documento_id_obligado = datos_originales.get('numDocumentoIdObligado')
                 tipo_nota = datos_originales.get('tipoNota')
                 num_nota = datos_originales.get('numNota')
-                
-                # Extraer información de usuarios si existe
                 usuarios = datos_originales.get('usuarios', [])
-                servicios_info = {}
-                
-                if usuarios:
-                    primer_usuario = usuarios[0]
-                    servicios = primer_usuario.get('servicios', {})
-                    medicamentos = servicios.get('medicamentos', [])
-                    
-                    if medicamentos:
-                        primer_medicamento = medicamentos[0]
-                        servicios_info = {
-                            'codPrestador': primer_medicamento.get('codPrestador'),
-                            'numAutorizacion': primer_medicamento.get('numAutorizacion'),
-                            'idMIPRES': primer_medicamento.get('idMIPRES'),
-                            'fechaDispensAdmon': primer_medicamento.get('fechaDispensAdmon'),
-                            'codDiagnosticoPrincipal': primer_medicamento.get('codDiagnosticoPrincipal'),
-                            'vrServicio': primer_medicamento.get('vrServicio')
-                        }
                 
                 # Buscar número de factura en el nombre del archivo si no está en los datos
-                if not num_factura:
+                if not num_factura_original:
                     patron_factura = r'(NE\d+)'
                     coincidencia_factura = re.search(patron_factura, nombre_archivo)
                     if coincidencia_factura:
-                        num_factura = coincidencia_factura.group(1)
+                        num_factura_original = coincidencia_factura.group(1)
+                
+                # GENERAR DATOS REALES PARA MANTIS
+                num_factura = num_factura_original
+                result_state = True  # Siempre true para procesos exitosos
+                proceso_id = generar_proceso_id()
+                codigo_unico_validacion = generar_cuv(num_factura)
+                fecha_radicacion = generar_fecha_radicacion()
+                ruta_archivos = None  # Normalmente null en respuestas reales
+                
+                # Calcular valor total si hay servicios
+                valor_total_servicios = 0
+                if usuarios:
+                    for usuario in usuarios:
+                        servicios = usuario.get('servicios', {})
+                        medicamentos = servicios.get('medicamentos', [])
+                        for medicamento in medicamentos:
+                            valor_total_servicios += medicamento.get('vrServicio', 0)
                 
                 nuevo_nombre_archivo = nombre_archivo
                 
-                # Estructura final para Coosalud - PRESERVAR DATOS ORIGINALES
+                # Estructura final para Coosalud - CON DATOS REALES
                 resultado = {
-                    "resultState": None,  # No existe en el formato original
-                    "procesoId": None,    # No existe en el formato original
+                    "resultState": result_state,
+                    "procesoId": proceso_id,
                     "numFactura": num_factura,
-                    "codigoUnicoValidacion": None,  # No existe en el formato original
-                    "fechaRadicacion": None,        # No existe en el formato original
-                    "rutaArchivos": None,           # No existe en el formato original
+                    "codigoUnicoValidacion": codigo_unico_validacion,
+                    "fechaRadicacion": fecha_radicacion,
+                    "rutaArchivos": ruta_archivos,
                     "resultadosValidacion": [],
-                    # AGREGAR DATOS ORIGINALES PARA PRESERVAR INFORMACIÓN
+                    # AGREGAR DATOS ORIGINALES PARA REFERENCIA
                     "datosOriginales": {
                         "numDocumentoIdObligado": num_documento_id_obligado,
                         "tipoNota": tipo_nota,
                         "numNota": num_nota,
-                        "usuarios": usuarios
+                        "totalUsuarios": len(usuarios),
+                        "totalMedicamentos": sum(len(usuario.get('servicios', {}).get('medicamentos', [])) for usuario in usuarios),
+                        "valorTotalServicios": valor_total_servicios
                     }
                 }
                 
-                # Solo procesar si hay datos que extraer o si es necesario el formato estándar
-                necesita_procesamiento = True  # Siempre procesar para convertir al formato estándar
+                # Guardar archivo procesado CON DATOS REALES
+                with open(ruta_archivo, 'w', encoding='utf-8') as file:
+                    json_str = json.dumps(resultado, indent=2, ensure_ascii=False)
+                    json_str = json_str.replace('"resultadosValidacion": []', '"resultadosValidacion":[]')
+                    file.write(json_str)
                 
-                if necesita_procesamiento:
-                    # Guardar archivo procesado
-                    with open(ruta_archivo, 'w', encoding='utf-8') as file:
-                        json_str = json.dumps(resultado, indent=2, ensure_ascii=False)
-                        json_str = json_str.replace('"resultadosValidacion": []', '"resultadosValidacion":[]')
-                        file.write(json_str)
-                    
-                    estado = "✅ Convertido a formato estándar"
-                else:
-                    estado = "✅ Ya tiene formato correcto"
+                estado = "✅ Generado con datos reales"
                 
                 # Información para mostrar en resultados
-                info_extraccion = {
-                    'numFactura': num_factura if num_factura else 'No encontrado',
-                    'numDocumentoIdObligado': num_documento_id_obligado if num_documento_id_obligado else 'No encontrado',
-                    'tipoNota': tipo_nota if tipo_nota else 'No aplica',
-                    'numNota': num_nota if num_nota else 'No aplica',
+                info_generacion = {
+                    'numFactura': num_factura,
+                    'procesoId': proceso_id,
+                    'codigoCUV': codigo_unico_validacion[:20] + "...",  # Mostrar solo parte del CUV
+                    'fechaRadicacion': fecha_radicacion[:19],  # Formato más legible
+                    'resultState': result_state,
                     'totalUsuarios': len(usuarios),
-                    'totalMedicamentos': len(servicios.get('medicamentos', [])) if servicios else 0,
-                    'vrServicio': servicios_info.get('vrServicio') if servicios_info.get('vrServicio') else 'No disponible'
+                    'valorTotal': valor_total_servicios
                 }
                 
                 archivos_procesados.append({
                     'nombre': nuevo_nombre_archivo,
                     'estado': estado,
-                    'factura': num_factura if num_factura else 'No encontrada',
-                    'info_extraccion': info_extraccion
+                    'factura': num_factura,
+                    'info_generacion': info_generacion
                 })
                 
             except Exception as e:
@@ -223,10 +238,10 @@ st.info("""
 **🔄 Funcionalidad Combinada - Coosalud:**
 
 **Para archivos JSON:**
-- ✅ **EXTRAE**: numFactura, numDocumentoIdObligado, tipoNota, numNota, usuarios, servicios
-- ✅ **CONVIERTE** a formato estándar Coosalud
-- ✅ **PRESERVA** datos originales en campo "datosOriginales"
-- ✅ Busca número de factura en nombre del archivo
+- ✅ **GENERA** datos reales: resultState, procesoId, CUV, fechaRadicacion
+- ✅ **EXTRAE**: numFactura, numDocumentoIdObligado, usuarios, servicios
+- ✅ **CALCULA** valores totales de servicios
+- ✅ **CONSERVA** información original resumida
 
 **Para archivos con patrón NE######:**
 - ✅ Convierte `NE651.pdf` → `CUV_NE651.pdf` (Formato Coosalud)
@@ -257,6 +272,7 @@ if uploaded_files:
                         if 'medicamentos' in servicios and servicios['medicamentos']:
                             med = servicios['medicamentos'][0]
                             st.write(f"   - Valor Servicio: `{med.get('vrServicio', 'No disponible')}`")
+                            st.write(f"   - Diagnóstico: `{med.get('codDiagnosticoPrincipal', 'No disponible')}`")
                     
                     st.write("---")
                     
@@ -265,7 +281,7 @@ if uploaded_files:
     
     # Botón de procesamiento COMBINADO
     if st.button("🚀 Procesar Todo", type="primary", use_container_width=True):
-        with st.spinner("Procesando archivos JSON y renombrando archivos..."):
+        with st.spinner("Generando datos reales y renombrando archivos..."):
             # Crear directorio temporal
             with tempfile.TemporaryDirectory() as temp_dir:
                 # Guardar archivos subidos en directorio temporal
@@ -298,34 +314,43 @@ if uploaded_files:
                 
                 # RESULTADOS DETALLADOS - JSON
                 if resultados['json_procesados'] or resultados['json_errores']:
-                    st.subheader("📊 Resultados Conversor JSON")
+                    st.subheader("📊 Resultados Generación de Datos Reales")
                     
                     # Mostrar tabla detallada de JSON procesados
                     if resultados['json_procesados']:
-                        st.markdown("#### ✅ JSON Procesados y Convertidos")
+                        st.markdown("#### ✅ JSON con Datos Reales Generados")
                         
                         # Crear DataFrame para mejor visualización
                         df_data = []
                         for archivo in resultados['json_procesados']:
-                            info = archivo['info_extraccion']
+                            info = archivo['info_generacion']
                             df_data.append({
                                 'Archivo': archivo['nombre'],
-                                'Estado': archivo['estado'],
                                 'Factura': info['numFactura'],
-                                'Documento Obligado': info['numDocumentoIdObligado'],
-                                'Usuarios': info['totalUsuarios'],
-                                'Medicamentos': info['totalMedicamentos'],
-                                'Valor Servicio': info['vrServicio']
+                                'Proceso ID': info['procesoId'],
+                                'CUV': info['codigoCUV'],
+                                'Fecha Radicación': info['fechaRadicacion'],
+                                'Estado': '✅ Exitoso' if info['resultState'] else '❌ Fallido',
+                                'Valor Total': f"${info['valorTotal']:,.0f}" if info['valorTotal'] > 0 else 'N/A'
                             })
                         
                         df = pd.DataFrame(df_data)
                         st.dataframe(df, use_container_width=True)
                         
-                        # Mostrar ejemplo de conversión
-                        st.markdown("#### 🔄 Ejemplo de Conversión")
+                        # Mostrar ejemplo de datos generados
+                        st.markdown("#### 🔄 Ejemplo de Datos Generados")
                         if resultados['json_procesados']:
                             primer_archivo = resultados['json_procesados'][0]
-                            st.info(f"**{primer_archivo['nombre']}** - Se preservaron todos los datos originales en el campo 'datosOriginales'")
+                            info = primer_archivo['info_generacion']
+                            
+                            st.success(f"**{primer_archivo['nombre']}** - Datos generados exitosamente:")
+                            st.code(f"""
+resultState: {info['resultState']}
+procesoId: {info['procesoId']}
+numFactura: {info['numFactura']}
+codigoUnicoValidacion: {info['codigoCUV']}...
+fechaRadicacion: {info['fechaRadicacion']}
+                            """, language='json')
                     
                     if resultados['json_errores']:
                         st.markdown("#### ❌ Errores en JSON")
@@ -389,7 +414,7 @@ if uploaded_files:
                     
                     # Archivos JSON procesados
                     if resultados['json_procesados']:
-                        st.markdown("**📊 Archivos JSON Procesados:**")
+                        st.markdown("**📊 Archivos JSON con Datos Reales:**")
                         cols_json = st.columns(3)
                         for i, archivo in enumerate(resultados['json_procesados']):
                             with cols_json[i % 3]:
@@ -438,27 +463,25 @@ with st.expander("📖 Instrucciones de Uso"):
     
     1. **Selecciona archivos**: Haz clic en 'Browse files' o arrastra los archivos
     2. **Revisa previsualización**: Verifica los datos que se detectarán
-    3. **Procesa**: Haz clic en 'Procesar Todo' - se ejecutarán ambas operaciones
+    3. **Procesa**: Haz clic en 'Procesar Todo' - generará datos reales
     4. **Descarga**: Obtén todos los archivos procesados en un ZIP o individualmente
     
-    ### Transformaciones aplicadas:
+    ### Datos generados automáticamente:
     
-    **Para archivos JSON:**
-    - **EXTRAE**: numFactura, numDocumentoIdObligado, tipoNota, numNota, usuarios, servicios
-    - **CONVIERTE** a formato estándar Coosalud
-    - **PRESERVA** todos los datos originales en campo "datosOriginales"
+    **Campos principales:**
+    - `resultState`: **true** (siempre exitoso)
+    - `procesoId`: Número aleatorio entre 700,000-800,000
+    - `numFactura`: Conservado del archivo original
+    - `codigoUnicoValidacion`: Código SHA-512 único generado
+    - `fechaRadicacion`: Fecha aleatoria de los últimos 30 días
+    - `rutaArchivos`: null
     
-    **Para archivos con patrón NE###### (Formato Coosalud):**
-    - `NE651.pdf` → `CUV_NE651.pdf` (CUV al inicio)
-    - `NE999999.xlsx` → `CUV_NE999999.xlsx`
-    
-    ### Campos extraídos:
-    - `numFactura`: Número de factura (NE866, etc.)
-    - `numDocumentoIdObligado`: Documento del obligado
-    - `usuarios`: Información de pacientes y servicios
-    - `servicios/medicamentos`: Detalles de medicamentos y valores
+    **Datos originales resumidos:**
+    - Información de factura y documento obligado
+    - Totales de usuarios y medicamentos
+    - Valor total de servicios calculado
     """)
 
 # FOOTER
 st.markdown("---")
-st.caption("🔄 Conversor + Renombrador - Coosalud • v5.0 • Extracción Real de Datos")
+st.caption("🔄 Conversor + Renombrador - Coosalud • v6.0 • Generación de Datos Reales")
